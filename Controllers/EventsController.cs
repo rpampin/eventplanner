@@ -11,47 +11,47 @@ namespace EventPlanner.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SupplierTypesController : ControllerBase
+    public class EventsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public SupplierTypesController(ApplicationDbContext context)
+        public EventsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/SupplierTypes
+        // GET: api/Events
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SupplierType>>> GetSupplierTypes()
+        public async Task<ActionResult<IEnumerable<Event>>> GetEventTypes()
         {
-            return await _context.SupplierTypes.ToListAsync();
+            return await _context.Events.ToListAsync();
         }
 
-        // GET: api/SupplierTypes/5
+        // GET: api/Events/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<SupplierType>> GetSupplierType(Guid id)
+        public async Task<ActionResult<Event>> GetEventType(Guid id)
         {
-            var supplierType = await _context.SupplierTypes.FindAsync(id);
+            var ev = await _context.Events.FindAsync(id);
 
-            if (supplierType == null)
+            if (ev == null)
             {
                 return NotFound();
             }
 
-            return supplierType;
+            return ev;
         }
 
-        // PUT: api/SupplierTypes/5
+        // PUT: api/Events/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSupplierType(Guid id, SupplierType supplierType)
+        public async Task<IActionResult> PutEventType(Guid id, Event ev)
         {
-            if (id != supplierType.Id)
+            if (id != ev.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(supplierType).State = EntityState.Modified;
+            _context.Entry(ev).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +59,7 @@ namespace EventPlanner.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!SupplierTypeExists(id))
+                if (!EventTypeExists(id))
                 {
                     return NotFound();
                 }
@@ -72,36 +72,36 @@ namespace EventPlanner.Controllers
             return NoContent();
         }
 
-        // POST: api/SupplierTypes
+        // POST: api/Events
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<SupplierType>> PostSupplierType(SupplierType supplierType)
+        public async Task<ActionResult<Event>> PostEventType(Event ev)
         {
-            _context.SupplierTypes.Add(supplierType);
+            _context.Events.Add(ev);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSupplierType", new { id = supplierType.Id }, supplierType);
+            return CreatedAtAction("GetEventType", new { id = ev.Id }, ev);
         }
 
-        // DELETE: api/SupplierTypes/5
+        // DELETE: api/Events/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSupplierType(Guid id)
+        public async Task<IActionResult> DeleteEventType(Guid id)
         {
-            var supplierType = await _context.SupplierTypes.FindAsync(id);
-            if (supplierType == null)
+            var ev = await _context.Events.FindAsync(id);
+            if (ev == null)
             {
                 return NotFound();
             }
 
-            _context.SupplierTypes.Remove(supplierType);
+            _context.Events.Remove(ev);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool SupplierTypeExists(Guid id)
+        private bool EventTypeExists(Guid id)
         {
-            return _context.SupplierTypes.Any(e => e.Id == id);
+            return _context.Events.Any(e => e.Id == id);
         }
     }
 }

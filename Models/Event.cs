@@ -27,6 +27,6 @@ namespace EventPlanner.Models
         public decimal Balance { get; set; }
         public IEnumerable<Guest> Guests { get; set; }
         public IEnumerable<Supplier> Suppliers { get; set; }
-        public Program Program { get; set; }
+        public Plan Plan { get; set; }
     }
 }

@@ -11,47 +11,47 @@ namespace EventPlanner.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SupplierTypesController : ControllerBase
+    public class PlansController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public SupplierTypesController(ApplicationDbContext context)
+        public PlansController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/SupplierTypes
+        // GET: api/Plans
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SupplierType>>> GetSupplierTypes()
+        public async Task<ActionResult<IEnumerable<Plan>>> GetPlans()
         {
-            return await _context.SupplierTypes.ToListAsync();
+            return await _context.Plans.ToListAsync();
         }
 
-        // GET: api/SupplierTypes/5
+        // GET: api/Plans/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<SupplierType>> GetSupplierType(Guid id)
+        public async Task<ActionResult<Plan>> GetPlan(Guid id)
         {
-            var supplierType = await _context.SupplierTypes.FindAsync(id);
+            var plan = await _context.Plans.FindAsync(id);
 
-            if (supplierType == null)
+            if (plan == null)
             {
                 return NotFound();
             }
 
-            return supplierType;
+            return plan;
         }
 
-        // PUT: api/SupplierTypes/5
+        // PUT: api/Plans/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSupplierType(Guid id, SupplierType supplierType)
+        public async Task<IActionResult> PutPlan(Guid id, Plan plan)
         {
-            if (id != supplierType.Id)
+            if (id != plan.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(supplierType).State = EntityState.Modified;
+            _context.Entry(plan).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +59,7 @@ namespace EventPlanner.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!SupplierTypeExists(id))
+                if (!PlanExists(id))
                 {
                     return NotFound();
                 }
@@ -72,36 +72,36 @@ namespace EventPlanner.Controllers
             return NoContent();
         }
 
-        // POST: api/SupplierTypes
+        // POST: api/Plans
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<SupplierType>> PostSupplierType(SupplierType supplierType)
+        public async Task<ActionResult<Plan>> PostPlan(Plan plan)
         {
-            _context.SupplierTypes.Add(supplierType);
+            _context.Plans.Add(plan);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSupplierType", new { id = supplierType.Id }, supplierType);
+            return CreatedAtAction("GetPlan", new { id = plan.Id }, plan);
         }
 
-        // DELETE: api/SupplierTypes/5
+        // DELETE: api/Plans/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSupplierType(Guid id)
+        public async Task<IActionResult> DeletePlan(Guid id)
         {
-            var supplierType = await _context.SupplierTypes.FindAsync(id);
-            if (supplierType == null)
+            var plan = await _context.Plans.FindAsync(id);
+            if (plan == null)
             {
                 return NotFound();
             }
 
-            _context.SupplierTypes.Remove(supplierType);
+            _context.Plans.Remove(plan);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool SupplierTypeExists(Guid id)
+        private bool PlanExists(Guid id)
         {
-            return _context.SupplierTypes.Any(e => e.Id == id);
+            return _context.Plans.Any(e => e.Id == id);
         }
     }
 }

@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EventPlanner.Models
 {
-    public class ProgramStepSong : ProgramStep
+    public class PlanStepSong : PlanStep
     {
         [Required]
         public string SongName { get; set; }
