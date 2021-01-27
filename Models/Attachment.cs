@@ -1,13 +1,15 @@
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace EventPlanner.Models
 {
-    public class EventType
+    public class Attachment
     {
         [Key]
         public Guid Id { get; set; }
         [Required]
         public string Name { get; set; }
+        [Required]
+        public string Base64 { get; set; }
     }
 }
