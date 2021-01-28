@@ -24,7 +24,9 @@ namespace EventPlanner.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EventType>>> GetEventTypes()
         {
-            return await _context.EventTypes.ToListAsync();
+            return await _context.EventTypes
+            .OrderBy(e => e.Name)
+            .ToListAsync();
         }
 
         // GET: api/EventTypes/5
