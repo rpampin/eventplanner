@@ -1,1 +1,87 @@
-<p>supplier-types works!</p>
+<h1 id="tableLabel">Supplier Types</h1>
+
+<p *ngIf="!types"><em>Loading...</em></p>
+
+<form (ngSubmit)="onSubmit(supplierTypeForm)" #supplierTypeForm="ngForm" autocomplete="off">
+  <div class="form-row">
+    <label for="name">Name</label>
+  </div>
+  <div class="form-row">
+    <input
+      type="text"
+      id="id"
+      [(ngModel)]="type.id"
+      name="id"
+      #id="ngModel"
+      hidden
+    />
+    <div class="col-10">
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        required
+        [(ngModel)]="type.name"
+        name="name"
+        #name="ngModel"
+      />
+      <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+        Name is required
+      </div>
+    </div>
+
+    <div class="col-auto">
+      <button
+        type="submit"
+        class="btn btn-success"
+        [disabled]="!supplierTypeForm.form.valid"
+      >
+      {{ type.id ? 'Update' : 'Add' }}
+      </button>
+    </div>
+    <div class="col-auto">
+      <button
+        type="button"
+        class="btn btn-default"
+        (click)="newType(); supplierTypeForm.reset()"
+      >
+        Clear
+      </button>
+    </div>
+  </div>
+</form>
+
+<br />
+
+<table class="table table-striped" aria-labelledby="tableLabel" *ngIf="types">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th class="fit"></th>
+      <th class="fit"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let type of types">
+      <td class="align-middle">{{ type.name }}</td>
+      <td class="fit">
+        <button
+          class="btn btn-lg"
+          style="background-color: transparent"
+          (click)="edit(type.id)"
+        >
+          <fa-icon [icon]="faEdit"></fa-icon>
+        </button>
+      </td>
+      <td class="fit">
+        <button
+          class="btn btn-lg"
+          style="background-color: transparent"
+          (click)="delete(type.id)"
+        >
+          <fa-icon [icon]="faTrash"></fa-icon>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

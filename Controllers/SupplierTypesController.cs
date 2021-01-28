@@ -24,7 +24,9 @@ namespace EventPlanner.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SupplierType>>> GetSupplierTypes()
         {
-            return await _context.SupplierTypes.ToListAsync();
+            return await _context.SupplierTypes
+            .OrderBy(t => t.Name)
+            .ToListAsync();
         }
 
         // GET: api/SupplierTypes/5

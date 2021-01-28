@@ -1,4 +1,4 @@
-export class EventType {
+export class SupplierType {
     id: string;
     name: string;
 }
