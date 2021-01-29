@@ -24,6 +24,10 @@ namespace EventPlanner.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Event>()
+                .HasMany(e => e.Guests)
+                .WithOne(g => g.Event)
+                .OnDelete(DeleteBehavior.Cascade);
             //modelBuilder.Entity<Event>().ToTable("Event");
             //modelBuilder.Entity<EventType>().ToTable("EventType");
             //modelBuilder.Entity<Guest>().ToTable("Guest");

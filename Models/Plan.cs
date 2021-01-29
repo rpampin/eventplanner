@@ -10,6 +10,6 @@ namespace EventPlanner.Models
         public Guid Id { get; set; }
         [Required]
         public string Title { get; set; }
-        public IEnumerable<PlanPart> Parts { get; set; }
+        public IList<PlanPart> Parts { get; set; }
     }
 }

@@ -14,5 +14,6 @@ namespace EventPlanner.Models
         [DataType(DataType.PhoneNumber)]
         public string Mobile { get; set; }
         public bool? WillAttend { get; set; }
+        public Event Event { get; set; }
     }
 }

@@ -4,9 +4,8 @@
   width: 1%;
 }
 
-.part-head {
+.form-table {
   display: grid;
   grid-gap: 1em;
-  align-items: center;
-  grid-template-columns: 10fr 1fr;
+  grid-template-columns: 1fr 5fr;
 }

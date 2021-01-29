@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using AutoMapper;
+using AutoMapper.EquivalencyExpression;
 
 namespace EventPlanner
 {
@@ -23,7 +25,10 @@ namespace EventPlanner
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services
+                .AddControllersWithViews()
+                .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
             services.AddRouting(options => options.LowercaseUrls = true);
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -38,6 +43,12 @@ namespace EventPlanner
 
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlite(Configuration.GetConnectionString("ApplicationContext")));
+
+            services.AddAutoMapper((serviceProvider, automapper) =>
+            {
+                automapper.AddCollectionMappers();
+                automapper.UseEntityFrameworkCoreModel<ApplicationDbContext>(serviceProvider);
+            }, typeof(ApplicationDbContext).Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

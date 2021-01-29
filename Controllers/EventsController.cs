@@ -52,6 +52,9 @@ namespace EventPlanner.Controllers
         {
             var ev = await _context.Events
                 .Include(e => e.Type)
+                .Include(e => e.Guests)
+                .Include(e => e.Suppliers).ThenInclude(s => s.Type)
+                .Include(e => e.Plan)
                 .FirstOrDefaultAsync(e => e.Id == id);
 
             if (ev == null)
@@ -72,7 +75,7 @@ namespace EventPlanner.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(ev).State = EntityState.Modified;
+            //_context.Entry(ev).State = EntityState.Modified;
 
             try
             {
@@ -99,6 +102,10 @@ namespace EventPlanner.Controllers
         public async Task<ActionResult<Event>> PostEvent(Event ev)
         {
             ev.Type = await _context.EventTypes.Where(et => et.Id == ev.Type.Id).SingleAsync();
+            foreach (var s in ev.Suppliers)
+            {
+                s.Type = await _context.SupplierTypes.Where(st => st.Id == s.Type.Id).SingleAsync();
+            }
 
             _context.Events.Add(ev);
             await _context.SaveChangesAsync();

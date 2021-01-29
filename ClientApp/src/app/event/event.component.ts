@@ -3,8 +3,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { Event } from './event';
 import { EventType } from '../event-types/event-type.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, NgForm } from '@angular/forms';
-import { Guest } from './guest';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-event',
@@ -71,13 +70,5 @@ export class EventComponent implements OnInit {
     if (!!a && !!b)
       return a.id === b.id;
     return false;
-  }
-
-  editGuest(index: number, guest: Guest) {
-    
-  }
-
-  deleteGuest(index: number) {
-    
   }
 }

@@ -17,7 +17,7 @@ namespace EventPlanner.Models
         public string Mobile { get; set; }
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
-        public IEnumerable<Attachment> Attachments { get; set; }
+        public IList<Attachment> Attachments { get; set; }
         public bool DownPaymentRequired { get; set; }
         [DataType(DataType.Currency)]
         public decimal PackagePrice { get; set; }

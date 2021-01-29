@@ -1,8 +1,7 @@
 <h1>Event</h1>
-
 <form (ngSubmit)="onSubmit(eventForm)" #eventForm="ngForm" autocomplete="off">
   <input type="hidden" [(ngModel)]="event.id" name="id" />
-
+  
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="type">Type</label>
@@ -45,18 +44,18 @@
   <div *ngIf="weddingEventTyperId === event?.type?.id">
     <div class="form-row">
       <div class="form-group col-md-6">
-        <label for="brideName">Bride's Name</label>
+        <label for="guest_name">Bride's Name</label>
         <input
           type="text"
           class="form-control"
-          name="brideName"
-          id="brideName"
-          #brideName="ngModel"
-          [(ngModel)]="event.brideName"
+          name="guest_name"
+          id="guest_name"
+          #guest_name="ngModel"
+          [(ngModel)]="event.guest_name"
           required
         />
         <div
-          [hidden]="brideName.valid || brideName.pristine"
+          [hidden]="guest_name.valid || guest_name.pristine"
           class="alert alert-danger"
         >
           Bride's Name is required
@@ -253,51 +252,12 @@
     </div>
   </div>
 
-  <!-- GUESTS -->
-  <div class="part-head">
-    <h2 id="tableLabel">Guests</h2>
-    <button class="btn btn-success" (click)="editForm()">New Guest</button>
-  </div>
-  <table class="table table-striped" aria-labelledby="tableLabel">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Moblie</th>
-        <th>Will Attend</th>
-        <th class="fit"></th>
-        <th class="fit"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let guest of event.guests; let index = index">
-        <td class="align-middle">{{ guest.type }}</td>
-        <td class="align-middle">{{ guest.date }}</td>
-        <td class="align-middle">{{ guest.celebrant }}</td>
-        <td class="align-middle">{{ guest.address }}</td>
-        <td class="fit">
-          <button
-            class="btn btn-lg"
-            style="background-color: transparent"
-            (click)="editGuest(index, guest)"
-          >
-            <fa-icon [icon]="faEdit"></fa-icon>
-          </button>
-        </td>
-        <td class="fit">
-          <button
-            class="btn btn-lg"
-            style="background-color: transparent"
-            (click)="deleteGuest(index)"
-          >
-            <fa-icon [icon]="faTrash"></fa-icon>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
+  <hr />
+  <app-guest [guests]="event.guests"></app-guest>
+  <hr />
+  <app-supplier [suppliers]="event.suppliers"></app-supplier>
+  <hr>
   <button type="submit" class="btn btn-primary">
-    {{ event.id ? "Update" : "Submit" }}
+    {{ event.id ? "Update Event" : "Submit Event" }}
   </button>
 </form>

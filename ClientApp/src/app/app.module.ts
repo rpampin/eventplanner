@@ -15,6 +15,7 @@ import { SupplierTypesComponent } from './supplier-types/supplier-types.componen
 import { EventComponent } from './event/event.component';
 import { UpcomingEventsComponent } from './upcoming-events/upcoming-events.component';
 import { GuestComponent } from './guest/guest.component';
+import { SupplierComponent } from './supplier/supplier.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { GuestComponent } from './guest/guest.component';
     SupplierTypesComponent,
     EventComponent,
     UpcomingEventsComponent,
-    GuestComponent
+    GuestComponent,
+    SupplierComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

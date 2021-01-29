@@ -25,8 +25,8 @@ namespace EventPlanner.Models
         public decimal DownPayment { get; set; }
         [DataType(DataType.Currency)]
         public decimal Balance { get; set; }
-        public IEnumerable<Guest> Guests { get; set; }
-        public IEnumerable<Supplier> Suppliers { get; set; }
+        public IList<Guest> Guests { get; set; }
+        public IList<Supplier> Suppliers { get; set; }
         public Plan Plan { get; set; }
     }
 }

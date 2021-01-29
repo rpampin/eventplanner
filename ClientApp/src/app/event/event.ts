@@ -1,5 +1,6 @@
 import { EventType } from '../event-types/event-type.model';
-import { Guest } from './guest';
+import { Guest } from '../guest/guest';
+import { Supplier } from '../supplier/supplier';
 
 export class Event {
     id: string;
@@ -20,8 +21,8 @@ export class Event {
     receptionVenue: string;
     receptionTime: string;
     
-    guests: Guest[];
-    // suppliers: Supplier[];
+    guests: Guest[] = [];
+    suppliers: Supplier[] = [];
     // plan: Plan;
     
     constructor() { }
