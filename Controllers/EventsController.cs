@@ -52,9 +52,6 @@ namespace EventPlanner.Controllers
         {
             var ev = await _context.Events
                 .Include(e => e.Type)
-                .Include(e => e.Guests)
-                .Include(e => e.Suppliers).ThenInclude(s => s.Type)
-                .Include(e => e.Plan)
                 .FirstOrDefaultAsync(e => e.Id == id);
 
             if (ev == null)

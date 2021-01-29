@@ -11,5 +11,6 @@ namespace EventPlanner.Models
         public string Name { get; set; }
         [Required]
         public string Base64 { get; set; }
+        public Supplier Supplier { get; set; }
     }
 }

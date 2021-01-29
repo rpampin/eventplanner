@@ -1,0 +1,50 @@
+<h1>Guest</h1>
+<form (ngSubmit)="onSubmit(eventForm)" #eventForm="ngForm" autocomplete="off">
+  <input type="text" [(ngModel)]="guest.id" name="id" hidden />
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="guest_name">Name</label>
+      <input type="text" class="form-control" name="guest_name" id="guest_name" #guest_name="ngModel"
+        [(ngModel)]="guest.name" />
+      <div [hidden]="guest_name.valid || guest_name.pristine" class="alert alert-danger">
+        Guest Name is required
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="guest_email">Email</label>
+      <input type="email" class="form-control" name="guest_email" id="guest_email" [(ngModel)]="guest.email" />
+    </div>
+    <div class="form-group col-md-4">
+      <label for="guest_mobile">Mobile</label>
+      <input type="text" class="form-control" name="guest_mobile" id="guest_mobile" [(ngModel)]="guest.mobile" />
+    </div>
+    <div class="form-group col-md-12">
+      <label for="attendanceRadio">Will Attend</label>
+      <div class="form-row">
+        <div class="custom-control custom-radio custom-control-inline">
+          <input value="true" [checked]="guest.willAttend === true" (change)="onWillAttendChange(true)" type="radio"
+            id="attendanceRadio1" name="attendanceRadio" class="custom-control-input" />
+          <label class="custom-control-label" for="attendanceRadio1">Yes</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+          <input value="false" [checked]="guest.willAttend === false" (change)="onWillAttendChange(false)" type="radio"
+            id="attendanceRadio2" name="attendanceRadio" class="custom-control-input" />
+          <label class="custom-control-label" for="attendanceRadio2">No</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+          <input value="null" [checked]="
+              guest.willAttend === undefined || guest.willAttend === null
+            " (change)="onWillAttendChange(null)" type="radio" id="attendanceRadio3" name="attendanceRadio"
+            class="custom-control-input" />
+          <label class="custom-control-label" for="attendanceRadio3">N/A</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-row" style="justify-content: flex-end;">
+    <button class="btn btn-info" style="margin: .5em;" [routerLink]="['..']">Back</button>
+    <button type="button" class="btn btn-success" style="margin: .5em;" (click)="submitGuest()">
+      {{ guest.id != "0" ? "Update Guest" : "Submit Guest" }}
+    </button>
+  </div>
+</form>

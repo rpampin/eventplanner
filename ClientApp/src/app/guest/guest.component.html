@@ -1,134 +1,57 @@
-<!-- GUESTS -->
-<h2>Guests</h2>
-<div class="form-table">
-  <div>
-    <input type="text" [(ngModel)]="guestIndex" name="guestIndex" hidden />
-    <input type="text" [(ngModel)]="guest.id" name="id" hidden />
-    <div class="form-group">
-      <label for="guest_name">Name</label>
-      <input
-        type="text"
-        class="form-control"
-        name="guest_name"
-        id="guest_name"
-        #guest_name="ngModel"
-        [(ngModel)]="guest.name"
-      />
-      <div
-        [hidden]="guest_name.valid || guest_name.pristine"
-        class="alert alert-danger"
-      >
-        Guest Name is required
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="guest_email">Email</label>
-      <input
-        type="email"
-        class="form-control"
-        name="guest_email"
-        id="guest_email"
-        [(ngModel)]="guest.email"
-      />
-    </div>
-    <div class="form-group">
-      <label for="guest_mobile">Mobile</label>
-      <input
-        type="text"
-        class="form-control"
-        name="guest_mobile"
-        id="guest_mobile"
-        [(ngModel)]="guest.mobile"
-      />
-    </div>
-    <div class="form-group">
-      <label for="attendanceRadio">Will Attend</label>
-      <div class="form-row">
-        <div class="custom-control custom-radio custom-control-inline">
-          <input
-            value="true"
-            [checked]="guest.willAttend === true"
-            (change)="onWillAttendChange(true)"
-            type="radio"
-            id="attendanceRadio1"
-            name="attendanceRadio"
-            class="custom-control-input"
-          />
-          <label class="custom-control-label" for="attendanceRadio1">Yes</label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline">
-          <input
-            value="false"
-            [checked]="guest.willAttend === false"
-            (change)="onWillAttendChange(false)"
-            type="radio"
-            id="attendanceRadio2"
-            name="attendanceRadio"
-            class="custom-control-input"
-          />
-          <label class="custom-control-label" for="attendanceRadio2">No</label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline">
-          <input
-            value="null"
-            [checked]="
-              guest.willAttend === undefined || guest.willAttend === null
-            "
-            (change)="onWillAttendChange(null)"
-            type="radio"
-            id="attendanceRadio3"
-            name="attendanceRadio"
-            class="custom-control-input"
-          />
-          <label class="custom-control-label" for="attendanceRadio3">N/A</label>
-        </div>
-      </div>
-    </div>
-    <button type="button" class="btn btn-success" (click)="submitGuest()">
-      {{ guest.id || guestIndex > -1 ? "Update Guest" : "Submit Guest" }}
-    </button>
-    <button type="button" class="btn btn-default" (click)="clearGuest()">
-      Clear
-    </button>
+<h1>Event</h1>
+<div class="form-row">
+  <div class="form-group col-md-4">
+    <label for="type">Type</label>
+    <input type="text" class="form-control" [(ngModel)]="event.type" readonly />
   </div>
-  <table class="table table-striped" aria-labelledby="tableLabel">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Moblie</th>
-        <th>Will Attend</th>
-        <th class="fit"></th>
-        <th class="fit"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let guest of guests; let i = index">
-        <td class="align-middle">{{ guest.name }}</td>
-        <td class="align-middle">{{ guest.email }}</td>
-        <td class="align-middle">{{ guest.mobile }}</td>
-        <td class="align-middle">{{ guest.willAttend }}</td>
-        <td class="fit">
-          <button
-            type="button"
-            class="btn btn-lg"
-            style="background-color: transparent"
-            (click)="editGuest(i, guest)"
-          >
-            <fa-icon [icon]="faEdit"></fa-icon>
-          </button>
-        </td>
-        <td class="fit">
-          <button
-            type="button"
-            class="btn btn-lg"
-            style="background-color: transparent"
-            (click)="deleteGuest(i)"
-          >
-            <fa-icon [icon]="faTrash"></fa-icon>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+
+  <div class="form-group col-md-4">
+    <label for="date">Date</label>
+    <input type="date" class="form-control" [ngModel]="event.date | date: 'yyyy-MM-dd'"
+      (ngModelChange)="event.date = $event" readonly />
+  </div>
+
+  <div class="form-group col-md-4">
+    <label for="celebrant">Celebrant/s</label>
+    <input type="text" class="form-control" [(ngModel)]="event.celebrant" readonly />
+  </div>
 </div>
+
+<div class="btn-head">
+  <h1>Guests</h1>
+  <button class="btn btn-info" [routerLink]="['..']">View Event</button>
+  <button class="btn btn-success" [routerLink]="[0]">New Guest</button>
+</div>
+
+<table class="table table-striped" aria-labelledby="tableLabel">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Moblie</th>
+      <th>Will Attend</th>
+      <th class="fit"></th>
+      <th class="fit"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let guest of guests; let i = index">
+      <td class="align-middle">{{ guest.name }}</td>
+      <td class="align-middle">{{ guest.email }}</td>
+      <td class="align-middle">{{ guest.mobile }}</td>
+      <td class="align-middle">{{ guest.willAttend }}</td>
+      <td class="fit">
+        <button type="button" class="btn btn-sm" style="background-color: transparent" placement="top"
+          ngbTooltip="Edit" [routerLink]="[guest.id]">
+          <fa-icon [icon]="faEdit"></fa-icon>
+        </button>
+      </td>
+      <td class="fit">
+        <button type="button" class="btn btn-sm" style="background-color: transparent" placement="top"
+          ngbTooltip="Remove" (click)="deleteGuest(i, guest)">
+          <fa-icon [icon]="faTrash"></fa-icon>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

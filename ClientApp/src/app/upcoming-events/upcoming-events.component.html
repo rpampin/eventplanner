@@ -33,23 +33,26 @@
       <td class="align-middle">{{ event.downPayment | currency }}</td>
       <td class="align-middle">{{ event.balance | currency }}</td>
       <td class="fit">
-        <button type="button" class="btn btn-sm" style="background-color: transparent" data-toggle="tooltip"
-          data-placement="top" title="Manage Guests">
+        <button type="button" class="btn btn-sm" style="background-color: transparent" placement="top"
+          ngbTooltip="Guests" [routerLink]="['/event', event.id, 'guests']">
           <fa-icon [icon]="faUser"></fa-icon>
         </button>
       </td>
       <td class="fit">
-        <button type="button" class="btn btn-sm" style="background-color: transparent">
+        <button type="button" class="btn btn-sm" style="background-color: transparent" placement="top"
+          ngbTooltip="Suppliers" [routerLink]="['/event', event.id, 'suppliers']">
           <fa-icon [icon]="faUserTie"></fa-icon>
         </button>
       </td>
       <td class="fit">
-        <button type="button" class="btn btn-sm" style="background-color: transparent" (click)="editForm(event.id)">
+        <button type="button" class="btn btn-sm" style="background-color: transparent" (click)="editForm(event.id)"
+          placement="top" ngbTooltip="Edit">
           <fa-icon [icon]="faEdit"></fa-icon>
         </button>
       </td>
       <td class="fit">
-        <button type="button" class="btn btn-sm" style="background-color: transparent" (click)="delete(event.id)">
+        <button type="button" class="btn btn-sm" style="background-color: transparent" (click)="delete(event.id)"
+          placement="top" ngbTooltip="Remove">
           <fa-icon [icon]="faTrash"></fa-icon>
         </button>
       </td>

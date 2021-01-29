@@ -1,4 +1,6 @@
 import { SupplierType } from '../supplier-types/supplier-type.model';
+import { Event } from '../event/event';
+import { Attachment } from '../supplier-form/attachment';
 
 export class Supplier {
     id: string;
@@ -7,7 +9,7 @@ export class Supplier {
     contactPerson: string;
     mobile: string;
     email: string;
-    // attachment: IEnumerable;
+    attachments: Attachment[];
     downPaymentRequired: boolean;
     packagePrice: number;
     otherPayments: number;
@@ -17,4 +19,7 @@ export class Supplier {
     totalDown: number;
     balance: number;
     remarks: string;
+    event: Event;
+
+    constructor() { }
 }

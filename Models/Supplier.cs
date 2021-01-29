@@ -34,5 +34,6 @@ namespace EventPlanner.Models
         [DataType(DataType.Currency)]
         public decimal Balance { get; set; }
         public string Remarks { get; set; }
+        public Event Event { get; set; }
     }
 }

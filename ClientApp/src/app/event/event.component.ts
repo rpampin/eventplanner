@@ -4,6 +4,7 @@ import { Event } from './event';
 import { EventType } from '../event-types/event-type.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import { faUser, faUserTie } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-event',
@@ -11,6 +12,8 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./event.component.css']
 })
 export class EventComponent implements OnInit {
+  faUser = faUser;
+  faUserTie = faUserTie;
   id: string;
   event: Event = new Event();
   weddingEventTyperId: string;
@@ -20,7 +23,7 @@ export class EventComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
-      this.id = params.get('id');
+      this.id = params.get('eventId');
     });
     this.http.get<EventType[]>(this.baseUrl + 'api/eventtypes').subscribe(result => {
       this.eventTypes = result;

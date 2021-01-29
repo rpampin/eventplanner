@@ -1,248 +1,60 @@
-<h2>Suppliers</h2>
-<div>
-  <input type="text" [(ngModel)]="supplierIndex" name="supplierIndex" hidden />
-  <input type="text" [(ngModel)]="supplier.id" name="id" hidden />
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <label for="type">Type</label>
-      <select
-        class="custom-select"
-        name="type"
-        id="type"
-        #type="ngModel"
-        [compareWith]="compareFn"
-        [(ngModel)]="supplier.type"
-      >
-        <option *ngFor="let type of types" [ngValue]="type">
-          {{ type.name }}
-        </option>
-      </select>
-      <div [hidden]="type.valid || type.pristine" class="alert alert-danger">
-        Type is required
-      </div>
-    </div>
-    <div class="form-group col-md-6">
-      <label for="name">Name</label>
-      <input
-        type="text"
-        class="form-control"
-        name="name"
-        id="name"
-        #name="ngModel"
-        [(ngModel)]="supplier.name"
-      />
-      <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
-        Supplier Name is required
-      </div>
-    </div>
+<h1>Event</h1>
+<div class="form-row">
+  <div class="form-group col-md-4">
+    <label for="type">Type</label>
+    <input type="text" class="form-control" [(ngModel)]="event.type" readonly />
   </div>
-  <div class="form-row">
-    <div class="form-group col-md-4">
-      <label for="supplier_contact_person">Contact Person</label>
-      <input
-        type="text"
-        class="form-control"
-        name="supplier_contact_person"
-        id="supplier_contact_person"
-        #supplier_contact_person="ngModel"
-        [(ngModel)]="supplier.contactPerson"
-      />
-      <div
-        [hidden]="
-          supplier_contact_person.valid || supplier_contact_person.pristine
-        "
-        class="alert alert-danger"
-      >
-        Supplier Name is required
-      </div>
-    </div>
-    <div class="form-group col-md-4">
-      <label for="supplier_mobile">Mobile</label>
-      <input
-        type="text"
-        class="form-control"
-        name="supplier_mobile"
-        id="supplier_mobile"
-        [(ngModel)]="supplier.mobile"
-      />
-    </div>
-    <div class="form-group col-md-4">
-      <label for="supplier_email">Email</label>
-      <input
-        type="email"
-        class="form-control"
-        name="supplier_email"
-        id="supplier_email"
-        [(ngModel)]="supplier.email"
-      />
-    </div>
+
+  <div class="form-group col-md-4">
+    <label for="date">Date</label>
+    <input type="date" class="form-control" [ngModel]="event.date | date: 'yyyy-MM-dd'"
+      (ngModelChange)="event.date = $event" readonly />
   </div>
-  <div class="form-row">
-    <div class="form-group col-md-12">
-      <div class="custom-control custom-checkbox my-1 mr-sm-2">
-        <input
-          type="checkbox"
-          class="custom-control-input"
-          id="supplier_require_dp"
-          [(ngModel)]="supplier.downPaymentRequired"
-        />
-        <label class="custom-control-label" for="supplier_require_dp"
-          >Requires Down Payment</label
-        >
-      </div>
-    </div>
-    <div class="form-group col-md-3">
-      <label for="packagePrice">Package Price</label>
-      <input
-        type="number"
-        class="form-control"
-        name="packagePrice"
-        id="packagePrice"
-        [(ngModel)]="supplier.packagePrice"
-      />
-    </div>
-    <div class="form-group col-md-3">
-      <label for="otherPayments">Other Payments</label>
-      <input
-        type="number"
-        class="form-control"
-        name="otherPayments"
-        id="otherPayments"
-        [(ngModel)]="supplier.otherPayments"
-      />
-    </div>
-    <div class="form-group col-md-3">
-      <label for="firstDownPayment">1st Down Payment</label>
-      <input
-        type="number"
-        class="form-control"
-        name="firstDownPayment"
-        id="firstDownPayment"
-        [(ngModel)]="supplier.firstDownPayment"
-      />
-    </div>
-    <div class="form-group col-md-3">
-      <label for="secondDownPayment">2nd Down Payment</label>
-      <input
-        type="number"
-        class="form-control"
-        name="secondDownPayment"
-        id="secondDownPayment"
-        [(ngModel)]="supplier.secondDownPayment"
-      />
-    </div>
-    <div class="form-group col-md-3">
-      <label for="thirdDownPayment">3rd Down Payment</label>
-      <input
-        type="number"
-        class="form-control"
-        name="thirdDownPayment"
-        id="thirdDownPayment"
-        [(ngModel)]="supplier.thirdDownPayment"
-      />
-    </div>
-    <div class="form-group col-md-3">
-      <label for="totalDown">Total Down</label>
-      <input
-        type="number"
-        class="form-control"
-        name="totalDown"
-        id="totalDown"
-        [(ngModel)]="supplier.totalDown"
-      />
-    </div>
-    <div class="form-group col-md-3">
-      <label for="balance">Balance</label>
-      <input
-        type="number"
-        class="form-control"
-        name="balance"
-        id="balance"
-        [(ngModel)]="supplier.balance"
-      />
-    </div>
+
+  <div class="form-group col-md-4">
+    <label for="celebrant">Celebrant/s</label>
+    <input type="text" class="form-control" [(ngModel)]="event.celebrant" readonly />
   </div>
-  <div class="form-group">
-    <label for="remarks">Remarks</label>
-    <input
-      type="text"
-      class="form-control"
-      name="remarks"
-      id="remarks"
-      #remarks="ngModel"
-      [(ngModel)]="supplier.remarks"
-    />
-  </div>
-  <button type="button" class="btn btn-success" (click)="submitSupplier()">
-    {{
-      supplier.id || supplierIndex > -1 ? "Update Supplier" : "Submit Supplier"
-    }}
-  </button>
-  <button type="button" class="btn btn-default" (click)="clearSupplier()">
-    Clear
-  </button>
 </div>
 
-<table
-  class="table table-striped"
-  aria-labelledby="tableLabel"
-  *ngIf="suppliers"
->
+<div class="btn-head">
+  <h1>Suppliers</h1>
+  <button class="btn btn-info" [routerLink]="['..']">View Event</button>
+  <button class="btn btn-success" [routerLink]="[0]">New Supplier</button>
+</div>
+
+<table class="table table-striped" aria-labelledby="tableLabel">
   <thead>
     <tr>
-      <th>Type</th>
       <th>Name</th>
+      <th>Type</th>
       <th>Contact Person</th>
       <th>Mobile</th>
       <th>Email</th>
-      <th>DP Required</th>
-      <th>Package Price</th>
-      <th>Other Payments</th>
-      <th>First DP</th>
-      <th>Second DP</th>
-      <th>Third DP</th>
-      <th>Total Down</th>
+      <th>PackagePrice</th>
       <th>Balance</th>
-      <th>Remarks</th>
       <th class="fit"></th>
       <th class="fit"></th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let supplier of suppliers; let i = index">
-      <td class="align-middle">{{ supplier.type.name }}</td>
       <td class="align-middle">{{ supplier.name }}</td>
+      <td class="align-middle">{{ supplier.type.name }}</td>
       <td class="align-middle">{{ supplier.contactPerson }}</td>
       <td class="align-middle">{{ supplier.mobile }}</td>
       <td class="align-middle">{{ supplier.email }}</td>
-      <td class="align-middle">{{ supplier.downPaymentRequired }}</td>
-      <td class="align-middle">{{ supplier.packagePrice | currency }}</td>
-      <td class="align-middle">{{ supplier.otherPayments | currency }}</td>
-      <td class="align-middle">{{ supplier.firstDownPayment | currency }}</td>
-      <td class="align-middle">
-        {{ supplier.secondDownPayment | currency }}
-      </td>
-      <td class="align-middle">{{ supplier.thirdDownPayment | currency }}</td>
-      <td class="align-middle">{{ supplier.totalDown | currency }}</td>
-      <td class="align-middle">{{ supplier.balance | currency }}</td>
-      <td class="align-middle">{{ supplier.remarks }}</td>
+      <td class="align-middle">{{ supplier.packagePrice }}</td>
+      <td class="align-middle">{{ supplier.balance }}</td>
       <td class="fit">
-        <button
-          type="button"
-          class="btn btn-lg"
-          style="background-color: transparent"
-          (click)="editSupplier(i, supplier)"
-        >
+        <button type="button" class="btn btn-sm" style="background-color: transparent" placement="top" ngbTooltip="Edit"
+          [routerLink]="[supplier.id]">
           <fa-icon [icon]="faEdit"></fa-icon>
         </button>
       </td>
       <td class="fit">
-        <button
-          type="button"
-          class="btn btn-lg"
-          style="background-color: transparent"
-          (click)="deleteSupplier(i)"
-        >
+        <button type="button" class="btn btn-sm" style="background-color: transparent" placement="top"
+          ngbTooltip="Remove" (click)="deleteSupplier(i, supplier)">
           <fa-icon [icon]="faTrash"></fa-icon>
         </button>
       </td>

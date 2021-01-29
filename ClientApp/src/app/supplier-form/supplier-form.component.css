@@ -1,0 +1,11 @@
+.table td.fit, .table th.fit {
+    white-space: nowrap;
+    width: 1%;
+}
+
+.btn-head {
+    display: grid;
+    grid-gap: 1em;
+    align-items: center;
+    grid-template-columns: 10fr 1.5fr 1.5fr;
+}

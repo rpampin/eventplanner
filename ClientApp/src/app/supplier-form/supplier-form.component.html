@@ -1,0 +1,140 @@
+<h1>Supplier</h1>
+
+<form (ngSubmit)="onSubmit(eventForm)" #eventForm="ngForm" autocomplete="off">
+    <input type="text" [(ngModel)]="supplier.id" name="id" hidden />
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="type">Type</label>
+            <select class="custom-select" name="type" id="type" #type="ngModel" [compareWith]="compareFn"
+                [(ngModel)]="supplier.type">
+                <option *ngFor="let type of types" [ngValue]="type">
+                    {{ type.name }}
+                </option>
+            </select>
+            <div [hidden]="type.valid || type.pristine" class="alert alert-danger">
+                Type is required
+            </div>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" name="name" id="name" #name="ngModel" [(ngModel)]="supplier.name" />
+            <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+                Supplier Name is required
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label for="supplier_contact_person">Contact Person</label>
+            <input type="text" class="form-control" name="supplier_contact_person" id="supplier_contact_person"
+                #supplier_contact_person="ngModel" [(ngModel)]="supplier.contactPerson" />
+            <div [hidden]="
+            supplier_contact_person.valid || supplier_contact_person.pristine
+          " class="alert alert-danger">
+                Supplier Name is required
+            </div>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="supplier_mobile">Mobile</label>
+            <input type="text" class="form-control" name="supplier_mobile" id="supplier_mobile"
+                [(ngModel)]="supplier.mobile" />
+        </div>
+        <div class="form-group col-md-4">
+            <label for="supplier_email">Email</label>
+            <input type="email" class="form-control" name="supplier_email" id="supplier_email"
+                [(ngModel)]="supplier.email" />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <div class="custom-control custom-checkbox my-1 mr-sm-2">
+                <input type="checkbox" class="custom-control-input" id="supplier_require_dp"
+                    [checked]="supplier.downPaymentRequired"
+                    (change)="supplier.downPaymentRequired = !supplier.downPaymentRequired" />
+                <label class="custom-control-label" for="supplier_require_dp">Requires Down Payment</label>
+            </div>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="packagePrice">Package Price</label>
+            <input type="number" class="form-control" name="packagePrice" id="packagePrice"
+                [(ngModel)]="supplier.packagePrice" />
+        </div>
+        <div class="form-group col-md-3">
+            <label for="otherPayments">Other Payments</label>
+            <input type="number" class="form-control" name="otherPayments" id="otherPayments"
+                [(ngModel)]="supplier.otherPayments" />
+        </div>
+        <div class="form-group col-md-3">
+            <label for="firstDownPayment">1st Down Payment</label>
+            <input type="number" class="form-control" name="firstDownPayment" id="firstDownPayment"
+                [(ngModel)]="supplier.firstDownPayment" />
+        </div>
+        <div class="form-group col-md-3">
+            <label for="secondDownPayment">2nd Down Payment</label>
+            <input type="number" class="form-control" name="secondDownPayment" id="secondDownPayment"
+                [(ngModel)]="supplier.secondDownPayment" />
+        </div>
+        <div class="form-group col-md-3">
+            <label for="thirdDownPayment">3rd Down Payment</label>
+            <input type="number" class="form-control" name="thirdDownPayment" id="thirdDownPayment"
+                [(ngModel)]="supplier.thirdDownPayment" />
+        </div>
+        <div class="form-group col-md-3">
+            <label for="totalDown">Total Down</label>
+            <input type="number" class="form-control" name="totalDown" id="totalDown"
+                [(ngModel)]="supplier.totalDown" />
+        </div>
+        <div class="form-group col-md-3">
+            <label for="balance">Balance</label>
+            <input type="number" class="form-control" name="balance" id="balance" [(ngModel)]="supplier.balance" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="remarks">Remarks</label>
+        <input type="text" class="form-control" name="remarks" id="remarks" #remarks="ngModel"
+            [(ngModel)]="supplier.remarks" />
+    </div>
+    <hr />
+    <div>
+        <h2>Attachments</h2>
+        <div class="form-row">
+            <input class="col-md-11" type="file" name="attachment" id="attachment" [disabled]="!supplier.id"
+                (change)="handleUpload($event)">
+            <button class="col-md-1" type="button" class="btn btn-primary" (click)="postAttachment()"
+                [disabled]="!allowUpload && !!supplier.id">Upload</button>
+        </div>
+        <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="attachments">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th class="fit"></th>
+                    <th class="fit"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let attachment of attachments; let i = index">
+                    <td>{{ attachment.name }}</td>
+                    <td class="fit">
+                        <button type="button" class="btn btn-sm" style="background-color: transparent" placement="top"
+                            ngbTooltip="Download" (click)="downloadAttachment(attachment.id)">
+                            <fa-icon [icon]="faDownload"></fa-icon>
+                        </button>
+                    </td>
+                    <td class="fit">
+                        <button type="button" class="btn btn-sm" style="background-color: transparent" placement="top"
+                            ngbTooltip="Delete" (click)="deleteAttachment(i, attachment.id)">
+                            <fa-icon [icon]="faTrash"></fa-icon>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <hr />
+    <div class="form-row" style="justify-content: flex-end;">
+        <button class="btn btn-info" style="margin: .5em;" [routerLink]="['..']">Back</button>
+        <button type="button" class="btn btn-success" style="margin: .5em;" (click)="submitSupplier()">
+            {{ supplier.id != "0" ? "Update Supplier" : "Submit Supplier" }}
+        </button>
+    </div>
+</form>

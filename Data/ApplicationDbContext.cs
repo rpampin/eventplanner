@@ -9,6 +9,7 @@ namespace EventPlanner.Data
         {
         }
 
+        public DbSet<Attachment> Attachments { get; set; }
         public DbSet<EventType> EventTypes { get; set; }
         public DbSet<SupplierType> SupplierTypes { get; set; }
         public DbSet<Event> Events { get; set; }
@@ -27,6 +28,10 @@ namespace EventPlanner.Data
             modelBuilder.Entity<Event>()
                 .HasMany(e => e.Guests)
                 .WithOne(g => g.Event)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Event>()
+                .HasMany(e => e.Suppliers)
+                .WithOne(s => s.Event)
                 .OnDelete(DeleteBehavior.Cascade);
             //modelBuilder.Entity<Event>().ToTable("Event");
             //modelBuilder.Entity<EventType>().ToTable("EventType");
