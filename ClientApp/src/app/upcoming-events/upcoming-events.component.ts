@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { EvenListView } from './even-list-view';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash, faUser, faUserTie } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,6 +12,8 @@ import { Router } from '@angular/router';
 export class UpcomingEventsComponent implements OnInit {
   faEdit = faEdit;
   faTrash = faTrash;
+  faUser = faUser;
+  faUserTie = faUserTie;
   events: EvenListView[];
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private router: Router) { }

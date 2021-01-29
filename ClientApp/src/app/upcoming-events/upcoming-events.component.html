@@ -11,14 +11,13 @@
       <th>Type</th>
       <th>Date</th>
       <th>Celebrant/s</th>
-      <th>Address</th>
       <th>Mobile</th>
       <th>Email</th>
       <th>Package</th>
       <th>DownPayment</th>
       <th>Balance</th>
-      <th>Guests Count</th>
-      <th>Suppliers Count</th>
+      <th class="fit"></th>
+      <th class="fit"></th>
       <th class="fit"></th>
       <th class="fit"></th>
     </tr>
@@ -28,29 +27,29 @@
       <td class="align-middle">{{ event.type }}</td>
       <td class="align-middle">{{ event.date | date }}</td>
       <td class="align-middle">{{ event.celebrant }}</td>
-      <td class="align-middle">{{ event.address }}</td>
       <td class="align-middle">{{ event.mobile }}</td>
       <td class="align-middle">{{ event.email }}</td>
       <td class="align-middle">{{ event.package }}</td>
       <td class="align-middle">{{ event.downPayment | currency }}</td>
       <td class="align-middle">{{ event.balance | currency }}</td>
-      <td class="align-middle">{{ event.guestsCount }}</td>
-      <td class="align-middle">{{ event.suppliersCount }}</td>
       <td class="fit">
-        <button
-          class="btn btn-lg"
-          style="background-color: transparent"
-          (click)="editForm(event.id)"
-        >
+        <button type="button" class="btn btn-sm" style="background-color: transparent" data-toggle="tooltip"
+          data-placement="top" title="Manage Guests">
+          <fa-icon [icon]="faUser"></fa-icon>
+        </button>
+      </td>
+      <td class="fit">
+        <button type="button" class="btn btn-sm" style="background-color: transparent">
+          <fa-icon [icon]="faUserTie"></fa-icon>
+        </button>
+      </td>
+      <td class="fit">
+        <button type="button" class="btn btn-sm" style="background-color: transparent" (click)="editForm(event.id)">
           <fa-icon [icon]="faEdit"></fa-icon>
         </button>
       </td>
       <td class="fit">
-        <button
-          class="btn btn-lg"
-          style="background-color: transparent"
-          (click)="delete(event.id)"
-        >
+        <button type="button" class="btn btn-sm" style="background-color: transparent" (click)="delete(event.id)">
           <fa-icon [icon]="faTrash"></fa-icon>
         </button>
       </td>

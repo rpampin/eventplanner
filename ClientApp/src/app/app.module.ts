@@ -42,6 +42,8 @@ import { SupplierComponent } from './supplier/supplier.component';
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'event', component: EventComponent },
       { path: 'event/:id', component: EventComponent },
+      { path: 'event/:id/guests', component: GuestComponent },
+      { path: 'event/:id/suppliers', component: SupplierComponent },
       { path: 'event-types', component: EventTypesComponent },
       { path: 'supplier-types', component: SupplierTypesComponent },
       { path: 'upcoming-events', component: UpcomingEventsComponent }
