@@ -12,12 +12,10 @@ namespace EventPlanner.Models
         [Required]
         public string CeremonyVenue { get; set; }
         [Required]
-        [DataType(DataType.Time)]
-        public TimeSpan CeremonyTime { get; set; }
+        public string CeremonyTime { get; set; }
         [Required]
         public string ReceptionVenue { get; set; }
         [Required]
-        [DataType(DataType.Time)]
-        public TimeSpan ReceptionTime { get; set; }
+        public string ReceptionTime { get; set; }
     }
 }

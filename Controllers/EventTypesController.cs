@@ -29,6 +29,15 @@ namespace EventPlanner.Controllers
             .ToListAsync();
         }
 
+        [HttpGet("wedding-type-id")]
+        public async Task<ActionResult<Guid>> GetWeddingEventTypeId()
+        {
+            return await _context.EventTypes
+                .Where(e => e.Name.ToLower() == "wedding")
+                .Select(e => e.Id)
+                .SingleAsync();
+        }
+
         // GET: api/EventTypes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<EventType>> GetEventType(Guid id)

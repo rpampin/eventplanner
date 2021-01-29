@@ -1,0 +1,324 @@
+<h1>Event</h1>
+
+<form (ngSubmit)="onSubmit(eventForm)" #eventForm="ngForm" autocomplete="off">
+  <input type="hidden" [(ngModel)]="event.id" name="id" />
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="type">Type</label>
+      <select
+        class="custom-select"
+        name="type"
+        id="type"
+        #type="ngModel"
+        [compareWith]="compareFn"
+        [(ngModel)]="event.type"
+        required
+      >
+        <option *ngFor="let type of eventTypes" [ngValue]="type">
+          {{ type.name }}
+        </option>
+      </select>
+      <div [hidden]="type.valid || type.pristine" class="alert alert-danger">
+        Type is required
+      </div>
+    </div>
+
+    <div class="form-group col-md-6">
+      <label for="date">Date</label>
+      <input
+        type="date"
+        class="form-control"
+        name="date"
+        id="date"
+        #date="ngModel"
+        [ngModel]="event.date | date: 'yyyy-MM-dd'"
+        (ngModelChange)="event.date = $event"
+        required
+      />
+      <div [hidden]="date.valid || date.pristine" class="alert alert-danger">
+        Date is required
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="weddingEventTyperId === event?.type?.id">
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="brideName">Bride's Name</label>
+        <input
+          type="text"
+          class="form-control"
+          name="brideName"
+          id="brideName"
+          #brideName="ngModel"
+          [(ngModel)]="event.brideName"
+          required
+        />
+        <div
+          [hidden]="brideName.valid || brideName.pristine"
+          class="alert alert-danger"
+        >
+          Bride's Name is required
+        </div>
+      </div>
+
+      <div class="form-group col-md-6">
+        <label for="groomName">Groom's Name</label>
+        <input
+          type="text"
+          class="form-control"
+          name="groomName"
+          id="groomName"
+          #groomName="ngModel"
+          [(ngModel)]="event.groomName"
+          required
+        />
+        <div
+          [hidden]="groomName.valid || groomName.pristine"
+          class="alert alert-danger"
+        >
+          Groom's Name is required
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-3">
+        <label for="ceremonyVenue">Ceremony Venue</label>
+        <input
+          type="text"
+          class="form-control"
+          name="ceremonyVenue"
+          id="ceremonyVenue"
+          #ceremonyVenue="ngModel"
+          [(ngModel)]="event.ceremonyVenue"
+          required
+        />
+        <div
+          [hidden]="ceremonyVenue.valid || ceremonyVenue.pristine"
+          class="alert alert-danger"
+        >
+          Ceremony Venue is required
+        </div>
+      </div>
+
+      <div class="form-group col-md-3">
+        <label for="ceremonyTime">Ceremony Time</label>
+        <input
+          type="time"
+          class="form-control"
+          name="ceremonyTime"
+          id="ceremonyTime"
+          #ceremonyTime="ngModel"
+          [(ngModel)]="event.ceremonyTime"
+          required
+        />
+        <div
+          [hidden]="ceremonyTime.valid || ceremonyTime.pristine"
+          class="alert alert-danger"
+        >
+          Ceremony Time is required
+        </div>
+      </div>
+
+      <div class="form-group col-md-3">
+        <label for="receptionVenue">Reception Venue</label>
+        <input
+          type="text"
+          class="form-control"
+          name="receptionVenue"
+          id="receptionVenue"
+          #receptionVenue="ngModel"
+          [(ngModel)]="event.receptionVenue"
+          required
+        />
+        <div
+          [hidden]="receptionVenue.valid || receptionVenue.pristine"
+          class="alert alert-danger"
+        >
+          Reception Venue is required
+        </div>
+      </div>
+
+      <div class="form-group col-md-3">
+        <label for="receptionTime">Reception Time</label>
+        <input
+          type="time"
+          class="form-control"
+          name="receptionTime"
+          id="receptionTime"
+          #receptionTime="ngModel"
+          [(ngModel)]="event.receptionTime"
+          required
+        />
+        <div
+          [hidden]="receptionTime.valid || receptionTime.pristine"
+          class="alert alert-danger"
+        >
+          Reception Time is required
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="weddingEventTyperId !== event?.type?.id">
+    <div class="form-group">
+      <label for="celebrant">Celebrant/s</label>
+      <input
+        type="text"
+        class="form-control"
+        name="celebrant"
+        id="celebrant"
+        #celebrant="ngModel"
+        [(ngModel)]="event.celebrant"
+        required
+      />
+      <div
+        [hidden]="celebrant.valid || celebrant.pristine"
+        class="alert alert-danger"
+      >
+        Celebrant is required
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="address">Address</label>
+      <input
+        type="text"
+        class="form-control"
+        name="address"
+        id="address"
+        [(ngModel)]="event.address"
+      />
+    </div>
+
+    <div class="form-group col-md-4">
+      <label for="mobile">Mobile</label>
+      <input
+        type="text"
+        class="form-control"
+        name="mobile"
+        id="mobile"
+        [(ngModel)]="event.mobile"
+      />
+    </div>
+
+    <div class="form-group col-md-4">
+      <label for="email">Email</label>
+      <input
+        type="email"
+        class="form-control"
+        name="email"
+        id="email"
+        [(ngModel)]="event.email"
+      />
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="package">Package</label>
+      <input
+        type="text"
+        class="form-control"
+        name="package"
+        id="package"
+        [(ngModel)]="event.package"
+      />
+    </div>
+
+    <div class="form-group col-md-4">
+      <label for="downPayment">Down payment</label>
+      <input
+        type="number"
+        class="form-control"
+        name="downPayment"
+        id="downPayment"
+        [(ngModel)]="event.downPayment"
+      />
+    </div>
+
+    <div class="form-group col-md-4">
+      <label for="balance">Balance</label>
+      <input
+        type="number"
+        class="form-control"
+        name="balance"
+        id="balance"
+        [(ngModel)]="event.balance"
+      />
+    </div>
+  </div>
+
+  <!-- GUESTS -->
+  <div class="part-head">
+    <h2 id="tableLabel">Guests</h2>
+    <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.show()" mdbWavesEffect>Launch demo modal</button>
+  </div>
+  <table class="table table-striped" aria-labelledby="tableLabel">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Moblie</th>
+        <th>Will Attend</th>
+        <th class="fit"></th>
+        <th class="fit"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let guest of event.guests; let index = index">
+        <td class="align-middle">{{ guest.type }}</td>
+        <td class="align-middle">{{ guest.date }}</td>
+        <td class="align-middle">{{ guest.celebrant }}</td>
+        <td class="align-middle">{{ guest.address }}</td>
+        <td class="fit">
+          <button
+            class="btn btn-lg"
+            style="background-color: transparent"
+            (click)="editGuest(index, guest)"
+          >
+            <fa-icon [icon]="faEdit"></fa-icon>
+          </button>
+        </td>
+        <td class="fit">
+          <button
+            class="btn btn-lg"
+            style="background-color: transparent"
+            (click)="deleteGuest(index)"
+          >
+            <fa-icon [icon]="faTrash"></fa-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Modal -->
+  <div mdbModal #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+            <span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title w-100" id="myModalLabel">Modal title</h4>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="basicModal.hide()" mdbWavesEffect>Close</button>
+          <button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary">
+    {{ event.id ? "Update" : "Submit" }}
+  </button>
+</form>

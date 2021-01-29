@@ -1,0 +1,12 @@
+.table td.fit, 
+.table th.fit {
+    white-space: nowrap;
+    width: 1%;
+}
+
+.upcoming-head {
+    display: grid;
+    grid-gap: 1em;
+    align-items: center;
+    grid-template-columns: 10fr 1fr;
+}

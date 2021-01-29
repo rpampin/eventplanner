@@ -12,6 +12,9 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { EventTypesComponent } from './event-types/event-types.component';
 import { SupplierTypesComponent } from './supplier-types/supplier-types.component';
+import { EventComponent } from './event/event.component';
+import { UpcomingEventsComponent } from './upcoming-events/upcoming-events.component';
+import { GuestComponent } from './guest/guest.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,10 @@ import { SupplierTypesComponent } from './supplier-types/supplier-types.componen
     CounterComponent,
     FetchDataComponent,
     EventTypesComponent,
-    SupplierTypesComponent
+    SupplierTypesComponent,
+    EventComponent,
+    UpcomingEventsComponent,
+    GuestComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -32,8 +38,11 @@ import { SupplierTypesComponent } from './supplier-types/supplier-types.componen
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
+      { path: 'event', component: EventComponent },
+      { path: 'event/:id', component: EventComponent },
       { path: 'event-types', component: EventTypesComponent },
-      { path: 'supplier-types', component: SupplierTypesComponent }
+      { path: 'supplier-types', component: SupplierTypesComponent },
+      { path: 'upcoming-events', component: UpcomingEventsComponent }
     ])
   ],
   providers: [],
