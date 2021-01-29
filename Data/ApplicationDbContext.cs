@@ -29,20 +29,21 @@ namespace EventPlanner.Data
                 .HasMany(e => e.Guests)
                 .WithOne(g => g.Event)
                 .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<Event>()
                 .HasMany(e => e.Suppliers)
                 .WithOne(s => s.Event)
                 .OnDelete(DeleteBehavior.Cascade);
-            //modelBuilder.Entity<Event>().ToTable("Event");
-            //modelBuilder.Entity<EventType>().ToTable("EventType");
-            //modelBuilder.Entity<Guest>().ToTable("Guest");
-            //modelBuilder.Entity<Program>().ToTable("Program");
-            //modelBuilder.Entity<ProgramPart>().ToTable("ProgramPart");
-            //modelBuilder.Entity<ProgramStep>().ToTable("ProgramStep");
-            //modelBuilder.Entity<ProgramStepSong>().ToTable("ProgramStepSong");
-            //modelBuilder.Entity<Supplier>().ToTable("Supplier");
-            //modelBuilder.Entity<SupplierType>().ToTable("SupplierType");
-            //modelBuilder.Entity<Wedding>().ToTable("Wedding");
+
+            modelBuilder.Entity<Plan>()
+                .HasMany(e => e.Parts)
+                .WithOne(s => s.Plan)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<PlanPart>()
+                .HasMany(e => e.Steps)
+                .WithOne(s => s.PlanPart)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

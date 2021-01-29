@@ -11,5 +11,6 @@ namespace EventPlanner.Models
         [Required]
         public string Title { get; set; }
         public IList<PlanStep> Steps { get; set; }
+        public Plan Plan { get; set; }
     }
 }

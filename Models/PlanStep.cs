@@ -12,5 +12,6 @@ namespace EventPlanner.Models
         [Required]
         [DataType(DataType.Html)]
         public string Description { get; set; }
+        public PlanPart PlanPart { get; set; }
     }
 }
