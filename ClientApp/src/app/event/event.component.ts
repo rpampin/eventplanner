@@ -4,7 +4,7 @@ import { Event } from './event';
 import { EventType } from '../event-types/event-type.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
-import { faUser, faUserTie } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faUserTie, faClipboard } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-event',
@@ -14,6 +14,7 @@ import { faUser, faUserTie } from '@fortawesome/free-solid-svg-icons';
 export class EventComponent implements OnInit {
   faUser = faUser;
   faUserTie = faUserTie;
+  faClipboard = faClipboard;
   id: string;
   event: Event = new Event();
   weddingEventTyperId: string;

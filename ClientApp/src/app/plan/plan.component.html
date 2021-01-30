@@ -1,0 +1,216 @@
+<h1>Event</h1>
+<div class="form-row">
+  <div class="form-group col-md-4">
+    <label for="type">Type</label>
+    <input type="text" class="form-control" [(ngModel)]="event.type" readonly />
+  </div>
+
+  <div class="form-group col-md-4">
+    <label for="date">Date</label>
+    <input
+      type="date"
+      class="form-control"
+      [ngModel]="event.date | date: 'yyyy-MM-dd'"
+      (ngModelChange)="event.date = $event"
+      readonly
+    />
+  </div>
+
+  <div class="form-group col-md-4">
+    <label for="celebrant">Celebrant/s</label>
+    <input
+      type="text"
+      class="form-control"
+      [(ngModel)]="event.celebrant"
+      readonly
+    />
+  </div>
+</div>
+
+<h1>Program</h1>
+<form (ngSubmit)="onPlanSubmit(plan)" #planForm="ngForm" autocomplete="off">
+  <div class="form-row">
+    <label for="planTitle" class="col-md-12">Title</label>
+  </div>
+  <div class="form-row">
+    <div class="col-md-10">
+      <input
+        type="text"
+        class="form-control"
+        id="planTitle"
+        required
+        [(ngModel)]="plan.title"
+        name="planTitle"
+        #planTitle="ngModel"
+      />
+      <div
+        [hidden]="planTitle.valid || planTitle.pristine"
+        class="alert alert-danger"
+      >
+        Title is required
+      </div>
+    </div>
+    <div class="col-auto">
+      <button
+        type="submit"
+        class="btn btn-success"
+        placement="top"
+        ngbTooltip="Update"
+      >
+        <fa-icon [icon]="faSave"></fa-icon>
+      </button>
+    </div>
+    <div class="col-auto">
+      <button type="button" class="btn btn-info" (click)="addNewPart()">
+        Add Part
+      </button>
+    </div>
+  </div>
+</form>
+{{plan | json}}
+<div *ngIf="plan.parts && plan.parts.length > 0">
+  <h2>Parts</h2>
+  <div *ngFor="let part of plan.parts; let index = index">
+    <div class="form-row">
+        <label for="partIndex_{{ index }}" class="col-md-1">Index</label>
+        <label for="partTitle_{{ index }}" class="col-md-9">Title</label>
+    </div>
+    <div class="form-row">
+      <div class="col-md-1">
+        <input
+          type="number"
+          class="form-control"
+          id="partIndex_{{ index }}"
+          required
+          [(ngModel)]="plan.parts[index].index"
+          name="partIndex_{{ index }}"
+          #partIndex="ngModel"
+        />
+        <div
+          [hidden]="partIndex.valid || partIndex.pristine"
+          class="alert alert-danger"
+        >
+          Index is required
+        </div>
+      </div>
+      <div class="col-md-9">
+        <input
+          type="text"
+          class="form-control"
+          id="partTitle_{{ index }}"
+          required
+          [(ngModel)]="plan.parts[index].title"
+          name="partTitle_{{ index }}"
+          #partTitle="ngModel"
+        />
+        <div
+          [hidden]="partTitle.valid || partTitle.pristine"
+          class="alert alert-danger"
+        >
+          Title is required
+        </div>
+      </div>
+      <div class="col-auto">
+        <button
+          type="submit"
+          class="btn btn-success"
+          placement="top"
+          ngbTooltip="Update"
+        >
+          <fa-icon [icon]="faSave"></fa-icon>
+        </button>
+      </div>
+      <div class="col-auto">
+        <button
+          type="button"
+          class="btn btn-danger"
+          placement="top"
+          ngbTooltip="Delete"
+          (click)="removePart(part)"
+        >
+          <fa-icon [icon]="faTrash"></fa-icon>
+        </button>
+      </div>
+      <div class="col-auto">
+        <button type="button" class="btn btn-info" (click)="addNewStep(part)">
+          Add Step
+        </button>
+      </div>
+    </div>
+
+    <div class="form-row">
+        <div *ngIf="part && part.steps.length > 0">
+            <h2>Steps</h2>
+            <div *ngFor="let step of part.steps; let stepIndex = index">
+              <div class="form-row">
+                  <label for="stepIndex_{{ stepIndex }}" class="col-md-1">Index</label>
+                  <label for="stepTitle_{{ stepIndex }}" class="col-md-9">Title</label>
+              </div>
+              <div class="form-row">
+                <div class="col-md-1">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="stepIndex_{{ stepIndex }}"
+                    required
+                    [(ngModel)]="part.steps[stepIndex].index"
+                    name="stepIndex_{{ stepIndex }}"
+                    #stepIndex="ngModel"
+                  />
+                  <div
+                    [hidden]="stepIndex.valid || stepIndex.pristine"
+                    class="alert alert-danger"
+                  >
+                    Index is required
+                  </div>
+                </div>
+                <div class="col-md-9">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="stepTitle_{{ stepIndex }}"
+                    required
+                    [(ngModel)]="part.steps[stepIndex].title"
+                    name="stepTitle_{{ stepIndex }}"
+                    #stepTitle="ngModel"
+                  />
+                  <div
+                    [hidden]="stepTitle.valid || stepTitle.pristine"
+                    class="alert alert-danger"
+                  >
+                    Title is required
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <button
+                    type="submit"
+                    class="btn btn-success"
+                    placement="top"
+                    ngbTooltip="Update"
+                  >
+                    <fa-icon [icon]="faSave"></fa-icon>
+                  </button>
+                </div>
+                <div class="col-auto">
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    placement="top"
+                    ngbTooltip="Delete"
+                    (click)="removeStep(step)"
+                  >
+                    <fa-icon [icon]="faTrash"></fa-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+
+
+
+
+
+
+  </div>
+</div>

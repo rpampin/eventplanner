@@ -19,6 +19,7 @@ import { GuestComponent } from './guest/guest.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { GuestFormComponent } from './guest-form/guest-form.component';
 import { SupplierFormComponent } from './supplier-form/supplier-form.component';
+import { PlanComponent } from './plan/plan.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { SupplierFormComponent } from './supplier-form/supplier-form.component';
     GuestComponent,
     SupplierComponent,
     GuestFormComponent,
-    SupplierFormComponent
+    SupplierFormComponent,
+    PlanComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -47,6 +49,7 @@ import { SupplierFormComponent } from './supplier-form/supplier-form.component';
       { path: 'event/:eventId/suppliers/:supplierId', component: SupplierFormComponent },
       { path: 'event/:eventId/guests/:guestId', component: GuestFormComponent },
       { path: 'event/:eventId/suppliers', component: SupplierComponent },
+      { path: 'event/:eventId/program', component: PlanComponent },
       { path: 'event/:eventId/guests', component: GuestComponent },
       { path: 'event/:eventId', component: EventComponent },
       { path: 'event', component: EventComponent },

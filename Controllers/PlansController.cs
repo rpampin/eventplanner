@@ -20,23 +20,26 @@ namespace EventPlanner.Controllers
             _context = context;
         }
 
-        // GET: api/Plans
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Plan>>> GetPlans()
-        {
-            return await _context.Plans.ToListAsync();
-        }
-
         // GET: api/Plans/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Plan>> GetPlan(Guid id)
+        [HttpGet("{eventId}")]
+        public async Task<ActionResult<Plan>> GetPlan(Guid eventId)
         {
-            var plan = await _context.Plans.FindAsync(id);
+            var plan = await _context.Events
+                .Include(e => e.Plan)
+                .Where(e => e.Id == eventId)
+                .Select(e => e.Plan)
+                .SingleOrDefaultAsync();
 
             if (plan == null)
             {
                 return NotFound();
             }
+
+            plan.Parts = await _context.PlanParts.Where(p => p.Plan.Id == plan.Id).ToListAsync();
+
+            if (plan.Parts != null && plan.Parts.Count > 0)
+                foreach (var p in plan.Parts)
+                    p.Steps = await _context.PlanSteps.Where(s => s.PlanPart.Id == p.Id).ToListAsync();
 
             return plan;
         }

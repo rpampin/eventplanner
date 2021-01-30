@@ -26,7 +26,7 @@ namespace EventPlanner.Controllers
         public async Task<ActionResult<IEnumerable<EvenListView>>> GetEvent()
         {
             return await _context.Events
-                .Where(e => e.Date > DateTime.Now)
+                .Where(e => e.Date >= DateTime.Now.Date)
                 .OrderBy(e => e.Date)
                 .Select(e => new EvenListView
                 {
@@ -60,6 +60,21 @@ namespace EventPlanner.Controllers
             }
 
             return ev;
+        }
+
+        // GET: api/Guests
+        [HttpGet("base-data/{eventId}")]
+        public async Task<ActionResult<object>> GetEventData(Guid eventId)
+        {
+            return await _context.Events
+            .Where(e => e.Id == eventId)
+            .Select(e => new
+            {
+                type = e.Type.Name,
+                date = e.Date,
+                celebrant = e.Celebrant
+            })
+            .FirstOrDefaultAsync();
         }
 
         // PUT: api/Events/5
@@ -99,6 +114,7 @@ namespace EventPlanner.Controllers
         public async Task<ActionResult<Event>> PostEvent(Event ev)
         {
             ev.Type = await _context.EventTypes.Where(et => et.Id == ev.Type.Id).SingleAsync();
+            ev.Plan = new Plan { Title = "Event Program" };
             foreach (var s in ev.Suppliers)
             {
                 s.Type = await _context.SupplierTypes.Where(st => st.Id == s.Type.Id).SingleAsync();
@@ -114,12 +130,14 @@ namespace EventPlanner.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEvent(Guid id)
         {
-            var ev = await _context.Events.FindAsync(id);
+            var ev = await _context.Events
+                .Include(e => e.Plan)
+                .SingleAsync(e => e.Id == id);
             if (ev == null)
             {
                 return NotFound();
             }
-
+            _context.Plans.Remove(ev.Plan);
             _context.Events.Remove(ev);
             await _context.SaveChangesAsync();
 
@@ -169,7 +187,7 @@ namespace EventPlanner.Controllers
         public async Task<ActionResult<Wedding>> PostWeddingEvent(Wedding ev)
         {
             ev.Type = await _context.EventTypes.Where(et => et.Id == ev.Type.Id).SingleAsync();
-
+            ev.Plan = new Plan { Title = "Event Program" };
             _context.Events.Add(ev);
             await _context.SaveChangesAsync();
 

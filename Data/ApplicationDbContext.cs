@@ -35,13 +35,18 @@ namespace EventPlanner.Data
                 .WithOne(s => s.Event)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<Supplier>()
+                .HasMany(s => s.Attachments)
+                .WithOne(a => a.Supplier)
+                .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<Plan>()
-                .HasMany(e => e.Parts)
-                .WithOne(s => s.Plan)
+                .HasMany(p => p.Parts)
+                .WithOne(p => p.Plan)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<PlanPart>()
-                .HasMany(e => e.Steps)
+                .HasMany(p => p.Steps)
                 .WithOne(s => s.PlanPart)
                 .OnDelete(DeleteBehavior.Cascade);
         }

@@ -20,21 +20,6 @@ namespace EventPlanner.Controllers
             _context = context;
         }
 
-        // GET: api/Guests
-        [HttpGet("event-data/{eventId}")]
-        public async Task<ActionResult<object>> GetEventData(Guid eventId)
-        {
-            return await _context.Events
-            .Where(e => e.Id == eventId)
-            .Select(e => new
-            {
-                type = e.Type.Name,
-                date = e.Date,
-                celebrant = e.Celebrant
-            })
-            .FirstOrDefaultAsync();
-        }
-
         [HttpGet("event-guests/{eventId}")]
         public async Task<ActionResult<IEnumerable<Guest>>> GetEventGuests(Guid eventId)
         {

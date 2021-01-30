@@ -20,6 +20,7 @@
       <th class="fit"></th>
       <th class="fit"></th>
       <th class="fit"></th>
+      <th class="fit"></th>
     </tr>
   </thead>
   <tbody>
@@ -32,6 +33,12 @@
       <td class="align-middle">{{ event.package }}</td>
       <td class="align-middle">{{ event.downPayment | currency }}</td>
       <td class="align-middle">{{ event.balance | currency }}</td>
+      <td class="fit">
+        <button type="button" class="btn btn-sm" style="background-color: transparent" placement="top"
+          ngbTooltip="Program" [routerLink]="['/event', event.id, 'program']">
+          <fa-icon [icon]="faClipboard"></fa-icon>
+        </button>
+      </td>
       <td class="fit">
         <button type="button" class="btn btn-sm" style="background-color: transparent" placement="top"
           ngbTooltip="Guests" [routerLink]="['/event', event.id, 'guests']">

@@ -25,7 +25,7 @@ export class GuestComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.eventId = params.get('eventId');
 
-      this.http.get<any>(this.baseUrl + 'api/guests/event-data/' + this.eventId).subscribe(result => {
+      this.http.get<any>(this.baseUrl + 'api/events/base-data/' + this.eventId).subscribe(result => {
         this.event = result;
 
         this.http.get<Guest[]>(this.baseUrl + 'api/guests/event-guests/' + this.eventId).subscribe(result => {

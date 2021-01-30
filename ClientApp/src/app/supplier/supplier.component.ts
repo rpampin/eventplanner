@@ -26,7 +26,7 @@ export class SupplierComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.eventId = params.get('eventId');
 
-      this.http.get<any>(this.baseUrl + 'api/suppliers/event-data/' + this.eventId).subscribe(result => {
+      this.http.get<any>(this.baseUrl + 'api/events/base-data/' + this.eventId).subscribe(result => {
         this.event = result;
 
         this.http.get<Supplier[]>(this.baseUrl + 'api/suppliers/event-suppliers/' + this.eventId).subscribe(result => {
