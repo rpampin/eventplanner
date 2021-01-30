@@ -54,11 +54,11 @@ export class EventComponent implements OnInit {
 
       if (!this.event.id) {
         this.http.post<Event>(this.baseUrl + url, this.event).subscribe(result => {
-          this.router.navigate(['/upcoming-events'])
+          this.router.navigate(['/'])
         }, error => console.error(error));
       } else {
         this.http.put<Event>(this.baseUrl + url + '/' + this.event.id, this.event).subscribe(result => {
-          this.router.navigate(['/upcoming-events'])
+          this.router.navigate(['/'])
         }, error => console.error(error));
       }
     } else {

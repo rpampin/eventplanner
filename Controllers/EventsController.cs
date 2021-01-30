@@ -23,11 +23,11 @@ namespace EventPlanner.Controllers
 
         // GET: api/Events
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<EvenListView>>> GetEvent()
+        public async Task<ActionResult<IEnumerable<EvenListView>>> GetEvent([FromQuery]bool pastEvents = false)
         {
-            return await _context.Events
-                .Where(e => e.Date >= DateTime.Now.Date)
-                .OrderBy(e => e.Date)
+            var events = await _context.Events
+                .Where(e => e.Date >= (pastEvents ? DateTime.MinValue : DateTime.Now.Date))
+                .OrderByDescending(e => e.Date)
                 .Select(e => new EvenListView
                 {
                     Id = e.Id,
@@ -44,6 +44,7 @@ namespace EventPlanner.Controllers
                     SuppliersCount = e.Suppliers.Count()
                 })
                 .ToListAsync();
+            return events;
         }
 
         // GET: api/Events/5

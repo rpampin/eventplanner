@@ -1,12 +1,16 @@
-.table td.fit, 
+.table td.fit,
 .table th.fit {
-    white-space: nowrap;
-    width: 1%;
+  white-space: nowrap;
+  width: 1%;
 }
 
 .upcoming-head {
-    display: grid;
-    grid-gap: 1em;
-    align-items: center;
-    grid-template-columns: 10fr 1fr;
+  display: grid;
+  grid-gap: 1em;
+  align-items: center;
+  grid-template-columns: 10fr 2fr 1fr;
+}
+
+.upcoming-head #chk {
+  justify-self: end;
 }

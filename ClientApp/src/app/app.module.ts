@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgbTooltipModule, NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 
 import { AppComponent } from './app.component';
@@ -21,10 +21,12 @@ import { SupplierComponent } from './supplier/supplier.component';
 import { GuestFormComponent } from './guest-form/guest-form.component';
 import { SupplierFormComponent } from './supplier-form/supplier-form.component';
 import { PlanComponent } from './plan/plan.component';
+import { ToastComponent } from './toast.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    ToastComponent,
     NavMenuComponent,
     HomeComponent,
     CounterComponent,
@@ -44,11 +46,10 @@ import { PlanComponent } from './plan/plan.component';
     FontAwesomeModule,
     HttpClientModule,
     FormsModule,
+    NgbModule,
     AngularEditorModule,
-    NgbTooltipModule,
-    NgbAccordionModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: '', component: UpcomingEventsComponent, pathMatch: 'full' },
       { path: 'event/:eventId/suppliers/:supplierId', component: SupplierFormComponent },
       { path: 'event/:eventId/guests/:guestId', component: GuestFormComponent },
       { path: 'event/:eventId/suppliers', component: SupplierComponent },

@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./upcoming-events.component.css']
 })
 export class UpcomingEventsComponent implements OnInit {
+  pastChk: boolean = false;
   faEdit = faEdit;
   faTrash = faTrash;
   faUser = faUser;
@@ -20,9 +21,17 @@ export class UpcomingEventsComponent implements OnInit {
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private router: Router) { }
 
   ngOnInit() {
-    this.http.get<EvenListView[]>(this.baseUrl + 'api/events').subscribe(result => {
+    this.getEvents();
+  }
+
+  getEvents() {
+    this.http.get<EvenListView[]>(this.baseUrl + `api/events?pastEvents=${this.pastChk}`).subscribe(result => {
       this.events = result;
     }, error => console.error(error));
+  }
+
+  chkChanged() {
+    this.getEvents();
   }
 
   delete(eventId: string) {
