@@ -36,7 +36,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let event of events">
+    <tr *ngFor="let event of pageOfEvents">
       <td class="align-middle">{{ event.type }}</td>
       <td class="align-middle">{{ event.date | date }}</td>
       <td class="align-middle">{{ event.celebrant }}</td>
@@ -108,3 +108,8 @@
     </tr>
   </tbody>
 </table>
+
+<jw-pagination
+  [items]="events"
+  (changePage)="onChangePage($event)"
+></jw-pagination>

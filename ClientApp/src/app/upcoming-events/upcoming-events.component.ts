@@ -17,11 +17,17 @@ export class UpcomingEventsComponent implements OnInit {
   faUserTie = faUserTie;
   faClipboard = faClipboard;
   events: EvenListView[];
+  pageOfEvents: Array<any>;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private router: Router) { }
 
   ngOnInit() {
     this.getEvents();
+  }
+
+  onChangePage(pageOfItems: Array<any>) {
+    // update current page of items
+    this.pageOfEvents = pageOfItems;
   }
 
   getEvents() {
