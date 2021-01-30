@@ -109,7 +109,9 @@
   </tbody>
 </table>
 
-<jw-pagination
-  [items]="events"
-  (changePage)="onChangePage($event)"
-></jw-pagination>
+<div class="pagination">
+  <jw-pagination
+    [items]="events"
+    (changePage)="onChangePage($event)"
+  ></jw-pagination>
+</div>

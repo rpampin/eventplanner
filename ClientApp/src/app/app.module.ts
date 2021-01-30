@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularEditorModule } from '@kolkov/angular-editor';
-import { JwPaginationComponent } from 'jw-angular-pagination';
+import { JwPaginationModule } from 'jw-angular-pagination';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -28,7 +28,6 @@ import { ToastComponent } from './toast.component';
   declarations: [
     AppComponent,
     ToastComponent,
-    JwPaginationComponent,
     NavMenuComponent,
     HomeComponent,
     CounterComponent,
@@ -49,6 +48,7 @@ import { ToastComponent } from './toast.component';
     HttpClientModule,
     FormsModule,
     NgbModule,
+    JwPaginationModule,
     AngularEditorModule,
     RouterModule.forRoot([
       { path: '', component: UpcomingEventsComponent, pathMatch: 'full' },
