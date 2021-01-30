@@ -1,5 +1,5 @@
 <h1>Guest</h1>
-<form (ngSubmit)="onSubmit(eventForm)" #eventForm="ngForm" autocomplete="off">
+<form (ngSubmit)="submitGuest()" #eventForm="ngForm" autocomplete="off">
   <input type="text" [(ngModel)]="guest.id" name="id" hidden />
   <div class="form-row">
     <div class="form-group col-md-4">

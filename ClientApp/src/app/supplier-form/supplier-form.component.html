@@ -1,6 +1,6 @@
 <h1>Supplier</h1>
 
-<form (ngSubmit)="onSubmit(eventForm)" #eventForm="ngForm" autocomplete="off">
+<form (ngSubmit)="submitSupplier()" #eventForm="ngForm" autocomplete="off">
     <input type="text" [(ngModel)]="supplier.id" name="id" hidden />
     <div class="form-row">
         <div class="form-group col-md-6">
