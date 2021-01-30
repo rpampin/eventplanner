@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faTrash, faSave } from '@fortawesome/free-solid-svg-icons';
 import { Plan, PlanPart, PlanStep } from './plan';
@@ -37,7 +37,6 @@ export class PlanComponent implements OnInit {
   }
 
   // PARTS
-
   addNewPart() {
     this.http.post<PlanPart>(this.baseUrl + 'api/planparts/' + this.plan.id, null).subscribe(result => {
       this.plan.parts.push(result);

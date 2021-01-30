@@ -17,7 +17,6 @@ namespace EventPlanner.Data
         public DbSet<Plan> Plans { get; set; }
         public DbSet<PlanPart> PlanParts { get; set; }
         public DbSet<PlanStep> PlanSteps { get; set; }
-        public DbSet<PlanStepSong> PlanStepsSong { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Wedding> Weddings { get; set; }
 

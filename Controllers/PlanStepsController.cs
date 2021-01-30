@@ -75,7 +75,7 @@ namespace EventPlanner.Controllers
 
         // POST: api/PlanSteps
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("{partId}")]
+        [HttpPost("{planPartId}")]
         public async Task<ActionResult<PlanStep>> PostPlanStep(Guid planPartId)
         {
             var stepCount = _context.PlanSteps.Where(p => p.PlanPart.Id == planPartId).Count();
