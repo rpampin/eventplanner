@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using ElectronNET.API;
+using System.Threading.Tasks;
 
 namespace EventPlanner
 {
@@ -87,6 +89,8 @@ namespace EventPlanner
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+
+            Task.Run(async () => await Electron.WindowManager.CreateWindowAsync());
         }
     }
 }

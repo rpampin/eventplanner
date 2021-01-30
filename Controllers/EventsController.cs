@@ -114,6 +114,11 @@ namespace EventPlanner.Controllers
         [HttpPost]
         public async Task<ActionResult<Event>> PostEvent(Event ev)
         {
+#if !DEBUG
+    if (await _context.Events.CountAsync() > 2)
+        throw new Exception("2 EVENTS FOR TESTING");
+#endif
+
             ev.Type = await _context.EventTypes.Where(et => et.Id == ev.Type.Id).SingleAsync();
             ev.Plan = new Plan { Title = "Event Program" };
             foreach (var s in ev.Suppliers)
@@ -187,6 +192,11 @@ namespace EventPlanner.Controllers
         [HttpPost("wedding")]
         public async Task<ActionResult<Wedding>> PostWeddingEvent(Wedding ev)
         {
+#if !DEBUG
+    if (await _context.Events.CountAsync() > 2)
+        throw new Exception("2 EVENTS FOR TESTING");
+#endif
+
             ev.Type = await _context.EventTypes.Where(et => et.Id == ev.Type.Id).SingleAsync();
             ev.Plan = new Plan { Title = "Event Program" };
             _context.Events.Add(ev);

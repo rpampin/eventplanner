@@ -1,0 +1,35 @@
+{
+  "executable": "EventPlanner",
+  "splashscreen": {
+    "imageFile": ""
+  },
+  "name": "EventPlanner",
+  "author": "",
+  "singleInstance": true,
+  "environment": "Production",
+  "build": {
+    "appId": "com.EventPlanner.app",
+    "productName": "EventPlanner",
+    "copyright": "Copyright © 2020",
+    "buildVersion": "0.1.0",
+    "compression": "maximum",
+    "directories": {
+      "output": "../../../bin/Desktop"
+    },
+    "extraResources": [
+      {
+        "from": "./bin",
+        "to": "bin",
+        "filter": [ "**/*" ]
+      }
+    ],
+    "files": [
+      {
+        "from": "./ElectronHostHook/node_modules",
+        "to": "ElectronHostHook/node_modules",
+        "filter": [ "**/*" ]
+      },
+      "**/*"
+    ]
+  }
+}
