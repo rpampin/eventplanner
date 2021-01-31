@@ -3,7 +3,6 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faTrash, faSave } from '@fortawesome/free-solid-svg-icons';
 import { Plan, PlanPart, PlanStep } from './plan';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { ToastService } from '../toast.service';
 
 @Component({

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using EventPlanner.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace EventPlanner.Data
 {
@@ -9,6 +10,8 @@ namespace EventPlanner.Data
         public static void Initialize(ApplicationDbContext context)
         {
             context.Database.EnsureCreated();
+            
+            context.Database.Migrate();
 
             // Look for any students.
             if (context.EventTypes.Any())

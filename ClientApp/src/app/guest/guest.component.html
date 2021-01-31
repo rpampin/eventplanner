@@ -19,6 +19,8 @@
 
 <div class="btn-head">
   <h1>Guests</h1>
+  <button class="btn btn-primary" (click)="sendInvitations(false, '')"><fa-icon [icon]="faEnvelope"></fa-icon> Send Invitations</button>
+  <button class="btn btn-secondary" (click)="sendInvitations(true, '')"><fa-icon [icon]="faEnvelope"></fa-icon> Resend Invitations</button>
   <button class="btn btn-info" [routerLink]="['..']">View Event</button>
   <button class="btn btn-success" [routerLink]="[0]">New Guest</button>
 </div>
@@ -32,6 +34,7 @@
       <th>Will Attend</th>
       <th class="fit"></th>
       <th class="fit"></th>
+      <th class="fit"></th>
     </tr>
   </thead>
   <tbody>
@@ -40,6 +43,12 @@
       <td class="align-middle">{{ guest.email }}</td>
       <td class="align-middle">{{ guest.mobile }}</td>
       <td class="align-middle">{{ guest.willAttend }}</td>
+      <td class="fit">
+        <button type="button" class="btn btn-sm" style="background-color: transparent" placement="top"
+          ngbTooltip="Send Invite" (click)="sendInvitations(true, guest.id)">
+          <fa-icon [icon]="faEnvelope"></fa-icon>
+        </button>
+      </td>
       <td class="fit">
         <button type="button" class="btn btn-sm" style="background-color: transparent" placement="top"
           ngbTooltip="Edit" [routerLink]="[guest.id]">

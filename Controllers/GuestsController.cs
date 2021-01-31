@@ -1,11 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using EventPlanner.Data;
+using EventPlanner.Models;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Gmail.v1;
+using Google.Apis.Util;
+using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using EventPlanner.Data;
-using EventPlanner.Models;
+using Microsoft.Extensions.Configuration;
+using MimeKit;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EventPlanner.Controllers
 {
@@ -14,10 +22,14 @@ namespace EventPlanner.Controllers
     public class GuestsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _configuration;
 
-        public GuestsController(ApplicationDbContext context)
+        public GuestsController(
+            ApplicationDbContext context,
+            IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         [HttpGet("event-guests/{eventId}")]
@@ -113,6 +125,97 @@ namespace EventPlanner.Controllers
         private bool GuestExists(Guid id)
         {
             return _context.Guests.Any(e => e.Id == id);
+        }
+
+        [HttpGet("send-invitations/{eventId}")]
+        public async Task<IActionResult> SendInvitations(Guid eventId, [FromQuery] bool resend, [FromQuery] Guid? guestId)
+        {
+            var @event = await _context.Events.FindAsync(eventId);
+            var guestLinq = _context.Guests.Where(g => g.Event.Id == eventId);
+            IList<Guest> guests;
+
+            if (guestId == null)
+                guests = await guestLinq.ToListAsync();
+            else
+                guests = await guestLinq.Where(g => g.Id == guestId.Value).ToListAsync();
+
+            if ((!resend && guests.Where(g => !g.InvitationSent).Count() == 0) || (resend && guests.Count == 0))
+                return BadRequest("There's no guests to send the invitation to");
+
+            var secrets = new ClientSecrets
+            {
+                ClientId = _configuration["GmailStmp:Key"],
+                ClientSecret = _configuration["GmailStmp:Secret"]
+            };
+
+            var googleCredentials = await GoogleWebAuthorizationBroker.AuthorizeAsync(secrets, new[] { GmailService.Scope.MailGoogleCom }, _configuration["GmailStmp:Email"], CancellationToken.None);
+            if (googleCredentials.Token.IsExpired(SystemClock.Default))
+            {
+                await googleCredentials.RefreshTokenAsync(CancellationToken.None);
+            }
+
+            using (var client = new SmtpClient())
+            {
+                client.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+
+                var oauth2 = new SaslMechanismOAuth2(googleCredentials.UserId, googleCredentials.Token.AccessToken);
+                client.Authenticate(oauth2);
+
+                var message = new MimeMessage();
+                message.From.Add(new MailboxAddress(_configuration["GmailStmp:Email"].Split("@").First(), _configuration["GmailStmp:Email"]));
+
+                foreach (var g in guests)
+                {
+                    if (!g.InvitationSent || (g.InvitationSent && resend))
+                    {
+                        g.InvitationSent = true;
+                        message.To.Add(new MailboxAddress(g.Name, g.Email));
+                    }
+                }
+
+                message.Subject = "How you doin?";
+                message.Body = new TextPart("html")
+                {
+                    Text = @"<h1>Hey Alice</h1>,
+
+                    What are you up to this weekend? Monica is throwing one of her parties on
+                    Saturday and I was hoping you could make it.
+
+                    Will you be my +1?
+
+                    -- Joey
+                    "
+                };
+
+                await client.SendAsync(message);
+                client.Disconnect(true);
+            }
+
+            await _context.SaveChangesAsync();
+
+            //var smtpClient = new SmtpClient(_configuration["Smtp:Host"])
+            //{
+            //    Port = int.Parse(_configuration["Smtp:Port"]),
+            //    Credentials = new NetworkCredential(_configuration["Smtp:Username"], _configuration["Smtp:Password"]),
+            //    EnableSsl = true,
+            //    UseDefaultCredentials = false
+            //};
+
+            //foreach (var g in guests)
+            //{
+            //    var mailMessage = new MailMessage
+            //    {
+            //        From = new MailAddress(_configuration["Smtp:Username"]),
+            //        Subject = "subject",
+            //        Body = "<h1>Hello</h1>",
+            //        IsBodyHtml = true,
+            //    };
+            //    mailMessage.To.Add(g.Email);
+
+            //    smtpClient.Send(mailMessage);
+            //}
+
+            return Ok();
         }
     }
 }
