@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { faCog } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-nav-menu',
@@ -6,6 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./nav-menu.component.css']
 })
 export class NavMenuComponent {
+  faCog = faCog;
   isExpanded = false;
 
   collapse() {

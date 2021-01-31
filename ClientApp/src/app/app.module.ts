@@ -23,6 +23,7 @@ import { GuestFormComponent } from './guest-form/guest-form.component';
 import { SupplierFormComponent } from './supplier-form/supplier-form.component';
 import { PlanComponent } from './plan/plan.component';
 import { ToastComponent } from './toast.component';
+import { ConfigComponent } from './config/config.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { ToastComponent } from './toast.component';
     SupplierComponent,
     GuestFormComponent,
     SupplierFormComponent,
-    PlanComponent
+    PlanComponent,
+    ConfigComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -59,6 +61,7 @@ import { ToastComponent } from './toast.component';
       { path: 'event/:eventId/guests', component: GuestComponent },
       { path: 'event/:eventId', component: EventComponent },
       { path: 'event', component: EventComponent },
+      { path: 'config', component: ConfigComponent },
       { path: 'event-types', component: EventTypesComponent },
       { path: 'supplier-types', component: SupplierTypesComponent },
       { path: 'upcoming-events', component: UpcomingEventsComponent }

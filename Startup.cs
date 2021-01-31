@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using ElectronNET.API;
 using System.Threading.Tasks;
+using ElectronNET.API.Entities;
 
 namespace EventPlanner
 {

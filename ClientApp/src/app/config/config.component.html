@@ -1,0 +1,47 @@
+<h1>Configuration</h1>
+<hr />
+<h2>SMTP</h2>
+<form (ngSubmit)="submitSmtpConfig(form)" #form="ngForm" autocomplete="off">
+    <input type="text" [(ngModel)]="smtpConfig.id" name="id" hidden />
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="smtpConfigHost">Host</label>
+            <input type="text" class="form-control" name="smtpConfigHost" id="smtpConfigHost"
+                #smtpConfigHost="ngModel" [(ngModel)]="smtpConfig.host" required />
+            <div [hidden]="smtpConfigHost.valid || smtpConfigHost.pristine" class="alert alert-danger">
+                Host is required
+            </div>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="smtpConfigPort">Port</label>
+            <input type="number" class="form-control" name="smtpConfigPort" id="smtpConfigPort"
+                #smtpConfigPort="ngModel" [(ngModel)]="smtpConfig.port" required />
+            <div [hidden]="smtpConfigPort.valid || smtpConfigPort.pristine" class="alert alert-danger">
+                Port is required
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="smtpConfigUsername">Username</label>
+            <input type="text" class="form-control" name="smtpConfigUsername" id="smtpConfigUsername"
+                #smtpConfigUsername="ngModel" [(ngModel)]="smtpConfig.username" required />
+            <div [hidden]="smtpConfigUsername.valid || smtpConfigUsername.pristine" class="alert alert-danger">
+                Username is required
+            </div>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="smtpConfigPassword">Password</label>
+            <input type="text" class="form-control" name="smtpConfigPassword" id="smtpConfigPassword"
+                #smtpConfigPassword="ngModel" [(ngModel)]="smtpConfig.password" required />
+            <div [hidden]="smtpConfigPassword.valid || smtpConfigPassword.pristine" class="alert alert-danger">
+                Password is required
+            </div>
+        </div>
+    </div>
+    <div class="form-row" style="justify-content: flex-end;">
+        <button type="submit" class="btn btn-success" style="margin: .5em;">
+            Submit SMTP Config
+        </button>
+    </div>
+</form>
