@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using EventPlanner.Data;
 using EventPlanner.Models;
 using EventPlanner.Models.View;
+using System.Threading;
 
 namespace EventPlanner.Controllers
 {
@@ -44,6 +45,7 @@ namespace EventPlanner.Controllers
                     SuppliersCount = e.Suppliers.Count()
                 })
                 .ToListAsync();
+
             return events;
         }
 

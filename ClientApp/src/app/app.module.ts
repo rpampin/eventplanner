@@ -1,12 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { JwPaginationModule } from 'jw-angular-pagination';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -24,6 +25,8 @@ import { SupplierFormComponent } from './supplier-form/supplier-form.component';
 import { PlanComponent } from './plan/plan.component';
 import { ToastComponent } from './toast.component';
 import { ConfigComponent } from './config/config.component';
+import { LoadingInterceptor } from './loading.interceptor';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -46,10 +49,12 @@ import { ConfigComponent } from './config/config.component';
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    BrowserAnimationsModule,
     FontAwesomeModule,
     HttpClientModule,
     FormsModule,
     NgbModule,
+    NgxSpinnerModule,
     JwPaginationModule,
     AngularEditorModule,
     RouterModule.forRoot([
@@ -67,7 +72,9 @@ import { ConfigComponent } from './config/config.component';
       { path: 'upcoming-events', component: UpcomingEventsComponent }
     ])
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
