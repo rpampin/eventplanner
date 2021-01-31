@@ -1,16 +1,9 @@
 <div class="upcoming-head">
   <h1 id="tableLabel">Upcoming Events</h1>
   <div id="chk" class="custom-control custom-checkbox my-1 mr-sm-2">
-    <input
-      [(ngModel)]="pastChk"
-      type="checkbox"
-      class="custom-control-input"
-      id="supplier_require_dp"
-      (change)="chkChanged()"
-    />
-    <label class="custom-control-label" for="supplier_require_dp"
-      >Include past events</label
-    >
+    <input [(ngModel)]="pastChk" type="checkbox" class="custom-control-input" id="supplier_require_dp"
+      (change)="chkChanged()" />
+    <label class="custom-control-label" for="supplier_require_dp">Include past events</label>
   </div>
   <button class="btn btn-success" (click)="editForm(null)">New Event</button>
 </div>
@@ -31,8 +24,6 @@
       <th class="fit"></th>
       <th class="fit"></th>
       <th class="fit"></th>
-      <th class="fit"></th>
-      <th class="fit"></th>
     </tr>
   </thead>
   <tbody>
@@ -46,62 +37,33 @@
       <td class="align-middle">{{ event.downPayment | currency }}</td>
       <td class="align-middle">{{ event.balance | currency }}</td>
       <td class="fit">
-        <button
-          type="button"
-          class="btn btn-sm"
-          style="background-color: transparent"
-          placement="top"
-          ngbTooltip="Program"
-          [routerLink]="['/event', event.id, 'program']"
-        >
-          <fa-icon [icon]="faClipboard"></fa-icon>
-        </button>
+        <div ngbDropdown class="d-inline-block">
+          <button class="btn btn-sm" id="dropdownBasic1" ngbDropdownToggle>Manage</button>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            <button ngbDropdownItem type="button" class="btn" style="background-color: transparent" placement="top"
+              ngbTooltip="Program" [routerLink]="['/event', event.id, 'program']">
+              <fa-icon [icon]="faClipboard"></fa-icon> Program
+            </button>
+            <button ngbDropdownItem type="button" class="btn" style="background-color: transparent" placement="top"
+              ngbTooltip="Guests" [routerLink]="['/event', event.id, 'guests']">
+              <fa-icon [icon]="faUser"></fa-icon> Guests
+            </button>
+            <button ngbDropdownItem type="button" class="btn" style="background-color: transparent" placement="top"
+              ngbTooltip="Suppliers" [routerLink]="['/event', event.id, 'suppliers']">
+              <fa-icon [icon]="faUserTie"></fa-icon> Suppliers
+            </button>
+          </div>
+        </div>
       </td>
       <td class="fit">
-        <button
-          type="button"
-          class="btn btn-sm"
-          style="background-color: transparent"
-          placement="top"
-          ngbTooltip="Guests"
-          [routerLink]="['/event', event.id, 'guests']"
-        >
-          <fa-icon [icon]="faUser"></fa-icon>
-        </button>
-      </td>
-      <td class="fit">
-        <button
-          type="button"
-          class="btn btn-sm"
-          style="background-color: transparent"
-          placement="top"
-          ngbTooltip="Suppliers"
-          [routerLink]="['/event', event.id, 'suppliers']"
-        >
-          <fa-icon [icon]="faUserTie"></fa-icon>
-        </button>
-      </td>
-      <td class="fit">
-        <button
-          type="button"
-          class="btn btn-sm"
-          style="background-color: transparent"
-          (click)="editForm(event.id)"
-          placement="top"
-          ngbTooltip="Edit"
-        >
+        <button type="button" class="btn btn-sm" style="background-color: transparent" (click)="editForm(event.id)"
+          placement="top" ngbTooltip="Edit">
           <fa-icon [icon]="faEdit"></fa-icon>
         </button>
       </td>
       <td class="fit">
-        <button
-          type="button"
-          class="btn btn-sm"
-          style="background-color: transparent"
-          (click)="delete(event.id)"
-          placement="top"
-          ngbTooltip="Remove"
-        >
+        <button type="button" class="btn btn-sm" style="background-color: transparent" (click)="delete(event.id)"
+          placement="top" ngbTooltip="Remove">
           <fa-icon [icon]="faTrash"></fa-icon>
         </button>
       </td>
@@ -110,8 +72,5 @@
 </table>
 
 <div class="pagination">
-  <jw-pagination
-    [items]="events"
-    (changePage)="onChangePage($event)"
-  ></jw-pagination>
+  <jw-pagination [items]="events" (changePage)="onChangePage($event)"></jw-pagination>
 </div>
