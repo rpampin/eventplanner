@@ -1,20 +1,13 @@
 ﻿using EventPlanner.Data;
 using EventPlanner.Models;
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.Gmail.v1;
-using Google.Apis.Util;
-// using MailKit.Net.Smtp;
-// using MailKit.Security;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-// using MimeKit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace EventPlanner.Controllers
