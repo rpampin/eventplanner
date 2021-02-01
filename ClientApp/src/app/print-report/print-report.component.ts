@@ -27,39 +27,14 @@ export class PrintReportComponent implements OnInit {
 
       this.route.queryParams.subscribe(params => {
         this.reportName = params['reportName'];
-
-        switch (this.reportName) {
-          case "budget-form":
-            this.getBudgetForm();
-            break;
-          case "checklist":
-            this.getChecklist();
-            break;
-          case "program":
-            this.getProgram();
-            break;
-          default:
-            break;
-        }
+        this.getReport();
       });
 
     });
   }
 
-  getBudgetForm() {
-    this.http.get<any>(this.baseUrl + 'api/reports/budget-form/' + this.eventId).subscribe(result => {
-      this.html = result.html;
-    }, error => console.error(error));
-  }
-
-  getChecklist() {
-    this.http.get<any>(this.baseUrl + 'api/reports/checklist/' + this.eventId).subscribe(result => {
-      this.html = result.html;
-    }, error => console.error(error));
-  }
-
-  getProgram() {
-    this.http.get<any>(this.baseUrl + 'api/reports/program/' + this.eventId).subscribe(result => {
+  getReport() {
+    this.http.get<any>(this.baseUrl + `api/reports/${this.reportName}/` + this.eventId).subscribe(result => {
       this.html = result.html;
     }, error => console.error(error));
   }

@@ -92,3 +92,41 @@ table {
 #plan .part-title {
   font-weight: bolder;
 }
+
+#guest-list {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#guest-list td,
+#guest-list th {
+  border: 1px solid black;
+  padding: 8px;
+}
+
+#guest-list th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+}
+
+#guest-list-header {
+  width: 100%;
+  text-align: center;
+}
+
+#guest-list tr td:first-child {
+  width: 1%;
+  white-space: nowrap;
+}
+
+#guest-list tr td:not(:first-child) {
+  width: 50%;
+}
+
+#guest-list tr:nth-child(1) td,
+#guest-list tr:nth-child(2) td,
+#guest-list tr:nth-child(3) td {
+  border: none;
+}

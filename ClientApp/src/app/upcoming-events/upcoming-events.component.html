@@ -116,6 +116,16 @@
             >
               Program
             </button>
+            <button
+              ngbDropdownItem
+              type="button"
+              class="btn"
+              style="background-color: transparent"
+              [routerLink]="['/event', event.id, 'report']"
+              [queryParams]="{ reportName: 'guest-list' }"
+            >
+              Guest List
+            </button>
           </div>
         </div>
       </td>
