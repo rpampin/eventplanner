@@ -40,16 +40,16 @@
         <div ngbDropdown class="d-inline-block">
           <button class="btn btn-sm" id="dropdownBasic1" ngbDropdownToggle>Manage</button>
           <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-            <button ngbDropdownItem type="button" class="btn" style="background-color: transparent" placement="top"
-              ngbTooltip="Program" [routerLink]="['/event', event.id, 'program']">
+            <button ngbDropdownItem type="button" class="btn" style="background-color: transparent"
+              [routerLink]="['/event', event.id, 'program']">
               <fa-icon [icon]="faClipboard"></fa-icon> Program
             </button>
-            <button ngbDropdownItem type="button" class="btn" style="background-color: transparent" placement="top"
-              ngbTooltip="Guests" [routerLink]="['/event', event.id, 'guests']">
+            <button ngbDropdownItem type="button" class="btn" style="background-color: transparent"
+              [routerLink]="['/event', event.id, 'guests']">
               <fa-icon [icon]="faUser"></fa-icon> Guests
             </button>
-            <button ngbDropdownItem type="button" class="btn" style="background-color: transparent" placement="top"
-              ngbTooltip="Suppliers" [routerLink]="['/event', event.id, 'suppliers']">
+            <button ngbDropdownItem type="button" class="btn" style="background-color: transparent"
+              [routerLink]="['/event', event.id, 'suppliers']">
               <fa-icon [icon]="faUserTie"></fa-icon> Suppliers
             </button>
           </div>

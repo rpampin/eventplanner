@@ -22,6 +22,8 @@ namespace EventPlanner.Models
         [DataType(DataType.Currency)]
         public decimal PackagePrice { get; set; }
         [DataType(DataType.Currency)]
+        public decimal Discount { get; set; }
+        [DataType(DataType.Currency)]
         public decimal OtherPayments { get; set; }
         [DataType(DataType.Currency)]
         public decimal FirstDownPayment { get; set; }

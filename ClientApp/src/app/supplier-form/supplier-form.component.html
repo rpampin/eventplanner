@@ -60,6 +60,11 @@
                 [(ngModel)]="supplier.packagePrice" />
         </div>
         <div class="form-group col-md-3">
+            <label for="discount">Discount</label>
+            <input type="number" class="form-control" name="discount" id="discount"
+                [(ngModel)]="supplier.discount" />
+        </div>
+        <div class="form-group col-md-3">
             <label for="otherPayments">Other Payments</label>
             <input type="number" class="form-control" name="otherPayments" id="otherPayments"
                 [(ngModel)]="supplier.otherPayments" />

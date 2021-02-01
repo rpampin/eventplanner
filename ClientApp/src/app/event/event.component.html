@@ -131,9 +131,28 @@
     </div>
   </div>
   <div class="form-row bottom-btn-row">
-    <button class="btn btn-info" [routerLink]="['program']" [disabled]="!event.id"><fa-icon [icon]="faClipboard"></fa-icon> Program</button>
-    <button class="btn btn-info" [routerLink]="['guests']" [disabled]="!event.id"><fa-icon [icon]="faUser"></fa-icon> Guests</button>
-    <button class="btn btn-info" [routerLink]="['suppliers']" [disabled]="!event.id"><fa-icon [icon]="faUserTie"></fa-icon> Suppliers</button>
+    <button type="button" class="btn btn-info" [routerLink]="['program']" [disabled]="!event.id">
+      <fa-icon [icon]="faClipboard"></fa-icon> Program
+    </button>
+    <button type="button" class="btn btn-info" [routerLink]="['guests']" [disabled]="!event.id">
+      <fa-icon [icon]="faUser"></fa-icon> Guests
+    </button>
+    <button type="button" class="btn btn-info" [routerLink]="['suppliers']" [disabled]="!event.id">
+      <fa-icon [icon]="faUserTie"></fa-icon> Suppliers
+    </button>
+  </div>
+  <div class="form-row bottom-btn-row">
+    <button type="button" class="btn btn-secondary" (click)="getBudgetForm()" [disabled]="!event.id">
+      Program
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="getChecklist()" [disabled]="!event.id">
+      Guests
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="getProgram()" [disabled]="!event.id">
+      Suppliers
+    </button>
+  </div>
+  <div class="form-row bottom-btn-row">
     <button type="submit" class="btn btn-success">
       {{ event.id ? "Update Event" : "Submit Event" }}
     </button>

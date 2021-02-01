@@ -12,6 +12,7 @@ export class Supplier {
     attachments: Attachment[];
     downPaymentRequired: boolean;
     packagePrice: number;
+    discount: number;
     otherPayments: number;
     firstDownPayment: number;
     secondDownPayment: number;
