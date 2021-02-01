@@ -1,4 +1,5 @@
-.table td.fit, .table th.fit {
+.table td.fit,
+.table th.fit {
   white-space: nowrap;
   width: 1%;
 }
@@ -13,6 +14,11 @@
   justify-content: flex-end;
 }
 
-.bottom-btn-row > button {
-  margin: .5em;
+.bottom-btn-row > * {
+  margin: 0.5em;
+}
+
+.param-lst {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }

@@ -20,6 +20,9 @@ export class Event {
     ceremonyTime: string;
     receptionVenue: string;
     receptionTime: string;
+
+    emailSubject: string;
+    emailTemplate: string;
     
     guests: Guest[] = [];
     suppliers: Supplier[] = [];

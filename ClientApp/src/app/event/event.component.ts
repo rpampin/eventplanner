@@ -5,6 +5,7 @@ import { EventType } from '../event-types/event-type.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { faUser, faUserTie, faClipboard } from '@fortawesome/free-solid-svg-icons';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
   selector: 'app-event',
@@ -74,27 +75,5 @@ export class EventComponent implements OnInit {
     if (!!a && !!b)
       return a.id === b.id;
     return false;
-  }
-
-  print(report: any) {
-    // ??
-  }
-
-  getBudgetForm() {
-    this.http.get<any>(this.baseUrl + 'api/reports/budget-form/' + this.event.id).subscribe(result => {
-      this.print(result);
-    }, error => console.error(error));
-  }
-
-  getChecklist() {
-    this.http.get<string>(this.baseUrl + 'api/reports/checklist/' + this.event.id).subscribe(result => {
-      this.print(result);
-    }, error => console.error(error));
-  }
-
-  getProgram() {
-    this.http.get<string>(this.baseUrl + 'api/reports/program/' + this.event.id).subscribe(result => {
-      this.print(result);
-    }, error => console.error(error));
   }
 }

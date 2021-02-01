@@ -90,7 +90,7 @@ namespace EventPlanner.Controllers
                 return BadRequest();
             }
 
-            //_context.Entry(ev).State = EntityState.Modified;
+            _context.Entry(ev).State = EntityState.Modified;
 
             try
             {

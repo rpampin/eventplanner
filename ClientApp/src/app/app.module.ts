@@ -1,5 +1,5 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
+import { NgModule, Pipe, PipeTransform } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -27,6 +27,15 @@ import { ToastComponent } from './toast.component';
 import { ConfigComponent } from './config/config.component';
 import { LoadingInterceptor } from './loading.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PrintReportComponent } from './print-report/print-report.component';
+
+@Pipe({ name: 'safeHtml'})
+export class SafeHtmlPipe implements PipeTransform  {
+  constructor(private sanitized: DomSanitizer) {}
+  transform(value) {
+    return this.sanitized.bypassSecurityTrustHtml(value);
+  }
+}
 
 @NgModule({
   declarations: [
@@ -45,7 +54,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     GuestFormComponent,
     SupplierFormComponent,
     PlanComponent,
-    ConfigComponent
+    ConfigComponent,
+    PrintReportComponent,
+    SafeHtmlPipe
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -61,6 +72,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       { path: '', component: UpcomingEventsComponent, pathMatch: 'full' },
       { path: 'event/:eventId/suppliers/:supplierId', component: SupplierFormComponent },
       { path: 'event/:eventId/guests/:guestId', component: GuestFormComponent },
+      { path: 'event/:eventId/report', component: PrintReportComponent },
       { path: 'event/:eventId/suppliers', component: SupplierComponent },
       { path: 'event/:eventId/program', component: PlanComponent },
       { path: 'event/:eventId/guests', component: GuestComponent },

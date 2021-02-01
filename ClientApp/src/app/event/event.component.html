@@ -5,8 +5,15 @@
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="type">Type</label>
-      <select class="custom-select" name="type" id="type" #type="ngModel" [compareWith]="compareFn"
-        [(ngModel)]="event.type" required>
+      <select
+        class="custom-select"
+        name="type"
+        id="type"
+        #type="ngModel"
+        [compareWith]="compareFn"
+        [(ngModel)]="event.type"
+        required
+      >
         <option *ngFor="let type of eventTypes" [ngValue]="type">
           {{ type.name }}
         </option>
@@ -18,8 +25,16 @@
 
     <div class="form-group col-md-6">
       <label for="date">Date</label>
-      <input type="date" class="form-control" name="date" id="date" #date="ngModel"
-        [ngModel]="event.date | date: 'yyyy-MM-dd'" (ngModelChange)="event.date = $event" required />
+      <input
+        type="date"
+        class="form-control"
+        name="date"
+        id="date"
+        #date="ngModel"
+        [ngModel]="event.date | date: 'yyyy-MM-dd'"
+        (ngModelChange)="event.date = $event"
+        required
+      />
       <div [hidden]="date.valid || date.pristine" class="alert alert-danger">
         Date is required
       </div>
@@ -30,18 +45,38 @@
     <div class="form-row">
       <div class="form-group col-md-6">
         <label for="brideName">Bride's Name</label>
-        <input type="text" class="form-control" name="brideName" id="brideName" #brideName="ngModel"
-          [(ngModel)]="event.brideName" required />
-        <div [hidden]="brideName.valid || brideName.pristine" class="alert alert-danger">
+        <input
+          type="text"
+          class="form-control"
+          name="brideName"
+          id="brideName"
+          #brideName="ngModel"
+          [(ngModel)]="event.brideName"
+          required
+        />
+        <div
+          [hidden]="brideName.valid || brideName.pristine"
+          class="alert alert-danger"
+        >
           Bride's Name is required
         </div>
       </div>
 
       <div class="form-group col-md-6">
         <label for="groomName">Groom's Name</label>
-        <input type="text" class="form-control" name="groomName" id="groomName" #groomName="ngModel"
-          [(ngModel)]="event.groomName" required />
-        <div [hidden]="groomName.valid || groomName.pristine" class="alert alert-danger">
+        <input
+          type="text"
+          class="form-control"
+          name="groomName"
+          id="groomName"
+          #groomName="ngModel"
+          [(ngModel)]="event.groomName"
+          required
+        />
+        <div
+          [hidden]="groomName.valid || groomName.pristine"
+          class="alert alert-danger"
+        >
           Groom's Name is required
         </div>
       </div>
@@ -50,36 +85,76 @@
     <div class="form-row">
       <div class="form-group col-md-3">
         <label for="ceremonyVenue">Ceremony Venue</label>
-        <input type="text" class="form-control" name="ceremonyVenue" id="ceremonyVenue" #ceremonyVenue="ngModel"
-          [(ngModel)]="event.ceremonyVenue" required />
-        <div [hidden]="ceremonyVenue.valid || ceremonyVenue.pristine" class="alert alert-danger">
+        <input
+          type="text"
+          class="form-control"
+          name="ceremonyVenue"
+          id="ceremonyVenue"
+          #ceremonyVenue="ngModel"
+          [(ngModel)]="event.ceremonyVenue"
+          required
+        />
+        <div
+          [hidden]="ceremonyVenue.valid || ceremonyVenue.pristine"
+          class="alert alert-danger"
+        >
           Ceremony Venue is required
         </div>
       </div>
 
       <div class="form-group col-md-3">
         <label for="ceremonyTime">Ceremony Time</label>
-        <input type="time" class="form-control" name="ceremonyTime" id="ceremonyTime" #ceremonyTime="ngModel"
-          [(ngModel)]="event.ceremonyTime" required />
-        <div [hidden]="ceremonyTime.valid || ceremonyTime.pristine" class="alert alert-danger">
+        <input
+          type="time"
+          class="form-control"
+          name="ceremonyTime"
+          id="ceremonyTime"
+          #ceremonyTime="ngModel"
+          [(ngModel)]="event.ceremonyTime"
+          required
+        />
+        <div
+          [hidden]="ceremonyTime.valid || ceremonyTime.pristine"
+          class="alert alert-danger"
+        >
           Ceremony Time is required
         </div>
       </div>
 
       <div class="form-group col-md-3">
         <label for="receptionVenue">Reception Venue</label>
-        <input type="text" class="form-control" name="receptionVenue" id="receptionVenue" #receptionVenue="ngModel"
-          [(ngModel)]="event.receptionVenue" required />
-        <div [hidden]="receptionVenue.valid || receptionVenue.pristine" class="alert alert-danger">
+        <input
+          type="text"
+          class="form-control"
+          name="receptionVenue"
+          id="receptionVenue"
+          #receptionVenue="ngModel"
+          [(ngModel)]="event.receptionVenue"
+          required
+        />
+        <div
+          [hidden]="receptionVenue.valid || receptionVenue.pristine"
+          class="alert alert-danger"
+        >
           Reception Venue is required
         </div>
       </div>
 
       <div class="form-group col-md-3">
         <label for="receptionTime">Reception Time</label>
-        <input type="time" class="form-control" name="receptionTime" id="receptionTime" #receptionTime="ngModel"
-          [(ngModel)]="event.receptionTime" required />
-        <div [hidden]="receptionTime.valid || receptionTime.pristine" class="alert alert-danger">
+        <input
+          type="time"
+          class="form-control"
+          name="receptionTime"
+          id="receptionTime"
+          #receptionTime="ngModel"
+          [(ngModel)]="event.receptionTime"
+          required
+        />
+        <div
+          [hidden]="receptionTime.valid || receptionTime.pristine"
+          class="alert alert-danger"
+        >
           Reception Time is required
         </div>
       </div>
@@ -89,9 +164,19 @@
   <div *ngIf="weddingEventTyperId !== event?.type?.id">
     <div class="form-group">
       <label for="celebrant">Celebrant/s</label>
-      <input type="text" class="form-control" name="celebrant" id="celebrant" #celebrant="ngModel"
-        [(ngModel)]="event.celebrant" required />
-      <div [hidden]="celebrant.valid || celebrant.pristine" class="alert alert-danger">
+      <input
+        type="text"
+        class="form-control"
+        name="celebrant"
+        id="celebrant"
+        #celebrant="ngModel"
+        [(ngModel)]="event.celebrant"
+        required
+      />
+      <div
+        [hidden]="celebrant.valid || celebrant.pristine"
+        class="alert alert-danger"
+      >
         Celebrant is required
       </div>
     </div>
@@ -100,57 +185,190 @@
   <div class="form-row">
     <div class="form-group col-md-4">
       <label for="address">Address</label>
-      <input type="text" class="form-control" name="address" id="address" [(ngModel)]="event.address" />
+      <input
+        type="text"
+        class="form-control"
+        name="address"
+        id="address"
+        [(ngModel)]="event.address"
+      />
     </div>
 
     <div class="form-group col-md-4">
       <label for="mobile">Mobile</label>
-      <input type="text" class="form-control" name="mobile" id="mobile" [(ngModel)]="event.mobile" />
+      <input
+        type="text"
+        class="form-control"
+        name="mobile"
+        id="mobile"
+        [(ngModel)]="event.mobile"
+      />
     </div>
 
     <div class="form-group col-md-4">
       <label for="email">Email</label>
-      <input type="email" class="form-control" name="email" id="email" [(ngModel)]="event.email" />
+      <input
+        type="email"
+        class="form-control"
+        name="email"
+        id="email"
+        [(ngModel)]="event.email"
+      />
     </div>
   </div>
 
   <div class="form-row">
     <div class="form-group col-md-4">
       <label for="package">Package</label>
-      <input type="text" class="form-control" name="package" id="package" [(ngModel)]="event.package" />
+      <input
+        type="text"
+        class="form-control"
+        name="package"
+        id="package"
+        [(ngModel)]="event.package"
+      />
     </div>
 
     <div class="form-group col-md-4">
       <label for="downPayment">Down payment</label>
-      <input type="number" class="form-control" name="downPayment" id="downPayment" [(ngModel)]="event.downPayment" />
+      <input
+        type="number"
+        class="form-control"
+        name="downPayment"
+        id="downPayment"
+        [(ngModel)]="event.downPayment"
+      />
     </div>
 
     <div class="form-group col-md-4">
       <label for="balance">Balance</label>
-      <input type="number" class="form-control" name="balance" id="balance" [(ngModel)]="event.balance" />
+      <input
+        type="number"
+        class="form-control"
+        name="balance"
+        id="balance"
+        [(ngModel)]="event.balance"
+      />
     </div>
   </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <label for="emailSubject">Email Subject</label>
+      <input
+        type="text"
+        class="form-control"
+        name="emailSubject"
+        id="emailSubject"
+        [(ngModel)]="event.emailSubject"
+      />
+    </div>
+    <div class="form-group col-md-12">
+      <div class="form-group">
+        <label for="emailTemplate">Email Template</label>
+        <angular-editor
+          name="emailTemplate"
+          id="emailTemplate"
+          [(ngModel)]="event.emailTemplate"
+        ></angular-editor>
+      </div>
+    </div>
+  </div>
+  <div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">Email Subject/Template Variables</h4>
+    <p>
+      Use the following text to replace it with it's value when sending an email
+    </p>
+    <hr />
+    <ul class="param-lst">
+      <li>[event.type]</li>
+      <li>[event.date]</li>
+      <li>[event.celebrant]</li>
+      <li>[event.address]</li>
+      <li>[event.mobile]</li>
+      <li>[event.email]</li>
+      <li>[event.brideName]</li>
+      <li>[event.groomName]</li>
+      <li>[event.ceremonyVenue]</li>
+      <li>[event.ceremonyTime]</li>
+      <li>[event.receptionVenue]</li>
+      <li>[event.receptionTime]</li>
+      <li>[guest.name]</li>
+      <li>[guest.email]</li>
+      <li>[guest.mobile]</li>
+    </ul>
+  </div>
+
   <div class="form-row bottom-btn-row">
-    <button type="button" class="btn btn-info" [routerLink]="['program']" [disabled]="!event.id">
+    <button
+      type="button"
+      class="btn btn-info"
+      target="_blank"
+      [routerLink]="['program']"
+      [disabled]="!event.id"
+    >
       <fa-icon [icon]="faClipboard"></fa-icon> Program
     </button>
-    <button type="button" class="btn btn-info" [routerLink]="['guests']" [disabled]="!event.id">
+    <button
+      type="button"
+      class="btn btn-info"
+      [routerLink]="['guests']"
+      [disabled]="!event.id"
+    >
       <fa-icon [icon]="faUser"></fa-icon> Guests
     </button>
-    <button type="button" class="btn btn-info" [routerLink]="['suppliers']" [disabled]="!event.id">
+    <button
+      type="button"
+      class="btn btn-info"
+      [routerLink]="['suppliers']"
+      [disabled]="!event.id"
+    >
       <fa-icon [icon]="faUserTie"></fa-icon> Suppliers
     </button>
-  </div>
-  <div class="form-row bottom-btn-row">
-    <button type="button" class="btn btn-secondary" (click)="getBudgetForm()" [disabled]="!event.id">
-      Program
-    </button>
-    <button type="button" class="btn btn-secondary" (click)="getChecklist()" [disabled]="!event.id">
-      Guests
-    </button>
-    <button type="button" class="btn btn-secondary" (click)="getProgram()" [disabled]="!event.id">
-      Suppliers
-    </button>
+
+    <div ngbDropdown class="d-inline-block">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        id="dropdownBasic1"
+        [disabled]="!event.id"
+        ngbDropdownToggle
+      >
+        Report
+      </button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+        <button
+          ngbDropdownItem
+          type="button"
+          class="btn"
+          style="background-color: transparent"
+          [routerLink]="['report']"
+          [queryParams]="{ reportName: 'budget-form' }"
+        >
+          Budget Form
+        </button>
+        <button
+          ngbDropdownItem
+          type="button"
+          class="btn"
+          style="background-color: transparent"
+          [routerLink]="['report']"
+          [queryParams]="{ reportName: 'checklist' }"
+        >
+          Checklist
+        </button>
+        <button
+          ngbDropdownItem
+          type="button"
+          class="btn"
+          style="background-color: transparent"
+          [routerLink]="['report']"
+          [queryParams]="{ reportName: 'program' }"
+        >
+          Program
+        </button>
+      </div>
+    </div>
   </div>
   <div class="form-row bottom-btn-row">
     <button type="submit" class="btn btn-success">

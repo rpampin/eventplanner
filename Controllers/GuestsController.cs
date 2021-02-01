@@ -125,11 +125,15 @@ namespace EventPlanner.Controllers
         [HttpGet("send-invitations/{eventId}")]
         public async Task<IActionResult> SendInvitations(Guid eventId, [FromQuery] bool resend, [FromQuery] Guid? guestId)
         {
-            var smtpConfig = await _context.SmtpConfig.FirstAsync();
+            var smtpConfig = await _context.SmtpConfig.FirstOrDefaultAsync();
             if (smtpConfig == null)
                 return BadRequest("There's no SMTP configured. Please configure one to send emails.");
 
-            var @event = await _context.Events.FindAsync(eventId);
+            var @event = await _context.Events.Include(e => e.Type).FirstAsync(e => e.Id == eventId);
+
+            if (string.IsNullOrEmpty(@event.EmailSubject) || string.IsNullOrEmpty(@event.EmailTemplate))
+                return BadRequest("No Subject/Template configured for this event.");
+
             var guestLinq = _context.Guests.Where(g => g.Event.Id == eventId);
             IList<Guest> guests;
 
@@ -141,6 +145,7 @@ namespace EventPlanner.Controllers
             if ((!resend && guests.Where(g => !g.InvitationSent).Count() == 0) || (resend && guests.Count == 0))
                 return BadRequest("There's no guests to send the invitation to");
 
+            #region GOOGLE API
             // var secrets = new ClientSecrets
             // {
             //     ClientId = _configuration["GmailStmp:Key"],
@@ -189,29 +194,74 @@ namespace EventPlanner.Controllers
             //     await client.SendAsync(message);
             //     client.Disconnect(true);
             // }
+            #endregion
 
             var smtpClient = new SmtpClient(smtpConfig.Host)
             {
-               Port = smtpConfig.Port,
-               Credentials = new NetworkCredential(smtpConfig.Username, smtpConfig.Password),
-               EnableSsl = true,
-               UseDefaultCredentials = false
+                Port = smtpConfig.Port,
+                Credentials = new NetworkCredential(smtpConfig.Username, smtpConfig.Password),
+                EnableSsl = true,
+                UseDefaultCredentials = false
             };
+
+            string template = @event.EmailTemplate;
+            string subject = @event.EmailSubject;
+            template = template.Replace("[event.type]", @event.Type.Name);
+            template = template.Replace("[event.date]", @event.Date.ToLongDateString());
+            template = template.Replace("[event.celebrant]", @event.Celebrant);
+            template = template.Replace("[event.address]", @event.Address);
+            template = template.Replace("[event.mobile]", @event.Mobile);
+            template = template.Replace("[event.email]", @event.Email);
+
+            subject = subject.Replace("[event.type]", @event.Type.Name);
+            subject = subject.Replace("[event.date]", @event.Date.ToLongDateString());
+            subject = subject.Replace("[event.celebrant]", @event.Celebrant);
+            subject = subject.Replace("[event.address]", @event.Address);
+            subject = subject.Replace("[event.mobile]", @event.Mobile);
+            subject = subject.Replace("[event.email]", @event.Email);
+
+            if (@event is Wedding)
+            {
+                var wedding = @event as Wedding;
+                template = template.Replace("[event.brideName]", wedding.BrideName);
+                template = template.Replace("[event.groomName]", wedding.GroomName);
+                template = template.Replace("[event.ceremonyVenue]", wedding.CeremonyVenue);
+                template = template.Replace("[event.ceremonyTime]", wedding.CeremonyTime);
+                template = template.Replace("[event.receptionVenue]", wedding.ReceptionVenue);
+                template = template.Replace("[event.receptionTime]", wedding.ReceptionTime);
+
+                subject = subject.Replace("[event.brideName]", wedding.BrideName);
+                subject = subject.Replace("[event.groomName]", wedding.GroomName);
+                subject = subject.Replace("[event.ceremonyVenue]", wedding.CeremonyVenue);
+                subject = subject.Replace("[event.ceremonyTime]", wedding.CeremonyTime);
+                subject = subject.Replace("[event.receptionVenue]", wedding.ReceptionVenue);
+                subject = subject.Replace("[event.receptionTime]", wedding.ReceptionTime);
+            }
 
             foreach (var g in guests)
             {
-               var mailMessage = new MailMessage
-               {
-                   From = new MailAddress(smtpConfig.Username),
-                   Subject = "subject",
-                   Body = "<h1>Hello</h1>",
-                   IsBodyHtml = true,
-               };
-               mailMessage.To.Add(g.Email);
+                var guestTemplate = template;
+                var guestSubject = subject;
+                guestTemplate = guestTemplate.Replace("[guest.name]", g.Name);
+                guestTemplate = guestTemplate.Replace("[guest.email]", g.Email);
+                guestTemplate = guestTemplate.Replace("[guest.mobile]", g.Mobile);
 
-               smtpClient.Send(mailMessage);
+                guestSubject = guestSubject.Replace("[guest.name]", g.Name);
+                guestSubject = guestSubject.Replace("[guest.email]", g.Email);
+                guestSubject = guestSubject.Replace("[guest.mobile]", g.Mobile);
+
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress(smtpConfig.Username),
+                    Subject = guestSubject,
+                    Body = guestTemplate,
+                    IsBodyHtml = true,
+                };
+                mailMessage.To.Add(g.Email);
+
+                smtpClient.Send(mailMessage);
             }
-            
+
             await _context.SaveChangesAsync();
 
             return Ok();

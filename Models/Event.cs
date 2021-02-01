@@ -25,6 +25,8 @@ namespace EventPlanner.Models
         public decimal DownPayment { get; set; }
         [DataType(DataType.Currency)]
         public decimal Balance { get; set; }
+        public string EmailSubject { get; set; }
+        public string EmailTemplate { get; set; }
         public IList<Guest> Guests { get; set; }
         public IList<Supplier> Suppliers { get; set; }
         public Plan Plan { get; set; }

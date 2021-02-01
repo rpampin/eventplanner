@@ -1,0 +1,94 @@
+table {
+  width: 100%;
+}
+
+#suppliers {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#suppliers td,
+#suppliers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#suppliers tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#suppliers tr:hover {
+  background-color: #ddd;
+}
+
+#suppliers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4caf50;
+  color: white;
+}
+
+#suppliers tfoot tr td {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #a6d8a8;
+  color: black;
+}
+
+#suppliers .header {
+  text-align: center;
+}
+
+#checklist {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#checklist td,
+#checklist th {
+  border: 1px solid black;
+  padding: 8px;
+}
+
+#checklist th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+}
+
+#checklist-header {
+  width: 100%;
+  text-align: center;
+}
+
+#checklist tr td:first-child {
+  width: 1%;
+  white-space: nowrap;
+}
+
+#checklist tr td:not(:first-child) {
+  width: 50%;
+}
+
+#plan thead {
+  display: table-header-group;
+}
+#plan tfoot {
+  display: table-row-group;
+}
+#plan tr {
+  page-break-inside: avoid;
+}
+
+#plan .plan-title {
+  text-align: center;
+  font-weight: bolder;
+}
+
+#plan .part-title {
+  font-weight: bolder;
+}
