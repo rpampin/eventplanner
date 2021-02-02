@@ -106,7 +106,7 @@
             <input class="col-md-11" type="file" name="attachment" id="attachment" [disabled]="!supplier.id"
                 (change)="handleUpload($event)">
             <button class="col-md-1" type="button" class="btn btn-primary" (click)="postAttachment()"
-                [disabled]="!allowUpload && !!supplier.id">Upload</button>
+                [disabled]="!allowUpload">Upload</button>
         </div>
         <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="attachments">
             <thead>
