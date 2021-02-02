@@ -298,7 +298,72 @@
       <li>[guest.mobile]</li>
     </ul>
   </div>
-
+  <hr />
+  <div>
+    <h2>Attachments</h2>
+    <div class="form-row">
+      <input
+        class="col-md-11"
+        type="file"
+        name="attachment"
+        id="attachment"
+        [disabled]="!event.id"
+        (change)="handleUpload($event)"
+      />
+      <button
+        class="col-md-1"
+        type="button"
+        class="btn btn-primary"
+        (click)="postAttachment()"
+        [disabled]="!allowUpload && !!event.id"
+      >
+        Upload
+      </button>
+    </div>
+    <table
+      class="table table-striped"
+      aria-labelledby="tableLabel"
+      *ngIf="attachments"
+    >
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th class="fit"></th>
+          <th class="fit"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let attachment of attachments; let i = index">
+          <td>{{ attachment.name }}</td>
+          <td class="fit">
+            <button
+              type="button"
+              class="btn btn-sm"
+              style="background-color: transparent"
+              placement="top"
+              ngbTooltip="Download"
+              (click)="downloadAttachment(attachment.id)"
+            >
+              <fa-icon [icon]="faDownload"></fa-icon>
+            </button>
+          </td>
+          <td class="fit">
+            <button
+              type="button"
+              class="btn btn-sm"
+              style="background-color: transparent"
+              placement="top"
+              ngbTooltip="Delete"
+              (click)="deleteAttachment(i, attachment.id)"
+            >
+              <fa-icon [icon]="faTrash"></fa-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <hr />
   <div class="form-row bottom-btn-row">
     <button
       type="button"

@@ -29,6 +29,7 @@ namespace EventPlanner.Models
         public string EmailTemplate { get; set; }
         public IList<Guest> Guests { get; set; }
         public IList<Supplier> Suppliers { get; set; }
+        public IList<Attachment> Attachments { get; set; }
         public Plan Plan { get; set; }
     }
 }

@@ -45,7 +45,8 @@ namespace EventPlanner.Controllers
         public class AttachmentPostData
         {
             public Attachment attachment { get; set; }
-            public Guid supplierId { get; set; }
+            public Guid? supplierId { get; set; }
+            public Guid? eventId { get; set; }
         }
 
         // POST: api/Attachments
@@ -53,7 +54,13 @@ namespace EventPlanner.Controllers
         [HttpPost]
         public async Task<ActionResult<Attachment>> PostAttachment(AttachmentPostData prm)
         {
-            prm.attachment.Supplier = await _context.Suppliers.FindAsync(prm.supplierId);
+            if (prm.supplierId.HasValue)
+                prm.attachment.Supplier = await _context.Suppliers.FindAsync(prm.supplierId.Value);
+            else if (prm.eventId.HasValue)
+                prm.attachment.Event = await _context.Events.FindAsync(prm.eventId.Value);
+            else
+                return BadRequest("No Event or Supplier provided");
+
             _context.Attachments.Add(prm.attachment);
             await _context.SaveChangesAsync();
 

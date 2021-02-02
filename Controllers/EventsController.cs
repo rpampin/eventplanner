@@ -55,6 +55,7 @@ namespace EventPlanner.Controllers
         {
             var ev = await _context.Events
                 .Include(e => e.Type)
+                .Include(e => e.Attachments)
                 .FirstOrDefaultAsync(e => e.Id == id);
 
             if (ev == null)
