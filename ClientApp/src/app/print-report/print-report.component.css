@@ -8,6 +8,18 @@ table {
   width: 100%;
 }
 
+#suppliers thead {
+  display: table-header-group;
+}
+
+#suppliers thead tr th {
+  text-align: center;
+}
+
+#suppliers tfoot {
+  display: table-footer-group;
+}
+
 #suppliers td,
 #suppliers th {
   border: 1px solid #ddd;
@@ -16,10 +28,6 @@ table {
 
 #suppliers tr:nth-child(even) {
   background-color: #f2f2f2;
-}
-
-#suppliers tr:hover {
-  background-color: #ddd;
 }
 
 #suppliers th {
@@ -40,6 +48,23 @@ table {
 
 #suppliers .header {
   text-align: center;
+}
+
+#suppliers tfoot tr:last-child,
+#suppliers tfoot tr:last-child td {
+  background-color: transparent;
+  border: none;
+}
+
+#suppliers tfoot tr:last-child td p {
+  color: grey;
+}
+
+#suppliers .logo,
+#suppliers .logo td {
+  border: none;
+  text-align: center;
+  background-color: transparent;
 }
 
 #checklist {
@@ -74,12 +99,51 @@ table {
   width: 50%;
 }
 
+#checklist thead {
+  display: table-header-group;
+}
+
+#checklist thead tr,
+#checklist thead tr td {
+  border: none;
+  text-align: center;
+}
+
+#checklist tfoot {
+  display: table-footer-group;
+}
+
+
+#checklist tfoot tr:last-child,
+#checklist tfoot tr:last-child td {
+  background-color: transparent;
+  border: none;
+}
+
+#checklist tfoot tr:last-child td p {
+  color: grey;
+}
+
+#checklist .logo,
+#checklist .logo td {
+  border: none;
+  text-align: center;
+  background-color: transparent;
+}
+
 #plan thead {
   display: table-header-group;
 }
-#plan tfoot {
-  display: table-row-group;
+
+#plan thead tr th {
+  text-align: center;
 }
+
+#plan tfoot {
+  display: table-footer-group;
+  color: grey;
+}
+
 #plan tr {
   page-break-inside: avoid;
 }
@@ -129,4 +193,36 @@ table {
 #guest-list tr:nth-child(2) td,
 #guest-list tr:nth-child(3) td {
   border: none;
+}
+
+#guest-list thead {
+  display: table-header-group;
+}
+
+#guest-list thead tr,
+#guest-list thead tr th {
+  border: none;
+  text-align: center;
+}
+
+#guest-list tfoot {
+  display: table-footer-group;
+}
+
+
+#guest-list tfoot tr:last-child,
+#guest-list tfoot tr:last-child td {
+  background-color: transparent;
+  border: none;
+}
+
+#guest-list tfoot tr:last-child td p {
+  color: grey;
+}
+
+#guest-list .logo,
+#guest-list .logo td {
+  border: none;
+  text-align: center;
+  background-color: transparent;
 }
