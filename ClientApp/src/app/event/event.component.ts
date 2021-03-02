@@ -32,10 +32,6 @@ export class EventComponent implements OnInit {
     showWeekNumbers: false,
     dateInputFormat: 'MM/DD/YYYY'
   }
-  
-  editorConfig: AngularEditorConfig = {
-    uploadUrl: `./assets/uploads`
-  };
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private router: Router, private route: ActivatedRoute) { }
 

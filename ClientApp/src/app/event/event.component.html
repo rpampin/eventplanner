@@ -202,7 +202,8 @@
       <div class="form-group col-md-12">
         <div class="form-group">
           <label for="emailTemplate">Email Template</label>
-          <angular-editor name="emailTemplate" id="emailTemplate" [(ngModel)]="event.emailTemplate" [config]="editorConfig"></angular-editor>
+          <angular-editor name="emailTemplate" id="emailTemplate" [(ngModel)]="event.emailTemplate"
+            [config]="editorConfig"></angular-editor>
         </div>
       </div>
     </div>
@@ -229,6 +230,14 @@
         <li>[guest.email]</li>
         <li>[guest.mobile]</li>
       </ul>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <div class="form-group">
+          <label for="emailSignature">Email Signature</label>
+          <angular-editor name="emailTemplate" id="emailSignature" [(ngModel)]="event.emailSignature"></angular-editor>
+        </div>
+      </div>
     </div>
   </div>
   <div>

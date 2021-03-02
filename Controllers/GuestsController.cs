@@ -250,6 +250,9 @@ namespace EventPlanner.Controllers
                 guestSubject = guestSubject.Replace("[guest.email]", g.Email);
                 guestSubject = guestSubject.Replace("[guest.mobile]", g.Mobile);
 
+                if (!string.IsNullOrEmpty(@event.EmailSignature))
+                    guestTemplate += "<hr>" + @event.EmailSignature;
+
                 var mailMessage = new MailMessage
                 {
                     From = new MailAddress(smtpConfig.Username),
