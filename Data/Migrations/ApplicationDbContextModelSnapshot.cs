@@ -51,6 +51,9 @@ namespace EventPlanner.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<decimal>("AdditionalCharges")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Address")
                         .HasColumnType("TEXT");
 
@@ -80,13 +83,16 @@ namespace EventPlanner.Data.Migrations
                     b.Property<string>("EmailTemplate")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("FirstDownPayment")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Mobile")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Notes")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Package")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("PackagePrice")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid?>("PlanId")
@@ -108,10 +114,7 @@ namespace EventPlanner.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("SecondDownPayment")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("ThirdDownPayment")
+                    b.Property<string>("Social")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid?>("TypeId")

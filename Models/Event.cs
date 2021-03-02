@@ -28,17 +28,17 @@ namespace EventPlanner.Models
         public string Mobile { get; set; }
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+        public string Social { get; set; }
         public string Package { get; set; }
         [DataType(DataType.Currency)]
-        public decimal DownPayment { get; set; }
+        public decimal PackagePrice { get; set; }
         [DataType(DataType.Currency)]
         public decimal Balance { get; set; }
         [DataType(DataType.Currency)]
-        public decimal FirstDownPayment { get; set; }
+        public decimal DownPayment { get; set; }
+        public string Notes { get; set; }
         [DataType(DataType.Currency)]
-        public decimal SecondDownPayment { get; set; }
-        [DataType(DataType.Currency)]
-        public decimal ThirdDownPayment { get; set; }
+        public decimal AdditionalCharges { get; set; }
         public string EmailSubject { get; set; }
         public string EmailTemplate { get; set; }
         public IList<Guest> Guests { get; set; }

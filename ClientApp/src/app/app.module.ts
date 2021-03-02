@@ -5,6 +5,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { JwPaginationModule } from 'jw-angular-pagination';
 import { NgxSpinnerModule } from "ngx-spinner";
@@ -70,6 +71,7 @@ export class SafeHtmlPipe implements PipeTransform {
     NgxSpinnerModule,
     JwPaginationModule,
     AngularEditorModule,
+    BsDatepickerModule.forRoot(),
     RouterModule.forRoot([
       { path: '', component: UpcomingEventsComponent, pathMatch: 'full' },
       { path: 'emailer', component: EmailComponent },

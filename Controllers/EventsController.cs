@@ -39,7 +39,7 @@ namespace EventPlanner.Controllers
                     Mobile = e.Mobile,
                     Email = e.Email,
                     Package = e.Package,
-                    DownPayment = e.DownPayment,
+                    DownPayment = e.PackagePrice,
                     Balance = e.Balance,
                     GuestsCount = e.Guests.Count(),
                     SuppliersCount = e.Suppliers.Count()

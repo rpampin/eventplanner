@@ -18,8 +18,8 @@
 
     <div class="form-group col-md-6">
       <label for="date">Date</label>
-      <input type="date" class="form-control" name="date" id="date" #date="ngModel"
-        [ngModel]="event.date | date: 'yyyy-MM-dd'" (ngModelChange)="event.date = $event" required />
+      <input type="text" class="form-control" bsDatepicker name="date" id="date" [(ngModel)]="event.date"
+        #date="ngModel" [bsConfig]="bsConfig" required>
       <div [hidden]="date.valid || date.pristine" class="alert alert-danger">
         Date is required
       </div>
@@ -120,20 +120,27 @@
   </div>
 
   <div class="form-row">
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-3">
       <label for="address">Address</label>
       <input type="text" class="form-control" name="address" id="address" [(ngModel)]="event.address" />
     </div>
 
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-3">
       <label for="mobile">Mobile</label>
       <input type="text" class="form-control" name="mobile" id="mobile" [(ngModel)]="event.mobile" />
     </div>
 
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-3">
       <label for="email">Email</label>
       <input type="email" class="form-control" name="email" id="email" [(ngModel)]="event.email" />
     </div>
+
+    <ng-container *ngIf="weddingEventTyperId !== event?.type?.id">
+      <div class="form-group col-md-3">
+        <label for="social">FB/IG</label>
+        <input type="text" class="form-control" name="social" id="social" [(ngModel)]="event.social" />
+      </div>
+    </ng-container>
   </div>
 
   <div *ngIf="weddingEventTyperId === event?.type?.id">
@@ -157,8 +164,9 @@
     </div>
 
     <div class="form-group col-md-4">
-      <label for="downPayment">Down payment</label>
-      <input type="number" class="form-control" name="downPayment" id="downPayment" [(ngModel)]="event.downPayment" />
+      <label for="packagePrice">Package Price</label>
+      <input type="number" class="form-control" name="packagePrice" id="packagePrice"
+        [(ngModel)]="event.packagePrice" />
     </div>
 
     <div class="form-group col-md-4">
@@ -167,21 +175,19 @@
     </div>
 
     <div class="form-group col-md-4">
-      <label for="firstDownPayment">1st Down Payment</label>
-      <input type="number" class="form-control" name="firstDownPayment" id="firstDownPayment"
-        [(ngModel)]="event.firstDownPayment" />
+      <label for="downPayment">Down Payment</label>
+      <input type="number" class="form-control" name="downPayment" id="downPayment" [(ngModel)]="event.downPayment" />
     </div>
 
     <div class="form-group col-md-4">
-      <label for="secondDownPayment">2nd Down Payment</label>
-      <input type="number" class="form-control" name="secondDownPayment" id="secondDownPayment"
-        [(ngModel)]="event.secondDownPayment" />
+      <label for="notes">Notes</label>
+      <input type="text" class="form-control" name="notes" id="notes" [(ngModel)]="event.notes" />
     </div>
 
     <div class="form-group col-md-4">
-      <label for="thirdDownPayment">3rd Down Payment</label>
-      <input type="number" class="form-control" name="thirdDownPayment" id="thirdDownPayment"
-        [(ngModel)]="event.thirdDownPayment" />
+      <label for="additionalCharges">Additional Charges</label>
+      <input type="number" class="form-control" name="additionalCharges" id="additionalCharges"
+        [(ngModel)]="event.additionalCharges" />
     </div>
   </div>
 
@@ -196,7 +202,7 @@
       <div class="form-group col-md-12">
         <div class="form-group">
           <label for="emailTemplate">Email Template</label>
-          <angular-editor name="emailTemplate" id="emailTemplate" [(ngModel)]="event.emailTemplate"></angular-editor>
+          <angular-editor name="emailTemplate" id="emailTemplate" [(ngModel)]="event.emailTemplate" [config]="editorConfig"></angular-editor>
         </div>
       </div>
     </div>

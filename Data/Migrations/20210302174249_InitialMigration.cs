@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EventPlanner.Data.Migrations
 {
-    public partial class ChangesMarchMigration : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -73,12 +73,13 @@ namespace EventPlanner.Data.Migrations
                     Address = table.Column<string>(type: "TEXT", nullable: true),
                     Mobile = table.Column<string>(type: "TEXT", nullable: true),
                     Email = table.Column<string>(type: "TEXT", nullable: true),
+                    Social = table.Column<string>(type: "TEXT", nullable: true),
                     Package = table.Column<string>(type: "TEXT", nullable: true),
-                    DownPayment = table.Column<decimal>(type: "TEXT", nullable: false),
+                    PackagePrice = table.Column<decimal>(type: "TEXT", nullable: false),
                     Balance = table.Column<decimal>(type: "TEXT", nullable: false),
-                    FirstDownPayment = table.Column<decimal>(type: "TEXT", nullable: false),
-                    SecondDownPayment = table.Column<decimal>(type: "TEXT", nullable: false),
-                    ThirdDownPayment = table.Column<decimal>(type: "TEXT", nullable: false),
+                    DownPayment = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Notes = table.Column<string>(type: "TEXT", nullable: true),
+                    AdditionalCharges = table.Column<decimal>(type: "TEXT", nullable: false),
                     EmailSubject = table.Column<string>(type: "TEXT", nullable: true),
                     EmailTemplate = table.Column<string>(type: "TEXT", nullable: true),
                     PlanId = table.Column<Guid>(type: "TEXT", nullable: true),

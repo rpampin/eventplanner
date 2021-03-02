@@ -28,6 +28,15 @@ export class EventComponent implements OnInit {
   weddingEventTyperId: string;
   eventTypes: EventType[];
 
+  bsConfig = {
+    showWeekNumbers: false,
+    dateInputFormat: 'MM/DD/YYYY'
+  }
+  
+  editorConfig: AngularEditorConfig = {
+    uploadUrl: `./assets/uploads`
+  };
+
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -43,6 +52,10 @@ export class EventComponent implements OnInit {
         if (!!this.id) {
           this.http.get<Event>(this.baseUrl + 'api/events/' + this.id).subscribe(result => {
             this.event = result;
+            var a = new Date(this.event.date);
+            var b = a.toISOString().split('T')[0];
+            var c = b.split('-');
+            this.event.date = new Date(parseInt(c[0]), parseInt(c[1]) - 1, parseInt(c[2]));
             this.attachments = this.event.attachments;
           }, error => console.error(error));
         }
