@@ -5,6 +5,7 @@ export class Email {
 
     body: string;
     subject: string;
+    message: string;
     to: string[];
     cc: string[];
     bcc: string[];
