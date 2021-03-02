@@ -1,0 +1,69 @@
+<h1>Send Email</h1>
+
+<form (ngSubmit)="submit()" #eventForm="ngForm" autocomplete="off">
+
+    <div class="form-group">
+        <label for="to">To</label>
+        <input type="text" class="form-control" name="to" id="to" aria-describedby="helpTo" placeholder="To"
+            [(ngModel)]="email.to">
+        <small id="helpTo" class="form-text text-muted">Separate emails with comma</small>
+    </div>
+
+    <div class="form-group">
+        <label for="cc">CC</label>
+        <input type="text" class="form-control" name="cc" id="cc" aria-describedby="helpCc" placeholder="CC"
+            [(ngModel)]="email.cc">
+        <small id="helpCc" class="form-text text-muted">Separate emails with comma</small>
+    </div>
+
+    <div class="form-group">
+        <label for="">BCC</label>
+        <input type="text" class="form-control" name="bcc" id="bcc" aria-describedby="helpBcc" placeholder="BCC"
+            [(ngModel)]="email.bcc">
+        <small id="helpBcc" class="form-text text-muted">Separate emails with comma</small>
+    </div>
+
+    <div class="form-group">
+        <label for="subject">Subject</label>
+        <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject"
+            [(ngModel)]="email.subject">
+    </div>
+
+    <div class="form-group">
+        <label for="message">Message</label>
+        <angular-editor name="message" id="message" [(ngModel)]="email.message"></angular-editor>
+    </div>
+
+    <div class="form-group">
+        <h2>Attachments</h2>
+        <div class="form-row">
+            <input class="col-md-11" type="file" name="attachment" id="attachment" (change)="handleUpload($event)">
+            <button class="col-md-1" type="button" class="btn btn-primary" (click)="postAttachment()"
+                [disabled]="!allowUpload">Add</button>
+        </div>
+        <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="email.attachments">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th class="fit"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let attachment of email.attachments; let i = index">
+                    <td>{{ attachment.name }}</td>
+                    <td class="fit">
+                        <button type="button" class="btn btn-sm" style="background-color: transparent" placement="top"
+                            ngbTooltip="Delete" (click)="deleteAttachment(i, attachment.id)">
+                            <fa-icon [icon]="faTrash"></fa-icon>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="buttons">
+        <button type="button" class="btn btn-info" (click)="clearEmail()">Clear</button>
+        <button type="submit" class="btn btn-success">Send email</button>
+    </div>
+</form>

@@ -28,10 +28,11 @@ import { ConfigComponent } from './config/config.component';
 import { LoadingInterceptor } from './loading.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PrintReportComponent } from './print-report/print-report.component';
+import { EmailComponent } from './email/email.component';
 
-@Pipe({ name: 'safeHtml'})
-export class SafeHtmlPipe implements PipeTransform  {
-  constructor(private sanitized: DomSanitizer) {}
+@Pipe({ name: 'safeHtml' })
+export class SafeHtmlPipe implements PipeTransform {
+  constructor(private sanitized: DomSanitizer) { }
   transform(value) {
     return this.sanitized.bypassSecurityTrustHtml(value);
   }
@@ -56,7 +57,8 @@ export class SafeHtmlPipe implements PipeTransform  {
     PlanComponent,
     ConfigComponent,
     PrintReportComponent,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+    EmailComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -70,6 +72,7 @@ export class SafeHtmlPipe implements PipeTransform  {
     AngularEditorModule,
     RouterModule.forRoot([
       { path: '', component: UpcomingEventsComponent, pathMatch: 'full' },
+      { path: 'emailer', component: EmailComponent },
       { path: 'event/:eventId/suppliers/:supplierId', component: SupplierFormComponent },
       { path: 'event/:eventId/guests/:guestId', component: GuestFormComponent },
       { path: 'event/:eventId/report', component: PrintReportComponent },

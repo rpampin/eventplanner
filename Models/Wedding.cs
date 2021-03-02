@@ -13,9 +13,7 @@ namespace EventPlanner.Models
         public string CeremonyVenue { get; set; }
         [Required]
         public string CeremonyTime { get; set; }
-        [Required]
-        public string ReceptionVenue { get; set; }
-        [Required]
-        public string ReceptionTime { get; set; }
+        public string brideSocial { get; set; }
+        public string groomSocial { get; set; }
     }
 }

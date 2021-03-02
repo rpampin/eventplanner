@@ -14,21 +14,29 @@ export class Event {
     package: string;
     downPayment: number;
     balance: number;
+    firstDownPayment: number;
+    secondDownPayment: number;
+    thirdDownPayment: number;
 
     brideName: string;
     groomName: string;
     ceremonyVenue: string;
     ceremonyTime: string;
+    brideSocial: string;
+    groomSocial: string;
+
+    preparationVenue: string;
+    preparationTime: string;
     receptionVenue: string;
     receptionTime: string;
 
     emailSubject: string;
     emailTemplate: string;
-    
+
     guests: Guest[] = [];
     suppliers: Supplier[] = [];
     attachments: Attachment[] = [];
     // plan: Plan;
-    
+
     constructor() { }
 }

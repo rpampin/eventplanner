@@ -1,0 +1,22 @@
+.table td.fit,
+.table th.fit {
+  white-space: nowrap;
+  width: 1%;
+}
+
+/deep/ .angular-editor-textarea {
+  min-height: 250px !important;
+}
+
+form {
+  margin-bottom: 2em;
+}
+
+button[type=submit] {
+    margin-left: 1em;
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+}

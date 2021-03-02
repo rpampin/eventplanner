@@ -22,3 +22,15 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
+
+/deep/ .angular-editor-textarea {
+  min-height: 250px !important;
+  background-color: white !important;
+}
+
+.email-template {
+  padding: 1em;
+  margin-bottom: 1em;
+  border-radius: 25px;
+  background-color: lightgray;
+}

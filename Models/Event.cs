@@ -15,6 +15,14 @@ namespace EventPlanner.Models
         public DateTime Date { get; set; }
         [Required]
         public string Celebrant { get; set; }
+        [Required]
+        public string ReceptionVenue { get; set; }
+        [Required]
+        public string ReceptionTime { get; set; }
+        [Required]
+        public string PreparationVenue { get; set; }
+        [Required]
+        public string PreparationTime { get; set; }
         public string Address { get; set; }
         [DataType(DataType.PhoneNumber)]
         public string Mobile { get; set; }
@@ -25,6 +33,12 @@ namespace EventPlanner.Models
         public decimal DownPayment { get; set; }
         [DataType(DataType.Currency)]
         public decimal Balance { get; set; }
+        [DataType(DataType.Currency)]
+        public decimal FirstDownPayment { get; set; }
+        [DataType(DataType.Currency)]
+        public decimal SecondDownPayment { get; set; }
+        [DataType(DataType.Currency)]
+        public decimal ThirdDownPayment { get; set; }
         public string EmailSubject { get; set; }
         public string EmailTemplate { get; set; }
         public IList<Guest> Guests { get; set; }
