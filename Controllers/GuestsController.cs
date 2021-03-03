@@ -5,9 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace EventPlanner.Controllers
@@ -122,6 +124,14 @@ namespace EventPlanner.Controllers
             return _context.Guests.Any(e => e.Id == id);
         }
 
+        private static Random random = new Random();
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
         [HttpGet("send-invitations/{eventId}")]
         public async Task<IActionResult> SendInvitations(Guid eventId, [FromQuery] bool resend, [FromQuery] Guid? guestId)
         {
@@ -206,6 +216,26 @@ namespace EventPlanner.Controllers
 
             string template = @event.EmailTemplate;
             string subject = @event.EmailSubject;
+
+            var signature = await _context.Configurations.Select(c => c.EmailSignature).FirstOrDefaultAsync();
+            if (!string.IsNullOrEmpty(signature))
+                template += "<hr>" + signature;
+
+            var attachments = new List<Models.Attachment>();
+            string pattern = @"<img.*?src=""(?<url>.*?)"".*?>";
+            Regex rx = new Regex(pattern);
+            foreach (Match m in rx.Matches(template))
+            {
+                string matchString = Regex.Match(m.ToString(), "<img.+?src=[\"'](.+?)[\"'].*?>", RegexOptions.IgnoreCase).Groups[1].Value;
+                string newName = RandomString(10);
+                attachments.Add(new Models.Attachment
+                {
+                    Name = newName,
+                    Base64 = matchString
+                });
+                template = template.Replace(matchString, $"cid:{newName}");
+            }
+
             template = template.Replace("[event.type]", @event.Type.Name);
             template = template.Replace("[event.date]", @event.Date.ToLongDateString());
             template = template.Replace("[event.celebrant]", @event.Celebrant);
@@ -250,9 +280,6 @@ namespace EventPlanner.Controllers
                 guestSubject = guestSubject.Replace("[guest.email]", g.Email);
                 guestSubject = guestSubject.Replace("[guest.mobile]", g.Mobile);
 
-                if (!string.IsNullOrEmpty(@event.EmailSignature))
-                    guestTemplate += "<hr>" + @event.EmailSignature;
-
                 var mailMessage = new MailMessage
                 {
                     From = new MailAddress(smtpConfig.Username),
@@ -262,7 +289,24 @@ namespace EventPlanner.Controllers
                 };
                 mailMessage.To.Add(g.Email);
 
+                var memoryStreams = new List<MemoryStream>();
+                foreach (var a in attachments)
+                {
+                    var base64 = a.Base64.Split(',').Last();
+                    base64 = base64.Replace('-', '+');
+                    base64 = base64.Replace('_', '/');
+                    var bytes = Convert.FromBase64String(base64);
+                    var stream = new MemoryStream(bytes);
+                    memoryStreams.Add(stream);
+                    var attch = new System.Net.Mail.Attachment(stream, a.Name);
+                    attch.ContentId = a.Name;
+                    mailMessage.Attachments.Add(attch);
+                }
+
                 smtpClient.Send(mailMessage);
+
+                foreach (var s in memoryStreams)
+                    s.Close();
             }
 
             await _context.SaveChangesAsync();

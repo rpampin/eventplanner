@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Attachment } from '../supplier-form/attachment';
 import { ToastService } from '../toast.service';
 import { Email } from './email';
@@ -17,6 +18,13 @@ export class EmailComponent implements OnInit {
   attachment: Attachment;
   attachmentInput: any;
   allowUpload: boolean = false;
+
+  config: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    placeholder: 'Enter text here...',
+    sanitize: false
+  };
 
   constructor(
     private http: HttpClient,

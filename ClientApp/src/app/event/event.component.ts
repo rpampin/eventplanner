@@ -33,6 +33,13 @@ export class EventComponent implements OnInit {
     dateInputFormat: 'MM/DD/YYYY'
   }
 
+  config: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    placeholder: 'Enter text here...',
+    sanitize: false
+  };
+
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {

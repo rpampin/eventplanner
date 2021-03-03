@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace EventPlanner.Controllers
@@ -19,7 +20,7 @@ namespace EventPlanner.Controllers
         public string To { get; set; }
         public string Cc { get; set; }
         public string Bcc { get; set; }
-        public EventPlanner.Models.Attachment[] Attachments { get; set; }
+        public IList<EventPlanner.Models.Attachment> Attachments { get; set; }
     }
 
     [Route("api/[controller]")]
@@ -27,6 +28,14 @@ namespace EventPlanner.Controllers
     public class EmailController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+
+        private static Random random = new Random();
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
 
         public EmailController(ApplicationDbContext context)
         {
@@ -49,6 +58,24 @@ namespace EventPlanner.Controllers
                 UseDefaultCredentials = false
             };
 
+            var signature = await _context.Configurations.Select(c => c.EmailSignature).FirstOrDefaultAsync();
+            if (!string.IsNullOrEmpty(signature))
+                email.Body += "<hr>" + signature;
+
+            string pattern = @"<img.*?src=""(?<url>.*?)"".*?>";
+            Regex rx = new Regex(pattern);
+            foreach (Match m in rx.Matches(email.Body))
+            {
+                string matchString = Regex.Match(m.ToString(), "<img.+?src=[\"'](.+?)[\"'].*?>", RegexOptions.IgnoreCase).Groups[1].Value;
+                string newName = RandomString(10);
+                email.Attachments.Add(new Models.Attachment
+                {
+                    Name = newName,
+                    Base64 = matchString
+                });
+                email.Body = email.Body.Replace(matchString, $"cid:{newName}");
+            }
+
             var mailMessage = new MailMessage
             {
                 From = new MailAddress(smtpConfig.Username),
@@ -66,6 +93,7 @@ namespace EventPlanner.Controllers
             if (!string.IsNullOrEmpty(email.Bcc))
                 foreach (var e in email.Bcc.Split(','))
                     mailMessage.Bcc.Add(e);
+            
             foreach (var a in email.Attachments)
             {
                 var base64 = a.Base64.Split(',').Last();
@@ -74,7 +102,9 @@ namespace EventPlanner.Controllers
                 var bytes = Convert.FromBase64String(base64);
                 var stream = new MemoryStream(bytes);
                 memoryStreams.Add(stream);
-                mailMessage.Attachments.Add(new Attachment(stream, a.Name));
+                var attch = new Attachment(stream, a.Name);
+                attch.ContentId = a.Name;
+                mailMessage.Attachments.Add(attch);
             }
 
             smtpClient.Send(mailMessage);

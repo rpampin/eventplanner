@@ -20,6 +20,7 @@ namespace EventPlanner.Data
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Wedding> Weddings { get; set; }
         public DbSet<SmtpConfig> SmtpConfig { get; set; }
+        public DbSet<Configuration> Configurations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

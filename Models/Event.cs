@@ -41,7 +41,6 @@ namespace EventPlanner.Models
         public decimal AdditionalCharges { get; set; }
         public string EmailSubject { get; set; }
         public string EmailTemplate { get; set; }
-        public string EmailSignature { get; set; }
         public IList<Guest> Guests { get; set; }
         public IList<Supplier> Suppliers { get; set; }
         public IList<Attachment> Attachments { get; set; }

@@ -6,8 +6,8 @@
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="smtpConfigHost">Host</label>
-            <input type="text" class="form-control" name="smtpConfigHost" id="smtpConfigHost"
-                #smtpConfigHost="ngModel" [(ngModel)]="smtpConfig.host" required />
+            <input type="text" class="form-control" name="smtpConfigHost" id="smtpConfigHost" #smtpConfigHost="ngModel"
+                [(ngModel)]="smtpConfig.host" required />
             <div [hidden]="smtpConfigHost.valid || smtpConfigHost.pristine" class="alert alert-danger">
                 Host is required
             </div>
@@ -32,7 +32,7 @@
         </div>
         <div class="form-group col-md-6">
             <label for="smtpConfigPassword">Password</label>
-            <input type="text" class="form-control" name="smtpConfigPassword" id="smtpConfigPassword"
+            <input type="password" class="form-control" name="smtpConfigPassword" id="smtpConfigPassword"
                 #smtpConfigPassword="ngModel" [(ngModel)]="smtpConfig.password" required />
             <div [hidden]="smtpConfigPassword.valid || smtpConfigPassword.pristine" class="alert alert-danger">
                 Password is required
@@ -42,6 +42,24 @@
     <div class="form-row" style="justify-content: flex-end;">
         <button type="submit" class="btn btn-success" style="margin: .5em;">
             Submit SMTP Config
+        </button>
+    </div>
+</form>
+<hr>
+<h2>SMTP</h2>
+<form (ngSubmit)="submitConfiguration(configForm)" #configForm="ngForm" autocomplete="off">
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <div class="form-group">
+                <label for="emailSignature">Email Signature</label>
+                <angular-editor [config]="config" name="emailSignature" id="emailSignature"
+                    [(ngModel)]="configuration.emailSignature"></angular-editor>
+            </div>
+        </div>
+    </div>
+    <div class="form-row" style="justify-content: flex-end;">
+        <button type="submit" class="btn btn-success" style="margin: .5em;">
+            Update configurations
         </button>
     </div>
 </form>

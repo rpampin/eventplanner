@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using EventPlanner.Data;
 using EventPlanner.Models;
@@ -20,23 +21,40 @@ namespace EventPlanner.Controllers
             _context = context;
         }
 
-        public class Config
+        [HttpGet]
+        public async Task<ActionResult<Configuration>> Get()
         {
-            public SmtpConfig SmtpConfig { get; set; }
+            return await _context.Configurations.FirstOrDefaultAsync();
         }
 
-        [HttpGet]
-        public async Task<ActionResult<Config>> Get()
+        [HttpPost]
+        public async Task<ActionResult<Configuration>> Post(Configuration configuration)
         {
-            var rv = new Config();
+            Guid confId = await _context.Configurations.Select(c => c.Id).FirstOrDefaultAsync();
+            if (confId != Guid.Empty)
+            {
+                configuration.Id = confId;
+                _context.Entry(configuration).State = EntityState.Modified;
+            }
+            else
+            {
+                await _context.Configurations.AddAsync(configuration);
+            }
 
-            rv.SmtpConfig = await _context.SmtpConfig.FirstOrDefaultAsync();
+            await _context.SaveChangesAsync();
 
-            return rv;
+            return configuration;
+        }
+
+
+        [HttpGet("smtp")]
+        public async Task<ActionResult<SmtpConfig>> GetStmp()
+        {
+            return await _context.SmtpConfig.FirstOrDefaultAsync();
         }
 
         [HttpPost("smtp")]
-        public async Task<ActionResult<SmtpConfig>> PostSmtpConfig(SmtpConfig config)
+        public async Task<ActionResult<SmtpConfig>> PostSmtp(SmtpConfig config)
         {
             if (config.Id == Guid.Empty)
             {
