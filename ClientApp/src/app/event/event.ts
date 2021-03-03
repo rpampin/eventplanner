@@ -12,11 +12,11 @@ export class Event {
     mobile: string;
     email: string;
     package: string;
-    downPayment: number;
+    packagePrice: number;
     balance: number;
-    firstDownPayment: number;
-    secondDownPayment: number;
-    thirdDownPayment: number;
+    downPayment: number;
+    notes: number;
+    additionalCharges: number;
 
     brideName: string;
     groomName: string;
