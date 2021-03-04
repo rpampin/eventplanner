@@ -130,7 +130,7 @@
       <input type="text" class="form-control" name="mobile" id="mobile" [(ngModel)]="event.mobile" />
     </div>
 
-    <div class="form-group col-md-3">
+    <div class="form-group col-md-3" [class.col-md-6]="weddingEventTyperId === event?.type?.id">
       <label for="email">Email</label>
       <input type="email" class="form-control" name="email" id="email" [(ngModel)]="event.email" />
     </div>
@@ -170,8 +170,8 @@
     </div>
 
     <div class="form-group col-md-4">
-      <label for="balance">Balance</label>
-      <input type="number" class="form-control" name="balance" id="balance" [(ngModel)]="event.balance" />
+      <label for="notes">Notes</label>
+      <input type="text" class="form-control" name="notes" id="notes" [(ngModel)]="event.notes" />
     </div>
 
     <div class="form-group col-md-4">
@@ -180,14 +180,14 @@
     </div>
 
     <div class="form-group col-md-4">
-      <label for="notes">Notes</label>
-      <input type="text" class="form-control" name="notes" id="notes" [(ngModel)]="event.notes" />
-    </div>
-
-    <div class="form-group col-md-4">
       <label for="additionalCharges">Additional Charges</label>
       <input type="number" class="form-control" name="additionalCharges" id="additionalCharges"
         [(ngModel)]="event.additionalCharges" />
+    </div>
+
+    <div class="form-group col-md-4">
+      <label for="balance">Balance</label>
+      <input type="number" class="form-control" name="balance" id="balance" [(ngModel)]="event.balance" />
     </div>
   </div>
 
