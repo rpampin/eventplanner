@@ -202,7 +202,7 @@
       <div class="form-group col-md-12">
         <div class="form-group">
           <label for="emailTemplate">Email Template</label>
-          <angular-editor [config]="config" name="emailTemplate" id="emailTemplate" [(ngModel)]="event.emailTemplate"></angular-editor>
+          <div [froalaEditor]="options" [(froalaModel)]="event.emailTemplate" name="emailTemplate" id="emailTemplate"></div>
         </div>
       </div>
     </div>

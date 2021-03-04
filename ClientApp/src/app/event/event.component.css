@@ -1,3 +1,7 @@
+/deep/ [id^="insertFiles-"] {
+  display: none;
+}
+
 .table td.fit,
 .table th.fit {
   white-space: nowrap;

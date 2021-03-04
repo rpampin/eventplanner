@@ -31,7 +31,7 @@
 
     <div class="form-group">
         <label for="message">Message</label>
-        <angular-editor [config]="config" name="message" id="message" [(ngModel)]="email.body"></angular-editor>
+        <div [froalaEditor]="options" [(froalaModel)]="email.body" name="message" id="message"></div>
     </div>
 
     <div class="form-group">

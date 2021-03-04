@@ -7,8 +7,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import { JwPaginationModule } from 'jw-angular-pagination';
 import { NgxSpinnerModule } from "ngx-spinner";
+
+import 'froala-editor/js/plugins.pkgd.min.js';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -71,6 +74,8 @@ export class SafeHtmlPipe implements PipeTransform {
     NgxSpinnerModule,
     JwPaginationModule,
     AngularEditorModule,
+    FroalaEditorModule.forRoot(),
+    FroalaViewModule.forRoot(),
     BsDatepickerModule.forRoot(),
     RouterModule.forRoot([
       { path: '', component: UpcomingEventsComponent, pathMatch: 'full' },

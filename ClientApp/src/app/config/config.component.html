@@ -52,8 +52,8 @@
         <div class="form-group col-md-12">
             <div class="form-group">
                 <label for="emailSignature">Email Signature</label>
-                <angular-editor [config]="config" name="emailSignature" id="emailSignature"
-                    [(ngModel)]="configuration.emailSignature"></angular-editor>
+                <div [froalaEditor]="options" [(froalaModel)]="configuration.emailSignature" name="emailSignature"
+                    id="emailSignature"></div>
             </div>
         </div>
     </div>

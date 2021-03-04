@@ -16,12 +16,28 @@ export class ConfigComponent implements OnInit {
   smtpConfig: SmtpConfig = new SmtpConfig();
   configuration: any = {};
 
-  config: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    placeholder: 'Enter text here...',
-    sanitize: false
-  };
+  public options: Object = {
+    placeholderText: 'Edit Your Content Here!',
+    events: {
+      "image.beforeUpload": function (files) {
+        var editor = this;
+        if (files.length) {
+          // Create a File Reader.
+          var reader = new FileReader();
+          // Set the reader to insert images when they are loaded.
+          reader.onload = function (e) {
+            var result = e.target.result;
+            editor.image.insert(result, null, null, editor.image.get());
+          };
+          // Read image as base64.
+          reader.readAsDataURL(files[0]);
+        }
+        editor.popups.hideAll();
+        // Stop default upload chain.
+        return false;
+      }
+    }
+  }
 
   constructor(
     private http: HttpClient,
