@@ -80,11 +80,11 @@
     <tr>
       <th>Last Name</th>
       <th>Name</th>
-      <th>Table</th>
+      <th>Email</th>
       <th>Moblie</th>
       <th>Attendance</th>
+      <th>Table</th>
       <th>Remarks</th>
-      <th>Email</th>
       <th class="fit"></th>
       <th class="fit"></th>
       <th class="fit"></th>
@@ -96,7 +96,17 @@
       <td class="align-middle">{{ guest.name }}</td>
       <td class="align-middle">{{ guest.email }}</td>
       <td class="align-middle">{{ guest.mobile }}</td>
-      <td class="align-middle">{{ guest.willAttend }}</td>
+      <td class="align-middle">
+        <ng-container *ngIf="guest.willAttend === null">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-success" (click)="willAttend(guest, true)">Attending</button>
+            <button type="button" class="btn btn-danger" (click)="willAttend(guest, false)">NOT Attending</button>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="guest.willAttend !== null">
+          {{ guest.willAttend ? "Attending" : "NOT Attending" }}
+        </ng-container>
+      </td>
       <td class="align-middle">{{ guest.table }}</td>
       <td class="align-middle">{{ guest.remarks }}</td>
       <td class="fit">

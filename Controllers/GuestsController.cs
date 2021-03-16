@@ -91,6 +91,20 @@ namespace EventPlanner.Controllers
             return NoContent();
         }
 
+        public class AttendanceData
+        {
+            public bool attending { get; set; }
+        }
+
+        [HttpPut("{id}/attendance")]
+        public async Task<IActionResult> PutGuestAttendance(Guid id, AttendanceData data)
+        {
+            var guest = await _context.Guests.FindAsync(id);
+            guest.WillAttend = data.attending;
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
         // POST: api/Guests
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]

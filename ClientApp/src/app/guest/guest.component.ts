@@ -63,6 +63,10 @@ export class GuestComponent implements OnInit {
     });
   }
 
+  willAttend(guest: Guest, attending: boolean) {
+    this.http.put(this.baseUrl + `api/guests/${guest.id}/attendance`, { attending }).subscribe(() => guest.willAttend = attending);
+  }
+
   deleteGuest(index: number, guest: Guest) {
     this.http.delete(this.baseUrl + 'api/guests/' + guest.id).subscribe(() => {
       this.guests.splice(index, 1);
@@ -70,7 +74,7 @@ export class GuestComponent implements OnInit {
   }
 
   updateTemplate() {
-    this.http.post(this.baseUrl + `api/events/${this.eventId}/program`, this.event).subscribe(() => {});
+    this.http.post(this.baseUrl + `api/events/${this.eventId}/program`, this.event).subscribe(() => { });
   }
 
   sendInvitations(resend: boolean, guestId: string) {
