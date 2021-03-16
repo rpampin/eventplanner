@@ -19,19 +19,72 @@
 
 <div class="btn-head">
   <h1>Guests</h1>
-  <button class="btn btn-primary" (click)="sendInvitations(false, '')"><fa-icon [icon]="faEnvelope"></fa-icon> Send Invitations</button>
-  <button class="btn btn-secondary" (click)="sendInvitations(true, '')"><fa-icon [icon]="faEnvelope"></fa-icon> Resend Invitations</button>
+  <button class="btn btn-primary" (click)="sendInvitations(false, '')">
+    <fa-icon [icon]="faEnvelope"></fa-icon> Send Invitations
+  </button>
+  <button class="btn btn-secondary" (click)="sendInvitations(true, '')">
+    <fa-icon [icon]="faEnvelope"></fa-icon> Resend Invitations
+  </button>
   <button class="btn btn-info" [routerLink]="['..']">View Event</button>
   <button class="btn btn-success" [routerLink]="[0]">New Guest</button>
 </div>
 
+<accordion>
+  <accordion-group heading="Guest's invitation email templating">
+    <div class="email-template">
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <label for="emailSubject">Email Subject</label>
+          <input type="text" class="form-control" name="emailSubject" id="emailSubject"
+            [(ngModel)]="event.emailSubject" />
+        </div>
+        <div class="form-group col-md-12">
+          <div class="form-group">
+            <label for="emailTemplate">Email Template</label>
+            <div [froalaEditor]="options" [(froalaModel)]="event.emailTemplate" name="emailTemplate" id="emailTemplate">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-info" role="alert">
+        <h4 class="alert-heading">Email Subject/Template Variables</h4>
+        <p>
+          Use the following text to replace it with it's value when sending an email
+        </p>
+        <hr />
+        <ul class="param-lst">
+          <li>[event.type]</li>
+          <li>[event.date]</li>
+          <li>[event.celebrant]</li>
+          <li>[event.address]</li>
+          <li>[event.mobile]</li>
+          <li>[event.email]</li>
+          <li>[event.brideName]</li>
+          <li>[event.groomName]</li>
+          <li>[event.ceremonyVenue]</li>
+          <li>[event.ceremonyTime]</li>
+          <li>[event.receptionVenue]</li>
+          <li>[event.receptionTime]</li>
+          <li>[guest.name]</li>
+          <li>[guest.email]</li>
+          <li>[guest.mobile]</li>
+        </ul>
+      </div>
+    </div>
+    <button type="button" class="btn btn-success" (click)="updateTemplate()">Update Template</button>
+  </accordion-group>
+</accordion>
+<br>
 <table class="table table-striped" aria-labelledby="tableLabel">
   <thead>
     <tr>
+      <th>Last Name</th>
       <th>Name</th>
-      <th>Email</th>
+      <th>Table</th>
       <th>Moblie</th>
-      <th>Will Attend</th>
+      <th>Attendance</th>
+      <th>Remarks</th>
+      <th>Email</th>
       <th class="fit"></th>
       <th class="fit"></th>
       <th class="fit"></th>
@@ -39,10 +92,13 @@
   </thead>
   <tbody>
     <tr *ngFor="let guest of guests; let i = index">
+      <td class="align-middle">{{ guest.lastName }}</td>
       <td class="align-middle">{{ guest.name }}</td>
       <td class="align-middle">{{ guest.email }}</td>
       <td class="align-middle">{{ guest.mobile }}</td>
       <td class="align-middle">{{ guest.willAttend }}</td>
+      <td class="align-middle">{{ guest.table }}</td>
+      <td class="align-middle">{{ guest.remarks }}</td>
       <td class="fit">
         <button type="button" class="btn btn-sm" style="background-color: transparent" placement="top"
           ngbTooltip="Send Invite" (click)="sendInvitations(true, guest.id)">
@@ -50,8 +106,8 @@
         </button>
       </td>
       <td class="fit">
-        <button type="button" class="btn btn-sm" style="background-color: transparent" placement="top"
-          ngbTooltip="Edit" [routerLink]="[guest.id]">
+        <button type="button" class="btn btn-sm" style="background-color: transparent" placement="top" ngbTooltip="Edit"
+          [routerLink]="[guest.id]">
           <fa-icon [icon]="faEdit"></fa-icon>
         </button>
       </td>

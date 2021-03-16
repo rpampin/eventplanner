@@ -9,6 +9,9 @@ namespace EventPlanner.Models
         public Guid Id { get; set; }
         [Required]
         public string Name { get; set; }
+        public string LastName { get; set; }
+        public string Table { get; set; }
+        public string Remarks { get; set; }
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
         [DataType(DataType.PhoneNumber)]

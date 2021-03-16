@@ -36,7 +36,7 @@ export class PrintReportComponent implements OnInit {
   getReport() {
     this.http.get<any>(this.baseUrl + `api/reports/${this.reportName}/` + this.eventId).subscribe(result => {
       this.html = result.html;
-    }, error => console.error(error));
+    });
   }
 
   goBack() {

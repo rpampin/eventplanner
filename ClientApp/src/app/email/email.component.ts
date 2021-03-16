@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Attachment } from '../supplier-form/attachment';
 import { ToastService } from '../toast.service';
 import { Email } from './email';
@@ -71,7 +70,8 @@ export class EmailComponent implements OnInit {
   }
 
   deleteAttachment(index: number) {
-    this.email.attachments = this.email.attachments.slice(index, 1);
+    debugger;
+    this.email.attachments.splice(index, 1);
   }
 
   clearEmail() {
@@ -82,6 +82,6 @@ export class EmailComponent implements OnInit {
     this.http.post(this.baseUrl + "api/email", this.email).subscribe(() => {
       this.toastService.show(`Email sent successfuly`, { classname: 'bg-success text-light' });
       this.email = new Email();
-    }, error => this.toastService.show(error, { classname: 'bg-dabger text-light' }));
+    });
   }
 }

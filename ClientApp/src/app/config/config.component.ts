@@ -56,7 +56,7 @@ export class ConfigComponent implements OnInit {
       this.http.post<SmtpConfig>(this.baseUrl + 'api/config/smtp', this.smtpConfig).subscribe(result => {
         this.smtpConfig = result;
         this.toastService.show(`SMTP updated successfuly`, { classname: 'bg-success text-light' });
-      }, error => console.error(error));
+      });
     } else {
       Object.keys(form.controls).forEach(key => {
         form.controls[key].markAsDirty();
@@ -69,7 +69,7 @@ export class ConfigComponent implements OnInit {
       this.http.post<any>(this.baseUrl + 'api/config', this.configuration).subscribe(result => {
         this.configuration = result;
         this.toastService.show(`Configuration updated successfuly`, { classname: 'bg-success text-light' });
-      }, error => console.error(error));
+      });
     } else {
       Object.keys(form.controls).forEach(key => {
         form.controls[key].markAsDirty();

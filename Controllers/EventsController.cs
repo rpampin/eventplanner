@@ -24,7 +24,7 @@ namespace EventPlanner.Controllers
 
         // GET: api/Events
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<EvenListView>>> GetEvent([FromQuery]bool pastEvents = false)
+        public async Task<ActionResult<IEnumerable<EvenListView>>> GetEvent([FromQuery] bool pastEvents = false)
         {
             var events = await _context.Events
                 .Where(e => e.Date >= (pastEvents ? DateTime.MinValue : DateTime.Now.Date))
@@ -76,9 +76,29 @@ namespace EventPlanner.Controllers
             {
                 type = e.Type.Name,
                 date = e.Date,
-                celebrant = e.Celebrant
+                celebrant = e.Celebrant,
+                emailSubject = e.EmailSubject,
+                emailTemplate = e.EmailTemplate
             })
             .FirstOrDefaultAsync();
+        }
+
+        public class UpdateProgramData
+        {
+            public string emailSubject { get; set; }
+            public string emailTemplate { get; set; }
+        }
+
+        [HttpPost("{eventId}/program")]
+        public async Task<IActionResult> UpdateEventProgram(Guid eventId, UpdateProgramData data)
+        {
+            var @event = await _context.Events.FindAsync(eventId);
+            @event.EmailSubject = data.emailSubject;
+            @event.EmailTemplate = data.emailTemplate;
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
 
         // PUT: api/Events/5
@@ -117,13 +137,9 @@ namespace EventPlanner.Controllers
         [HttpPost]
         public async Task<ActionResult<Event>> PostEvent(Event ev)
         {
-#if !DEBUG
-    if (await _context.Events.CountAsync() > 2)
-        throw new Exception("2 EVENTS FOR TESTING");
-#endif
-
             ev.Type = await _context.EventTypes.Where(et => et.Id == ev.Type.Id).SingleAsync();
-            ev.Plan = new Plan { Title = "Event Program" };
+            ev.Plan = await _context.Configurations.Select(c => c.EventProgramTemplate).FirstOrDefaultAsync();
+            ev.Date = ev.Date.Date;
             foreach (var s in ev.Suppliers)
             {
                 s.Type = await _context.SupplierTypes.Where(st => st.Id == s.Type.Id).SingleAsync();
@@ -140,13 +156,11 @@ namespace EventPlanner.Controllers
         public async Task<IActionResult> DeleteEvent(Guid id)
         {
             var ev = await _context.Events
-                .Include(e => e.Plan)
                 .SingleAsync(e => e.Id == id);
             if (ev == null)
             {
                 return NotFound();
             }
-            _context.Plans.Remove(ev.Plan);
             _context.Events.Remove(ev);
             await _context.SaveChangesAsync();
 
@@ -195,17 +209,40 @@ namespace EventPlanner.Controllers
         [HttpPost("wedding")]
         public async Task<ActionResult<Wedding>> PostWeddingEvent(Wedding ev)
         {
-#if !DEBUG
-    if (await _context.Events.CountAsync() > 2)
-        throw new Exception("2 EVENTS FOR TESTING");
-#endif
-
             ev.Type = await _context.EventTypes.Where(et => et.Id == ev.Type.Id).SingleAsync();
-            ev.Plan = new Plan { Title = "Event Program" };
+            ev.Plan = await _context.Configurations.Select(c => c.EventProgramTemplate).FirstOrDefaultAsync();
+            ev.Date = ev.Date.Date;
             _context.Events.Add(ev);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetEventType", new { id = ev.Id }, ev);
+        }
+
+        [HttpGet("{eventId}/plan")]
+        public async Task<ActionResult<object>> GetEventPlan(Guid eventId)
+        {
+            var @event = await _context.Events.FindAsync(eventId);
+            return Ok(new
+            {
+                plan = @event.Plan
+            });
+        }
+
+        public class EventPlan
+        {
+            public string Plan { get; set; }
+        }
+
+        [HttpPut("{eventId}/plan")]
+        public async Task<ActionResult<string>> GetEventPlan(Guid eventId, EventPlan eventPlan)
+        {
+            var @event = await _context.Events.FindAsync(eventId);
+
+            @event.Plan = eventPlan.Plan;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(@event.Plan);
         }
     }
 }

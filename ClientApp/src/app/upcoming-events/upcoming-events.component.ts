@@ -33,7 +33,7 @@ export class UpcomingEventsComponent implements OnInit {
   getEvents() {
     this.http.get<EvenListView[]>(this.baseUrl + `api/events?pastEvents=${this.pastChk}`).subscribe(result => {
       this.events = result;
-    }, error => console.error(error));
+    });
   }
 
   chkChanged() {
@@ -45,7 +45,7 @@ export class UpcomingEventsComponent implements OnInit {
       this.events = this.events.filter(function (e) {
         return e.id !== eventId;
       });
-    }, error => console.error(error));
+    });
   }
 
   editForm(eventId: string) {

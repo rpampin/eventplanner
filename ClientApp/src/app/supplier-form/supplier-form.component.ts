@@ -42,14 +42,14 @@ export class SupplierFormComponent implements OnInit {
             this.supplier = result;
             this.supplierId = result.id;
             this.attachments = this.supplier.attachments;
-          }, error => console.error(error));
+          });
         } else {
           this.http.get<Event>(this.baseUrl + 'api/events/' + this.eventId).subscribe(result => {
             this.supplier.event = result;
-          }, error => console.error(error));
+          });
         }
 
-      }, error => console.error(error));
+      });
     });
   }
 
@@ -62,14 +62,16 @@ export class SupplierFormComponent implements OnInit {
   }
 
   submitSupplier() {
+    let supplier = {...this.supplier};
+    supplier.attachments = [];
     if (!this.supplier.id) {
-      this.http.post<Supplier>(this.baseUrl + 'api/suppliers', this.supplier).subscribe(result => {
+      this.http.post<Supplier>(this.baseUrl + 'api/suppliers', supplier).subscribe(result => {
         this.router.navigate(['../'], { relativeTo: this.route });
-      }, error => console.error(error));
+      });
     } else {
-      this.http.put<Supplier>(this.baseUrl + 'api/suppliers/' + this.supplier.id, this.supplier).subscribe(result => {
+      this.http.put<Supplier>(this.baseUrl + 'api/suppliers/' + supplier.id, supplier).subscribe(result => {
         this.router.navigate(['../'], { relativeTo: this.route });
-      }, error => console.error(error));
+      });
     }
   }
 
@@ -92,7 +94,7 @@ export class SupplierFormComponent implements OnInit {
       this.attachmentInput.value = null;
       this.attachment = new Attachment();
       this.allowUpload = false;
-    }, error => console.error(error));
+    });
   }
 
   downloadAttachment(attachmentId: string) {
@@ -101,12 +103,12 @@ export class SupplierFormComponent implements OnInit {
       a.href = file.base64; //Image Base64 Goes here
       a.download = file.name; //File name Here
       a.click(); //Downloaded file
-    }, error => console.error(error));
+    });
   }
 
   deleteAttachment(index: number, attachmentId: string) {
     this.http.delete(this.baseUrl + 'api/attachments/' + attachmentId).subscribe(() => {
       this.attachments.splice(index, 1);
-    }, error => console.error(error));
+    });
   }
 }

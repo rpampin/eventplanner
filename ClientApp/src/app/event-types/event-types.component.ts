@@ -18,7 +18,7 @@ export class EventTypesComponent {
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
     http.get<EventType[]>(baseUrl + 'api/eventtypes').subscribe(result => {
       this.types = result;
-    }, error => console.error(error));
+    });
   }
 
   submitted = false;
@@ -36,7 +36,7 @@ export class EventTypesComponent {
           return 0;
         });
         eventTypeForm.reset();
-      }, error => console.error(error));
+      });
     } else {
       this.http.put<EventType>(this.baseUrl + 'api/eventtypes/' + this.type.id, this.type).subscribe(() => {
         const edited = this.types.filter(t => t.id === this.type.id)[0];
@@ -47,7 +47,7 @@ export class EventTypesComponent {
           return 0;
         });
         eventTypeForm.reset();
-      }, error => console.error(error));
+      });
     }
 
     this.submitted = true;
@@ -65,6 +65,6 @@ export class EventTypesComponent {
       this.types = this.types.filter(function (t) {
         return t.id !== typeId;
       });
-    }, error => console.error(error));
+    });
   }
 }

@@ -50,24 +50,6 @@
 
   <div class="form-row">
     <div class="form-group col-md-3">
-      <label for="receptionVenue">Reception Venue</label>
-      <input type="text" class="form-control" name="receptionVenue" id="receptionVenue" #receptionVenue="ngModel"
-        [(ngModel)]="event.receptionVenue" required />
-      <div [hidden]="receptionVenue.valid || receptionVenue.pristine" class="alert alert-danger">
-        Reception Venue is required
-      </div>
-    </div>
-
-    <div class="form-group col-md-3">
-      <label for="receptionTime">Reception Time</label>
-      <input type="time" class="form-control" name="receptionTime" id="receptionTime" #receptionTime="ngModel"
-        [(ngModel)]="event.receptionTime" required />
-      <div [hidden]="receptionTime.valid || receptionTime.pristine" class="alert alert-danger">
-        Reception Time is required
-      </div>
-    </div>
-
-    <div class="form-group col-md-3">
       <label for="preparationVenue">Preparation Venue</label>
       <input type="text" class="form-control" name="preparationVenue" id="preparationVenue" #preparationVenue="ngModel"
         [(ngModel)]="event.preparationVenue" required />
@@ -84,10 +66,8 @@
         Preparation Time is required
       </div>
     </div>
-  </div>
 
-  <div *ngIf="weddingEventTyperId === event?.type?.id">
-    <div class="form-row">
+    <ng-container *ngIf="weddingEventTyperId === event?.type?.id">
       <div class="form-group col-md-3">
         <label for="ceremonyVenue">Ceremony Venue</label>
         <input type="text" class="form-control" name="ceremonyVenue" id="ceremonyVenue" #ceremonyVenue="ngModel"
@@ -104,6 +84,24 @@
         <div [hidden]="ceremonyTime.valid || ceremonyTime.pristine" class="alert alert-danger">
           Ceremony Time is required
         </div>
+      </div>
+    </ng-container>
+
+    <div class="form-group col-md-3">
+      <label for="receptionVenue">Reception Venue</label>
+      <input type="text" class="form-control" name="receptionVenue" id="receptionVenue" #receptionVenue="ngModel"
+        [(ngModel)]="event.receptionVenue" required />
+      <div [hidden]="receptionVenue.valid || receptionVenue.pristine" class="alert alert-danger">
+        Reception Venue is required
+      </div>
+    </div>
+
+    <div class="form-group col-md-3">
+      <label for="receptionTime">Reception Time</label>
+      <input type="time" class="form-control" name="receptionTime" id="receptionTime" #receptionTime="ngModel"
+        [(ngModel)]="event.receptionTime" required />
+      <div [hidden]="receptionTime.valid || receptionTime.pristine" class="alert alert-danger">
+        Reception Time is required
       </div>
     </div>
   </div>
@@ -165,8 +163,13 @@
 
     <div class="form-group col-md-4">
       <label for="packagePrice">Package Price</label>
-      <input type="number" class="form-control" name="packagePrice" id="packagePrice"
-        [(ngModel)]="event.packagePrice" />
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">{{'PHP'| currencySymbol}}</span>
+        </div>
+        <input type="number" class="form-control" name="packagePrice" id="packagePrice"
+          [(ngModel)]="event.packagePrice" />
+      </div>
     </div>
 
     <div class="form-group col-md-4">
@@ -176,61 +179,36 @@
 
     <div class="form-group col-md-4">
       <label for="downPayment">Down Payment</label>
-      <input type="number" class="form-control" name="downPayment" id="downPayment" [(ngModel)]="event.downPayment" />
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">{{'PHP'| currencySymbol}}</span>
+        </div>
+        <input type="number" class="form-control" name="downPayment" id="downPayment" [(ngModel)]="event.downPayment" />
+      </div>
     </div>
 
     <div class="form-group col-md-4">
       <label for="additionalCharges">Additional Charges</label>
-      <input type="number" class="form-control" name="additionalCharges" id="additionalCharges"
-        [(ngModel)]="event.additionalCharges" />
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">{{'PHP'| currencySymbol}}</span>
+        </div>
+        <input type="number" class="form-control" name="additionalCharges" id="additionalCharges"
+          [(ngModel)]="event.additionalCharges" />
+      </div>
     </div>
 
     <div class="form-group col-md-4">
       <label for="balance">Balance</label>
-      <input type="number" class="form-control" name="balance" id="balance" [(ngModel)]="event.balance" />
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">{{'PHP'| currencySymbol}}</span>
+        </div>
+        <input type="number" class="form-control" name="balance" id="balance" [(ngModel)]="event.balance" />
+      </div>
     </div>
   </div>
 
-  <div class="email-template">
-    <h4>Guest's invitation email templating</h4>
-    <div class="form-row">
-      <div class="form-group col-md-12">
-        <label for="emailSubject">Email Subject</label>
-        <input type="text" class="form-control" name="emailSubject" id="emailSubject"
-          [(ngModel)]="event.emailSubject" />
-      </div>
-      <div class="form-group col-md-12">
-        <div class="form-group">
-          <label for="emailTemplate">Email Template</label>
-          <div [froalaEditor]="options" [(froalaModel)]="event.emailTemplate" name="emailTemplate" id="emailTemplate"></div>
-        </div>
-      </div>
-    </div>
-    <div class="alert alert-info" role="alert">
-      <h4 class="alert-heading">Email Subject/Template Variables</h4>
-      <p>
-        Use the following text to replace it with it's value when sending an email
-      </p>
-      <hr />
-      <ul class="param-lst">
-        <li>[event.type]</li>
-        <li>[event.date]</li>
-        <li>[event.celebrant]</li>
-        <li>[event.address]</li>
-        <li>[event.mobile]</li>
-        <li>[event.email]</li>
-        <li>[event.brideName]</li>
-        <li>[event.groomName]</li>
-        <li>[event.ceremonyVenue]</li>
-        <li>[event.ceremonyTime]</li>
-        <li>[event.receptionVenue]</li>
-        <li>[event.receptionTime]</li>
-        <li>[guest.name]</li>
-        <li>[guest.email]</li>
-        <li>[guest.mobile]</li>
-      </ul>
-    </div>
-  </div>
   <div>
     <h2>Attachments</h2>
     <div class="form-row">

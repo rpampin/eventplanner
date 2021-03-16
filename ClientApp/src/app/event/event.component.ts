@@ -33,29 +33,6 @@ export class EventComponent implements OnInit {
     dateInputFormat: 'MM/DD/YYYY'
   }
 
-  public options: Object = {
-    placeholderText: 'Edit Your Content Here!',
-    events: {
-      "image.beforeUpload": function (files) {
-        var editor = this;
-        if (files.length) {
-          // Create a File Reader.
-          var reader = new FileReader();
-          // Set the reader to insert images when they are loaded.
-          reader.onload = function (e) {
-            var result = e.target.result;
-            editor.image.insert(result, null, null, editor.image.get());
-          };
-          // Read image as base64.
-          reader.readAsDataURL(files[0]);
-        }
-        editor.popups.hideAll();
-        // Stop default upload chain.
-        return false;
-      }
-    }
-  }
-
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -76,12 +53,12 @@ export class EventComponent implements OnInit {
             var c = b.split('-');
             this.event.date = new Date(parseInt(c[0]), parseInt(c[1]) - 1, parseInt(c[2]));
             this.attachments = this.event.attachments;
-          }, error => console.error(error));
+          });
         }
 
-      }, error => console.error(error));
+      });
 
-    }, error => console.error(error));
+    });
 
   }
 
@@ -96,11 +73,11 @@ export class EventComponent implements OnInit {
       if (!this.event.id) {
         this.http.post<Event>(this.baseUrl + url, this.event).subscribe(result => {
           this.router.navigate(['/'])
-        }, error => console.error(error));
+        });
       } else {
         this.http.put<Event>(this.baseUrl + url + '/' + this.event.id, this.event).subscribe(result => {
           this.router.navigate(['/'])
-        }, error => console.error(error));
+        });
       }
     } else {
       Object.keys(eventForm.controls).forEach(key => {
@@ -136,7 +113,7 @@ export class EventComponent implements OnInit {
       this.attachmentInput.value = null;
       this.attachment = new Attachment();
       this.allowUpload = false;
-    }, error => console.error(error));
+    });
   }
 
   downloadAttachment(attachmentId: string) {
@@ -145,12 +122,12 @@ export class EventComponent implements OnInit {
       a.href = file.base64; //Image Base64 Goes here
       a.download = file.name; //File name Here
       a.click(); //Downloaded file
-    }, error => console.error(error));
+    });
   }
 
   deleteAttachment(index: number, attachmentId: string) {
     this.http.delete(this.baseUrl + 'api/attachments/' + attachmentId).subscribe(() => {
       this.attachments.splice(index, 1);
-    }, error => console.error(error));
+    });
   }
 }

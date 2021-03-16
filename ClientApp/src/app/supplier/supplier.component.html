@@ -44,8 +44,8 @@
       <td class="align-middle">{{ supplier.contactPerson }}</td>
       <td class="align-middle">{{ supplier.mobile }}</td>
       <td class="align-middle">{{ supplier.email }}</td>
-      <td class="align-middle">{{ supplier.packagePrice }}</td>
-      <td class="align-middle">{{ supplier.balance }}</td>
+      <td class="align-middle">{{ supplier.packagePrice | currency:'PHP' }}</td>
+      <td class="align-middle">{{ supplier.balance | currency:'PHP' }}</td>
       <td class="fit">
         <button type="button" class="btn btn-sm" style="background-color: transparent" placement="top" ngbTooltip="Edit"
           [routerLink]="[supplier.id]">

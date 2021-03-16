@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faTrash, faSave } from '@fortawesome/free-solid-svg-icons';
-import { Plan, PlanPart, PlanStep } from './plan';
 import { ToastService } from '../toast.service';
 
 @Component({
@@ -15,15 +14,37 @@ export class PlanComponent implements OnInit {
   faSave = faSave;
   event: any = {};
   eventId: string;
-  plan: Plan = new Plan();
+  plan: string = '';
+
+  public options: Object = {
+    placeholderText: 'Edit Your Content Here!',
+    heightMin: 500,
+    events: {
+      "image.beforeUpload": function (files) {
+        var editor = this;
+        if (files.length) {
+          // Create a File Reader.
+          var reader = new FileReader();
+          // Set the reader to insert images when they are loaded.
+          reader.onload = function (e) {
+            var result = e.target.result;
+            editor.image.insert(result, null, null, editor.image.get());
+          };
+          // Read image as base64.
+          reader.readAsDataURL(files[0]);
+        }
+        editor.popups.hideAll();
+        // Stop default upload chain.
+        return false;
+      }
+    }
+  }
 
   constructor(private http: HttpClient,
     @Inject('BASE_URL') private baseUrl: string,
     private router: Router,
     private route: ActivatedRoute,
     public toastService: ToastService) { }
-
-  
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -32,62 +53,18 @@ export class PlanComponent implements OnInit {
       this.http.get<any>(this.baseUrl + 'api/events/base-data/' + this.eventId).subscribe(result => {
         this.event = result;
 
-        this.http.get<Plan>(this.baseUrl + 'api/plans/' + this.eventId).subscribe(result => {
-          this.plan = result;
-        }, error => console.error(error));
+        this.http.get<any>(this.baseUrl + `api/events/${this.eventId}/plan`).subscribe(result => {
+          this.plan = result.plan;
+        });
 
-      }, error => console.error(error));
+      });
     });
   }
 
   // PLAN
-  onPlanSubmit(plan: Plan) {
-    this.http.put<Plan>(this.baseUrl + 'api/plans/' + plan.id, plan).subscribe(result => {
-      this.toastService.show(`Program: ${plan.title} updated successfuly`, { classname: 'bg-success text-light' });
-    }, error => console.error(error));
-  }
-
-  // PARTS
-
-  addNewPart() {
-    this.http.post<PlanPart>(this.baseUrl + 'api/planparts/' + this.plan.id, null).subscribe(result => {
-      this.plan.parts.push(result);
-    }, error => console.error(error));
-  }
-
-  updatePart(part: PlanPart) {
-    this.http.put<PlanPart>(this.baseUrl + 'api/planparts/' + part.id, part).subscribe(result => {
-      this.toastService.show(`Program Part: ${part.title} updated successfuly`, { classname: 'bg-success text-light' });
-    }, error => console.error(error));
-  }
-
-  removePart(part: PlanPart) {
-    this.http.delete(this.baseUrl + 'api/planparts/' + part.id).subscribe(() => {
-      this.plan.parts = this.plan.parts.filter(function (p) {
-        return p.id !== part.id;
-      });
-    }, error => console.error(error));
-  }
-
-  // STEPS
-
-  addNewStep(part: PlanPart) {
-    this.http.post<PlanStep>(this.baseUrl + 'api/plansteps/' + part.id, null).subscribe(result => {
-      part.steps.push(result);
-    }, error => console.error(error));
-  }
-
-  updateStep(step: PlanStep) {
-    this.http.put<PlanStep>(this.baseUrl + 'api/plansteps/' + step.id, step).subscribe(result => {
-      this.toastService.show(`Program Step: ${step.title} updated successfuly`, { classname: 'bg-success text-light' });
-    }, error => console.error(error));
-  }
-
-  removeStep(step: PlanStep, partIndex: number) {
-    this.http.delete(this.baseUrl + 'api/plansteps/' + step.id).subscribe(() => {
-      this.plan.parts[partIndex].steps = this.plan.parts[partIndex].steps.filter(function (s) {
-        return s.id !== step.id;
-      });
-    }, error => console.error(error));
+  onPlanSubmit(plan: string) {
+    this.http.put<string>(this.baseUrl + `api/events/${this.eventId}/plan`, { plan: plan }).subscribe(result => {
+      this.toastService.show(`Program updated successfuly`, { classname: 'bg-success text-light' });
+    });
   }
 }

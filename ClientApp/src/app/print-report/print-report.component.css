@@ -180,15 +180,6 @@ table {
   text-align: center;
 }
 
-#guest-list tr td:first-child {
-  width: 1%;
-  white-space: nowrap;
-}
-
-#guest-list tr td:not(:first-child) {
-  width: 50%;
-}
-
 #guest-list tr:nth-child(1) td,
 #guest-list tr:nth-child(2) td,
 #guest-list tr:nth-child(3) td {

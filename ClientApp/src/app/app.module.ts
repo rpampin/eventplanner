@@ -1,22 +1,23 @@
 import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
-import { NgModule, Pipe, PipeTransform } from '@angular/core';
+import { LOCALE_ID, NgModule, Pipe, PipeTransform } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { AngularEditorModule } from '@kolkov/angular-editor';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import { JwPaginationModule } from 'jw-angular-pagination';
 import { NgxSpinnerModule } from "ngx-spinner";
+import localePh from '@angular/common/locales/en-PH';
+registerLocaleData(localePh);
 
 import 'froala-editor/js/plugins.pkgd.min.js';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { EventTypesComponent } from './event-types/event-types.component';
 import { SupplierTypesComponent } from './supplier-types/supplier-types.component';
@@ -33,12 +34,24 @@ import { LoadingInterceptor } from './loading.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PrintReportComponent } from './print-report/print-report.component';
 import { EmailComponent } from './email/email.component';
+import { getCurrencySymbol, registerLocaleData } from '@angular/common';
+import { HttpErrorInterceptor } from './error.interceptor';
 
 @Pipe({ name: 'safeHtml' })
 export class SafeHtmlPipe implements PipeTransform {
   constructor(private sanitized: DomSanitizer) { }
   transform(value) {
     return this.sanitized.bypassSecurityTrustHtml(value);
+  }
+}
+@Pipe({ name: "currencySymbol" })
+export class CurrencySymbolPipe implements PipeTransform {
+  transform(
+    code: string,
+    format: "wide" | "narrow" = "narrow",
+    locale?: string
+  ): string {
+    return getCurrencySymbol(code, format, locale);
   }
 }
 
@@ -48,7 +61,6 @@ export class SafeHtmlPipe implements PipeTransform {
     ToastComponent,
     NavMenuComponent,
     HomeComponent,
-    CounterComponent,
     FetchDataComponent,
     EventTypesComponent,
     SupplierTypesComponent,
@@ -62,6 +74,7 @@ export class SafeHtmlPipe implements PipeTransform {
     ConfigComponent,
     PrintReportComponent,
     SafeHtmlPipe,
+    CurrencySymbolPipe,
     EmailComponent
   ],
   imports: [
@@ -73,10 +86,10 @@ export class SafeHtmlPipe implements PipeTransform {
     NgbModule,
     NgxSpinnerModule,
     JwPaginationModule,
-    AngularEditorModule,
     FroalaEditorModule.forRoot(),
     FroalaViewModule.forRoot(),
     BsDatepickerModule.forRoot(),
+    AccordionModule.forRoot(),
     RouterModule.forRoot([
       { path: '', component: UpcomingEventsComponent, pathMatch: 'full' },
       { path: 'emailer', component: EmailComponent },
@@ -95,6 +108,8 @@ export class SafeHtmlPipe implements PipeTransform {
     ])
   ],
   providers: [
+    { provide: LOCALE_ID, useValue: 'en-PH' },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

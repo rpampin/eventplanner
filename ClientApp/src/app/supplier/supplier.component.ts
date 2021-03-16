@@ -31,15 +31,15 @@ export class SupplierComponent implements OnInit {
 
         this.http.get<Supplier[]>(this.baseUrl + 'api/suppliers/event-suppliers/' + this.eventId).subscribe(result => {
           this.suppliers = result;
-        }, error => console.error(error));
+        });
 
-      }, error => console.error(error));
+      });
     });
   }
 
   deleteSupplier(index: number, supplier: Supplier) {
     this.http.delete(this.baseUrl + 'api/suppliers/' + supplier.id).subscribe(() => {
       this.suppliers.splice(index, 1);
-    }, error => console.error(error));
+    });
   }
 }

@@ -14,9 +14,6 @@ namespace EventPlanner.Data
         public DbSet<SupplierType> SupplierTypes { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<Guest> Guests { get; set; }
-        public DbSet<Plan> Plans { get; set; }
-        public DbSet<PlanPart> PlanParts { get; set; }
-        public DbSet<PlanStep> PlanSteps { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Wedding> Weddings { get; set; }
         public DbSet<SmtpConfig> SmtpConfig { get; set; }
@@ -39,16 +36,6 @@ namespace EventPlanner.Data
             modelBuilder.Entity<Supplier>()
                 .HasMany(s => s.Attachments)
                 .WithOne(a => a.Supplier)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Plan>()
-                .HasMany(p => p.Parts)
-                .WithOne(p => p.Plan)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<PlanPart>()
-                .HasMany(p => p.Steps)
-                .WithOne(s => s.PlanPart)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

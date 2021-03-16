@@ -18,6 +18,30 @@ export class GuestComponent implements OnInit {
   faTrash = faTrash;
   faEnvelope = faEnvelope;
 
+  public options: Object = {
+    placeholderText: 'Edit Your Content Here!',
+    heightMin: 250,
+    events: {
+      "image.beforeUpload": function (files) {
+        var editor = this;
+        if (files.length) {
+          // Create a File Reader.
+          var reader = new FileReader();
+          // Set the reader to insert images when they are loaded.
+          reader.onload = function (e) {
+            var result = e.target.result;
+            editor.image.insert(result, null, null, editor.image.get());
+          };
+          // Read image as base64.
+          reader.readAsDataURL(files[0]);
+        }
+        editor.popups.hideAll();
+        // Stop default upload chain.
+        return false;
+      }
+    }
+  }
+
   constructor(private http: HttpClient,
     @Inject('BASE_URL') private baseUrl: string,
     private router: Router,
@@ -33,24 +57,25 @@ export class GuestComponent implements OnInit {
 
         this.http.get<Guest[]>(this.baseUrl + 'api/guests/event-guests/' + this.eventId).subscribe(result => {
           this.guests = result;
-        }, error => console.error(error));
+        });
 
-      }, error => console.error(error));
+      });
     });
   }
 
   deleteGuest(index: number, guest: Guest) {
     this.http.delete(this.baseUrl + 'api/guests/' + guest.id).subscribe(() => {
       this.guests.splice(index, 1);
-    }, error => console.error(error));
+    });
+  }
+
+  updateTemplate() {
+    this.http.post(this.baseUrl + `api/events/${this.eventId}/program`, this.event).subscribe(() => {});
   }
 
   sendInvitations(resend: boolean, guestId: string) {
     this.http.get(this.baseUrl + 'api/guests/send-invitations/' + this.eventId + `?resend=${resend}&guestId=${guestId}`).subscribe(() => {
       this.toastService.show(`Invitations sent successfuly`, { classname: 'bg-success text-light' });
-    }, error => {
-      console.error(error);
-      this.toastService.show(error.error, { classname: 'bg-danger text-light' })
     });
   }
 }

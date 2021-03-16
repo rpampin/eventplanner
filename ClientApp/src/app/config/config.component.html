@@ -46,7 +46,7 @@
     </div>
 </form>
 <hr>
-<h2>SMTP</h2>
+<h2>Templates</h2>
 <form (ngSubmit)="submitConfiguration(configForm)" #configForm="ngForm" autocomplete="off">
     <div class="form-row">
         <div class="form-group col-md-12">
@@ -54,6 +54,15 @@
                 <label for="emailSignature">Email Signature</label>
                 <div [froalaEditor]="options" [(froalaModel)]="configuration.emailSignature" name="emailSignature"
                     id="emailSignature"></div>
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <div class="form-group">
+                <label for="programTemplate">Event Program Template</label>
+                <div [froalaEditor]="options" [(froalaModel)]="configuration.eventProgramTemplate" name="programTemplate"
+                    id="programTemplate"></div>
             </div>
         </div>
     </div>

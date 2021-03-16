@@ -28,11 +28,11 @@ export class GuestFormComponent implements OnInit {
         this.http.get<Guest>(this.baseUrl + 'api/guests/' + this.guestId).subscribe(result => {
           this.guest = result;
           this.guestId = result.id;
-        }, error => console.error(error));
+        });
       } else {
         this.http.get<Event>(this.baseUrl + 'api/events/' + this.eventId).subscribe(result => {
           this.guest.event = result;
-        }, error => console.error(error));
+        });
       }
     });
   }
@@ -45,11 +45,11 @@ export class GuestFormComponent implements OnInit {
     if (!this.guest.id) {
       this.http.post<Guest>(this.baseUrl + 'api/guests', this.guest).subscribe(result => {
         this.router.navigate(['../'], { relativeTo: this.route });
-      }, error => console.error(error));
+      });
     } else {
       this.http.put<Guest>(this.baseUrl + 'api/guests/' + this.guest.id, this.guest).subscribe(result => {
         this.router.navigate(['../'], { relativeTo: this.route });
-      }, error => console.error(error));
+      });
     }
   }
 }

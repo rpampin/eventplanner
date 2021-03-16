@@ -18,7 +18,7 @@ export class SupplierTypesComponent {
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
     http.get<SupplierType[]>(baseUrl + 'api/suppliertypes').subscribe(result => {
       this.types = result;
-    }, error => console.error(error));
+    });
   }
 
   submitted = false;
@@ -36,7 +36,7 @@ export class SupplierTypesComponent {
           return 0;
         });
         supplierTypeForm.reset();
-      }, error => console.error(error));
+      });
     } else {
       this.http.put<SupplierType>(this.baseUrl + 'api/suppliertypes/' + this.type.id, this.type).subscribe(() => {
         const edited = this.types.filter(t => t.id === this.type.id)[0];
@@ -47,7 +47,7 @@ export class SupplierTypesComponent {
           return 0;
         });
         supplierTypeForm.reset();
-      }, error => console.error(error));
+      });
     }
 
     this.submitted = true;
@@ -65,6 +65,6 @@ export class SupplierTypesComponent {
       this.types = this.types.filter(function (t) {
         return t.id !== typeId;
       });
-    }, error => console.error(error));
+    });
   }
 }

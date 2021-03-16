@@ -11,6 +11,24 @@
       </div>
     </div>
     <div class="form-group col-md-4">
+      <label for="guest_last_name">Last Name</label>
+      <input type="text" class="form-control" name="guest_last_name" id="guest_last_name" #guest_last_name="ngModel"
+        [(ngModel)]="guest.lastName" />
+      <div [hidden]="guest_last_name.valid || guest_last_name.pristine" class="alert alert-danger">
+        Guest Last Name is required
+      </div>
+    </div>
+    <ng-container *ngIf="guest.willAttend === true">
+      <div class="form-group col-md-4">
+        <label for="guest_table">Table</label>
+        <input type="text" class="form-control" name="guest_table" id="guest_table" [(ngModel)]="guest.table" />
+      </div>
+      <div class="form-group col-md-4">
+        <label for="guest_remarks">Remarks</label>
+        <input type="text" class="form-control" name="guest_remarks" id="guest_remarks" [(ngModel)]="guest.remarks" />
+      </div>
+    </ng-container>
+    <div class="form-group col-md-4">
       <label for="guest_email">Email</label>
       <input type="email" class="form-control" name="guest_email" id="guest_email" [(ngModel)]="guest.email" />
     </div>

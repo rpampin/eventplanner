@@ -8,5 +8,6 @@ namespace EventPlanner.Models
         [Key]
         public Guid Id { get; set; }
         public string EmailSignature { get; set; }
+        public string EventProgramTemplate { get; set; }
     }
 }

@@ -56,42 +56,82 @@
         </div>
         <div class="form-group col-md-3">
             <label for="packagePrice">Package Price</label>
-            <input type="number" class="form-control" name="packagePrice" id="packagePrice"
-                [(ngModel)]="supplier.packagePrice" />
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">{{'PHP'| currencySymbol}}</span>
+                </div>
+                <input type="number" class="form-control" name="packagePrice" id="packagePrice"
+                    [(ngModel)]="supplier.packagePrice" />
+            </div>
         </div>
         <div class="form-group col-md-3">
             <label for="discount">Discount</label>
-            <input type="number" class="form-control" name="discount" id="discount"
-                [(ngModel)]="supplier.discount" />
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">{{'PHP'| currencySymbol}}</span>
+                </div>
+                <input type="number" class="form-control" name="discount" id="discount"
+                    [(ngModel)]="supplier.discount" />
+            </div>
         </div>
         <div class="form-group col-md-3">
             <label for="otherPayments">Other Payments</label>
-            <input type="number" class="form-control" name="otherPayments" id="otherPayments"
-                [(ngModel)]="supplier.otherPayments" />
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">{{'PHP'| currencySymbol}}</span>
+                </div>
+                <input type="number" class="form-control" name="otherPayments" id="otherPayments"
+                    [(ngModel)]="supplier.otherPayments" />
+            </div>
         </div>
         <div class="form-group col-md-3">
             <label for="firstDownPayment">1st Down Payment</label>
-            <input type="number" class="form-control" name="firstDownPayment" id="firstDownPayment"
-                [(ngModel)]="supplier.firstDownPayment" />
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">{{'PHP'| currencySymbol}}</span>
+                </div>
+                <input type="number" class="form-control" name="firstDownPayment" id="firstDownPayment"
+                    [(ngModel)]="supplier.firstDownPayment" />
+            </div>
         </div>
         <div class="form-group col-md-3">
             <label for="secondDownPayment">2nd Down Payment</label>
-            <input type="number" class="form-control" name="secondDownPayment" id="secondDownPayment"
-                [(ngModel)]="supplier.secondDownPayment" />
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">{{'PHP'| currencySymbol}}</span>
+                </div>
+                <input type="number" class="form-control" name="secondDownPayment" id="secondDownPayment"
+                    [(ngModel)]="supplier.secondDownPayment" />
+            </div>
         </div>
         <div class="form-group col-md-3">
             <label for="thirdDownPayment">3rd Down Payment</label>
-            <input type="number" class="form-control" name="thirdDownPayment" id="thirdDownPayment"
-                [(ngModel)]="supplier.thirdDownPayment" />
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">{{'PHP'| currencySymbol}}</span>
+                </div>
+                <input type="number" class="form-control" name="thirdDownPayment" id="thirdDownPayment"
+                    [(ngModel)]="supplier.thirdDownPayment" />
+            </div>
         </div>
         <div class="form-group col-md-3">
             <label for="totalDown">Total Down</label>
-            <input type="number" class="form-control" name="totalDown" id="totalDown"
-                [(ngModel)]="supplier.totalDown" />
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">{{'PHP'| currencySymbol}}</span>
+                </div>
+                <input type="number" class="form-control" name="totalDown" id="totalDown"
+                    [(ngModel)]="supplier.totalDown" />
+            </div>
         </div>
         <div class="form-group col-md-3">
             <label for="balance">Balance</label>
-            <input type="number" class="form-control" name="balance" id="balance" [(ngModel)]="supplier.balance" />
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">{{'PHP'| currencySymbol}}</span>
+                </div>
+                <input type="number" class="form-control" name="balance" id="balance" [(ngModel)]="supplier.balance" />
+            </div>
         </div>
     </div>
     <div class="form-group">
