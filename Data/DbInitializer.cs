@@ -17,10 +17,14 @@ namespace EventPlanner.Data
             {
                 var eventTypes = new EventType[]
                 {
-                new EventType { Name = "Wedding" },
-                new EventType { Name = "Birthday" },
-                new EventType { Name = "Debut" },
-                new EventType { Name = "Corporations" }
+                    new EventType { Name = "Wedding" },
+                    new EventType { Name = "Birthday" },
+                    new EventType { Name = "Debut" },
+                    new EventType { Name = "Corporate" },
+                    new EventType { Name = "Reunion" },
+                    new EventType { Name = "Birthday" },
+                    new EventType { Name = "Corporate" },
+                    new EventType { Name = "Retirement" }
                 };
 
                 context.EventTypes.AddRange(eventTypes);
@@ -30,34 +34,41 @@ namespace EventPlanner.Data
             {
                 var supplierTypes = new SupplierType[]
                 {
-                    new SupplierType { Name = "BRIDAL GOWN & ACCESSORIES" },
-                    new SupplierType { Name = "GROM SUIT" },
-                    new SupplierType { Name = "ENTOURAGE GOWNS AND SUIT" },
-                    new SupplierType { Name = "BRIDAL CAR" },
-                    new SupplierType { Name = "CATERER" },
-                    new SupplierType { Name = "CAKE" },
-                    new SupplierType { Name = "DOVE IN CAGE" },
-                    new SupplierType { Name = "WEDDING RING" },
-                    new SupplierType { Name = "CEREMONY ARRANGEMENT" },
-                    new SupplierType { Name = "ENTOURAGE FLOWERS" },
-                    new SupplierType { Name = "RECEPTION STYLING" },
-                    new SupplierType { Name = "HAIR AND MAKE UP FOR BRIDE" },
-                    new SupplierType { Name = "HAIR AND MAKE UP FOR ENTOURAGE" },
-                    new SupplierType { Name = "PRENUP STYLING HMU" },
-                    new SupplierType { Name = "ENTERTAINMENT CHURCH/RECEPTION" },
-                    new SupplierType { Name = "LCD PROJECTOR & SCREEN" },
-                    new SupplierType { Name = "EMCEE" },
-                    new SupplierType { Name = "LIGHTS & SOUND SYSTEM" },
-                    new SupplierType { Name = "LED WALL" },
-                    new SupplierType { Name = "PHOTOGRAPHER" },
-                    new SupplierType { Name = "VIDEOGRAPHER" },
-                    new SupplierType { Name = "PHOTOBOOTH" },
-                    new SupplierType { Name = "INVITATION CARDS/INVITES" },
-                    new SupplierType { Name = "MISALETTE/PROGRAM" },
-                    new SupplierType { Name = "STAGE/DANCE FLOOR" },
-                    new SupplierType { Name = "FIREWORKS" },
-                    new SupplierType { Name = "POPPERS" },
-                    new SupplierType { Name = "CREW MEAL" }
+                    new SupplierType { Name = "Venue" },
+                    new SupplierType { Name = "Caterer" },
+                    new SupplierType { Name = "Florist" },
+                    new SupplierType { Name = "Stylist" },
+                    new SupplierType { Name = "Emcee" },
+                    new SupplierType { Name = "Band" },
+                    new SupplierType { Name = "Photographer" },
+                    new SupplierType { Name = "Videographer" },
+                    new SupplierType { Name = "Photobooth" },
+                    new SupplierType { Name = "Crew meals" },
+                    new SupplierType { Name = "Jeweler" },
+                    new SupplierType { Name = "Skin Aesthetics" },
+                    new SupplierType { Name = "Teeth Aesthetics" },
+                    new SupplierType { Name = "Preparation Venue" },
+                    new SupplierType { Name = "Couture" },
+                    new SupplierType { Name = "Tailor" },
+                    new SupplierType { Name = "Lights & Sounds" },
+                    new SupplierType { Name = "LED Wall" },
+                    new SupplierType { Name = "Screen & Projector" },
+                    new SupplierType { Name = "LED Animation" },
+                    new SupplierType { Name = "Poppers / Confetti" },
+                    new SupplierType { Name = "Fireworks" },
+                    new SupplierType { Name = "Bridal Car" },
+                    new SupplierType { Name = "DJ" },
+                    new SupplierType { Name = "Mobile Bar" },
+                    new SupplierType { Name = "Cake" },
+                    new SupplierType { Name = "Lechon" },
+                    new SupplierType { Name = "Beef Carving Station" },
+                    new SupplierType { Name = "Transport" },
+                    new SupplierType { Name = "Grazing Table / Box" },
+                    new SupplierType { Name = "Groom groomer" },
+                    new SupplierType { Name = "Invitation Printing" },
+                    new SupplierType { Name = "Souvenir for Sponsors" },
+                    new SupplierType { Name = "Souvenir - General" },
+                    new SupplierType { Name = "Technical director" }
                 };
 
                 context.SupplierTypes.AddRange(supplierTypes);

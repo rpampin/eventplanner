@@ -308,8 +308,20 @@ namespace EventPlanner.Data.Migrations
                 {
                     b.HasBaseType("EventPlanner.Models.Event");
 
+                    b.Property<string>("BrideAddress")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BrideEmail")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BrideMobile")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("BrideName")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BrideSocial")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CeremonyTime")
@@ -320,14 +332,20 @@ namespace EventPlanner.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("GroomAddress")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("GroomEmail")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("GroomMobile")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("GroomName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("brideSocial")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("groomSocial")
+                    b.Property<string>("GroomSocial")
                         .HasColumnType("TEXT");
 
                     b.HasDiscriminator().HasValue("Wedding");

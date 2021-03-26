@@ -12,7 +12,8 @@ namespace EventPlanner.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    EmailSignature = table.Column<string>(type: "TEXT", nullable: true)
+                    EmailSignature = table.Column<string>(type: "TEXT", nullable: true),
+                    EventProgramTemplate = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -88,8 +89,14 @@ namespace EventPlanner.Data.Migrations
                     GroomName = table.Column<string>(type: "TEXT", nullable: true),
                     CeremonyVenue = table.Column<string>(type: "TEXT", nullable: true),
                     CeremonyTime = table.Column<string>(type: "TEXT", nullable: true),
-                    brideSocial = table.Column<string>(type: "TEXT", nullable: true),
-                    groomSocial = table.Column<string>(type: "TEXT", nullable: true)
+                    BrideAddress = table.Column<string>(type: "TEXT", nullable: true),
+                    BrideMobile = table.Column<string>(type: "TEXT", nullable: true),
+                    BrideEmail = table.Column<string>(type: "TEXT", nullable: true),
+                    GroomAddress = table.Column<string>(type: "TEXT", nullable: true),
+                    GroomMobile = table.Column<string>(type: "TEXT", nullable: true),
+                    GroomEmail = table.Column<string>(type: "TEXT", nullable: true),
+                    BrideSocial = table.Column<string>(type: "TEXT", nullable: true),
+                    GroomSocial = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -108,6 +115,9 @@ namespace EventPlanner.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
+                    LastName = table.Column<string>(type: "TEXT", nullable: true),
+                    Table = table.Column<string>(type: "TEXT", nullable: true),
+                    Remarks = table.Column<string>(type: "TEXT", nullable: true),
                     Email = table.Column<string>(type: "TEXT", nullable: true),
                     Mobile = table.Column<string>(type: "TEXT", nullable: true),
                     WillAttend = table.Column<bool>(type: "INTEGER", nullable: true),

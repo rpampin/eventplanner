@@ -34,6 +34,7 @@ namespace EventPlanner.Controllers
         {
             var guest = await _context.Guests
             .Where(g => g.Event.Id == eventId)
+            .OrderBy(g => g.LastName).ThenBy(g => g.Name)
             .ToListAsync();
 
             if (guest == null)
@@ -253,16 +254,10 @@ namespace EventPlanner.Controllers
             template = template.Replace("[event.type]", @event.Type.Name);
             template = template.Replace("[event.date]", @event.Date.ToLongDateString());
             template = template.Replace("[event.celebrant]", @event.Celebrant);
-            template = template.Replace("[event.address]", @event.Address);
-            template = template.Replace("[event.mobile]", @event.Mobile);
-            template = template.Replace("[event.email]", @event.Email);
 
             subject = subject.Replace("[event.type]", @event.Type.Name);
             subject = subject.Replace("[event.date]", @event.Date.ToLongDateString());
             subject = subject.Replace("[event.celebrant]", @event.Celebrant);
-            subject = subject.Replace("[event.address]", @event.Address);
-            subject = subject.Replace("[event.mobile]", @event.Mobile);
-            subject = subject.Replace("[event.email]", @event.Email);
 
             if (@event is Wedding)
             {

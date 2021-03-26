@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EventPlanner.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210316014653_GuestDataMigration")]
-    partial class GuestDataMigration
+    [Migration("20210326174724_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -310,8 +310,20 @@ namespace EventPlanner.Data.Migrations
                 {
                     b.HasBaseType("EventPlanner.Models.Event");
 
+                    b.Property<string>("BrideAddress")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BrideEmail")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BrideMobile")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("BrideName")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BrideSocial")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CeremonyTime")
@@ -322,14 +334,20 @@ namespace EventPlanner.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("GroomAddress")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("GroomEmail")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("GroomMobile")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("GroomName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("brideSocial")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("groomSocial")
+                    b.Property<string>("GroomSocial")
                         .HasColumnType("TEXT");
 
                     b.HasDiscriminator().HasValue("Wedding");

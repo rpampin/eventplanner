@@ -11,7 +11,7 @@ export class Event {
     address: string;
     mobile: string;
     email: string;
-    package: string;
+    package: string = 'Full Planning';
     packagePrice: number;
     balance: number;
     downPayment: number;
@@ -22,6 +22,13 @@ export class Event {
     groomName: string;
     ceremonyVenue: string;
     ceremonyTime: string;
+
+    brideAddress: string;
+    brideMobile: string;
+    brideEmail: string;
+    groomAddress: string;
+    groomMobile: string;
+    groomEmail: string;
     brideSocial: string;
     groomSocial: string;
 

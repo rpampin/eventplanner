@@ -28,12 +28,15 @@ export class EventComponent implements OnInit {
   weddingEventTyperId: string;
   eventTypes: EventType[];
 
+  minDate: Date;
   bsConfig = {
     showWeekNumbers: false,
     dateInputFormat: 'MM/DD/YYYY'
   }
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private router: Router, private route: ActivatedRoute) { }
+  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private router: Router, private route: ActivatedRoute) {
+    this.minDate = new Date();
+  }
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
