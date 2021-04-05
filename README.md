@@ -1,4 +1,6 @@
-CliendID + Secret for GMAIL SMTP
-https://www.emailarchitect.net/easendmail/sdk/html/object_oauth.htm
+Event planner for Upwork contract.
+Made simple and without best practices.
 
-OR Allow Insecure Apps in account config
+Build:
+
+electronize build /target win
