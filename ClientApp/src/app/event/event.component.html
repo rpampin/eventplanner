@@ -179,7 +179,15 @@
   <div class="form-row">
     <div class="form-group col-md-4">
       <label for="package">Package</label>
-      <input type="text" class="form-control" name="package" id="package" [(ngModel)]="event.package" />
+      <select class="custom-select" name="package" id="package" #package="ngModel" [compareWith]="compareFn"
+        [(ngModel)]="event.package" required>
+        <option *ngFor="let package of packages" [ngValue]="package">
+          {{ package.name }}
+        </option>
+      </select>
+      <div [hidden]="package.valid || package.pristine" class="alert alert-danger">
+        Package is required
+      </div>
     </div>
 
     <div class="form-group col-md-4">

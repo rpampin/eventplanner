@@ -8,7 +8,7 @@ namespace EventPlanner.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Configurations",
+                name: "AppConfigurations",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
@@ -17,7 +17,7 @@ namespace EventPlanner.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Configurations", x => x.Id);
+                    table.PrimaryKey("PK_AppConfigurations", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -30,6 +30,18 @@ namespace EventPlanner.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EventTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Packages",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Packages", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -75,7 +87,7 @@ namespace EventPlanner.Data.Migrations
                     Mobile = table.Column<string>(type: "TEXT", nullable: true),
                     Email = table.Column<string>(type: "TEXT", nullable: true),
                     Social = table.Column<string>(type: "TEXT", nullable: true),
-                    Package = table.Column<string>(type: "TEXT", nullable: true),
+                    PackageId = table.Column<Guid>(type: "TEXT", nullable: true),
                     PackagePrice = table.Column<decimal>(type: "TEXT", nullable: false),
                     Balance = table.Column<decimal>(type: "TEXT", nullable: false),
                     DownPayment = table.Column<decimal>(type: "TEXT", nullable: false),
@@ -105,6 +117,12 @@ namespace EventPlanner.Data.Migrations
                         name: "FK_Events_EventTypes_TypeId",
                         column: x => x.TypeId,
                         principalTable: "EventTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Events_Packages_PackageId",
+                        column: x => x.PackageId,
+                        principalTable: "Packages",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -212,6 +230,11 @@ namespace EventPlanner.Data.Migrations
                 column: "SupplierId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Events_PackageId",
+                table: "Events",
+                column: "PackageId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Events_TypeId",
                 table: "Events",
                 column: "TypeId");
@@ -235,10 +258,10 @@ namespace EventPlanner.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Attachments");
+                name: "AppConfigurations");
 
             migrationBuilder.DropTable(
-                name: "Configurations");
+                name: "Attachments");
 
             migrationBuilder.DropTable(
                 name: "Guests");
@@ -257,6 +280,9 @@ namespace EventPlanner.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "EventTypes");
+
+            migrationBuilder.DropTable(
+                name: "Packages");
         }
     }
 }

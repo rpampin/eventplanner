@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EventPlanner.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210326174724_InitialMigration")]
+    [Migration("20210405225155_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,7 +61,7 @@ namespace EventPlanner.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Configurations");
+                    b.ToTable("AppConfigurations");
                 });
 
             modelBuilder.Entity("EventPlanner.Models.Event", b =>
@@ -108,7 +108,7 @@ namespace EventPlanner.Data.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Package")
+                    b.Property<Guid?>("PackageId")
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("PackagePrice")
@@ -140,6 +140,8 @@ namespace EventPlanner.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PackageId");
 
                     b.HasIndex("TypeId");
 
@@ -202,6 +204,20 @@ namespace EventPlanner.Data.Migrations
                     b.HasIndex("EventId");
 
                     b.ToTable("Guests");
+                });
+
+            modelBuilder.Entity("EventPlanner.Models.Package", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Packages");
                 });
 
             modelBuilder.Entity("EventPlanner.Models.SmtpConfig", b =>
@@ -371,9 +387,15 @@ namespace EventPlanner.Data.Migrations
 
             modelBuilder.Entity("EventPlanner.Models.Event", b =>
                 {
+                    b.HasOne("EventPlanner.Models.Package", "Package")
+                        .WithMany()
+                        .HasForeignKey("PackageId");
+
                     b.HasOne("EventPlanner.Models.EventType", "Type")
                         .WithMany()
                         .HasForeignKey("TypeId");
+
+                    b.Navigation("Package");
 
                     b.Navigation("Type");
                 });

@@ -36,6 +36,7 @@ import { PrintReportComponent } from './print-report/print-report.component';
 import { EmailComponent } from './email/email.component';
 import { getCurrencySymbol, registerLocaleData } from '@angular/common';
 import { HttpErrorInterceptor } from './error.interceptor';
+import { PackagesComponent } from './packages/packages.component';
 
 @Pipe({ name: 'safeHtml' })
 export class SafeHtmlPipe implements PipeTransform {
@@ -75,7 +76,8 @@ export class CurrencySymbolPipe implements PipeTransform {
     PrintReportComponent,
     SafeHtmlPipe,
     CurrencySymbolPipe,
-    EmailComponent
+    EmailComponent,
+    PackagesComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -104,6 +106,7 @@ export class CurrencySymbolPipe implements PipeTransform {
       { path: 'config', component: ConfigComponent },
       { path: 'event-types', component: EventTypesComponent },
       { path: 'supplier-types', component: SupplierTypesComponent },
+      { path: 'packages', component: PackagesComponent },
       { path: 'upcoming-events', component: UpcomingEventsComponent }
     ])
   ],

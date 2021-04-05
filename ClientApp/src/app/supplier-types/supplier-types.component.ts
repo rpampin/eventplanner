@@ -54,6 +54,7 @@ export class SupplierTypesComponent {
   }
 
   public edit(typeId: string) {
+    window.scroll(0,0);
     const toEdit = this.types.filter(t => t.id == typeId)[0];
     this.type = new SupplierType();
     this.type.id = toEdit.id;

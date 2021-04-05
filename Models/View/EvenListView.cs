@@ -11,7 +11,7 @@ namespace EventPlanner.Models.View
         public string Address { get; set; }
         public string Mobile { get; set; }
         public string Email { get; set; }
-        public string Package { get; set; }
+        public Package Package { get; set; }
         public decimal DownPayment { get; set; }
         public decimal Balance { get; set; }
         public int GuestsCount { get; set; }

@@ -11,7 +11,7 @@ export class Event {
     address: string;
     mobile: string;
     email: string;
-    package: string = 'Full Planning';
+    package: any;
     packagePrice: number;
     balance: number;
     downPayment: number;

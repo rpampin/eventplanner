@@ -12,7 +12,18 @@ namespace EventPlanner.Data
 
             context.Database.Migrate();
 
-            // Look for any students.
+            if (!context.Packages.Any())
+            {
+                var packages = new Package[]
+                {
+                    new Package { Name = "On The Day Coordination" },
+                    new Package { Name = "Partial / Mid-way Coordination" },
+                    new Package { Name = "Full Event Planning & Coordination" }
+                };
+
+                context.Packages.AddRange(packages);
+            }
+
             if (!context.EventTypes.Any())
             {
                 var eventTypes = new EventType[]

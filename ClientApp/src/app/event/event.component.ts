@@ -7,6 +7,7 @@ import { NgForm } from '@angular/forms';
 import { faUser, faUserTie, faClipboard, faDownload, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Attachment } from '../supplier-form/attachment';
+import { ToastService } from '../toast.service';
 
 @Component({
   selector: 'app-event',
@@ -27,6 +28,7 @@ export class EventComponent implements OnInit {
   event: Event = new Event();
   weddingEventTyperId: string;
   eventTypes: EventType[];
+  packages: any[];
 
   minDate: Date;
   bsConfig = {
@@ -34,7 +36,12 @@ export class EventComponent implements OnInit {
     dateInputFormat: 'MM/DD/YYYY'
   }
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private router: Router, private route: ActivatedRoute) {
+  constructor(
+      private http: HttpClient, 
+      @Inject('BASE_URL') private baseUrl: string, 
+      private router: Router, 
+      private route: ActivatedRoute,
+      private toastService: ToastService) {
     this.minDate = new Date();
   }
 
@@ -45,19 +52,24 @@ export class EventComponent implements OnInit {
     this.http.get<EventType[]>(this.baseUrl + 'api/eventtypes').subscribe(result => {
       this.eventTypes = result;
 
-      this.http.get<string>(this.baseUrl + 'api/eventtypes/wedding-type-id').subscribe(result => {
-        this.weddingEventTyperId = result;
+      this.http.get<any[]>(this.baseUrl + 'api/packages').subscribe(result => {
+        this.packages = result;
 
-        if (!!this.id) {
-          this.http.get<Event>(this.baseUrl + 'api/events/' + this.id).subscribe(result => {
-            this.event = result;
-            var a = new Date(this.event.date);
-            var b = a.toISOString().split('T')[0];
-            var c = b.split('-');
-            this.event.date = new Date(parseInt(c[0]), parseInt(c[1]) - 1, parseInt(c[2]));
-            this.attachments = this.event.attachments;
-          });
-        }
+        this.http.get<string>(this.baseUrl + 'api/eventtypes/wedding-type-id').subscribe(result => {
+          this.weddingEventTyperId = result;
+
+          if (!!this.id) {
+            this.http.get<Event>(this.baseUrl + 'api/events/' + this.id).subscribe(result => {
+              this.event = result;
+              var a = new Date(this.event.date);
+              var b = a.toISOString().split('T')[0];
+              var c = b.split('-');
+              this.event.date = new Date(parseInt(c[0]), parseInt(c[1]) - 1, parseInt(c[2]));
+              this.attachments = this.event.attachments;
+            });
+          }
+
+        });
 
       });
 
@@ -86,6 +98,10 @@ export class EventComponent implements OnInit {
       Object.keys(eventForm.controls).forEach(key => {
         eventForm.controls[key].markAsDirty();
       });
+
+      this.toastService.show("There are some error on the form. Correct these before continuing...", { classname: 'bg-danger text-light' });
+
+      window.scroll(0,0);
     }
   }
 

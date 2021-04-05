@@ -29,7 +29,7 @@ namespace EventPlanner.Models
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
         public string Social { get; set; }
-        public string Package { get; set; }
+        public Package Package { get; set; }
         [DataType(DataType.Currency)]
         public decimal PackagePrice { get; set; }
         [DataType(DataType.Currency)]

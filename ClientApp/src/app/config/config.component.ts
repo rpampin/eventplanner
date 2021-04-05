@@ -61,6 +61,8 @@ export class ConfigComponent implements OnInit {
       Object.keys(form.controls).forEach(key => {
         form.controls[key].markAsDirty();
       });
+
+      this.toastService.show("There are some error on the SMTP form. Correct these before continuing...", { classname: 'bg-danger text-light' });
     }
   }
 
@@ -74,6 +76,8 @@ export class ConfigComponent implements OnInit {
       Object.keys(form.controls).forEach(key => {
         form.controls[key].markAsDirty();
       });
+
+      this.toastService.show("There are some error on the form. Correct these before continuing...", { classname: 'bg-danger text-light' });
     }
   }
 
