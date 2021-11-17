@@ -1,0 +1,43 @@
+﻿@page "/event-type"
+@using EventPlanner.Models
+@using EventPlanner.Data
+@inject EventTypeService eventTypeService
+@inject NavigationManager NavigationManager
+
+<h3>Create Event Type</h3>
+<hr />
+
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="Name" class="control-label">Name</label>
+                <input form="Name" class="form-control" @bind="@obj.Name" />
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-success" @onclick="@Insert" value="Save" />
+                <input type="button" class="btn btn-light" @onclick="@Cancel" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    EventType obj = new EventType();
+
+    protected async void Insert()
+    {
+        await eventTypeService.InsertOne(obj);
+        NavigationManager.NavigateTo("event-types");
+    }
+
+    void Cancel()
+        => NavigationManager.NavigateTo("event-types");
+}

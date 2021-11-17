@@ -1,0 +1,43 @@
+﻿@page "/supplier-type"
+@using EventPlanner.Models
+@using EventPlanner.Data
+@inject SupplierTypeService supplierTypeService
+@inject NavigationManager NavigationManager
+
+<h3>Create Supplier Type</h3>
+<hr />
+
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="Name" class="control-label">Name</label>
+                <input form="Name" class="form-control" @bind="@obj.Name" />
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-success" @onclick="@Insert" value="Save" />
+                <input type="button" class="btn btn-light" @onclick="@Cancel" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    SupplierType obj = new SupplierType();
+
+    protected async void Insert()
+    {
+        await supplierTypeService.InsertOne(obj);
+        NavigationManager.NavigateTo("supplier-types");
+    }
+
+    void Cancel()
+        => NavigationManager.NavigateTo("supplier-types");
+}

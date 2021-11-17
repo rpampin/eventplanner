@@ -1,0 +1,67 @@
+﻿@page "/event-types"
+@using EventPlanner.Models
+@using EventPlanner.Data
+@inject EventTypeService eventTypeService
+@inject NavigationManager NavigationManager
+
+<div class="row">
+    <div class="col-md-8">
+        <h3>Event types</h3>
+    </div>
+    <div class="col-md-4" style="text-align: end">
+        <a type="button" class="btn btn-primary" href="event-type">
+            <span class="oi oi-plus"> NEW EVENT TYPE</span>
+        </a>
+    </div>
+</div>
+
+@if (Types is null)
+{
+    <p><em>Loading... !</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var type in Types)
+            {
+                <tr>
+                    <td>@type.Name</td>
+                    <td class="fit">
+                        <a type="button" class="btn btn-link" href="event-type/@type.Id">
+                            <span class="oi oi-pencil"></span>
+                        </a>
+                    </td>
+                    <td class="fit">
+                        <button type="button" class="btn btn-link" @onclick="@(e => Delete(@type))">
+                            <span class="oi oi-trash"></span>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    IEnumerable<EventType> Types;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Types = await Task.Run(() => eventTypeService.GetAll());
+    }
+
+    protected async void Delete(EventType evType)
+    {
+        await eventTypeService.DeleteOne(evType);
+        NavigationManager.NavigateTo("event-types", true);
+    }
+
+}
