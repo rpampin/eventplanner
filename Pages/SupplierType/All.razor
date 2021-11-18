@@ -4,15 +4,9 @@
 @inject SupplierTypeService supplierTypeService
 @inject NavigationManager NavigationManager
 
-<div class="row">
-    <div class="col-md-8">
-        <h3>Supplier types</h3>
-    </div>
-    <div class="col-md-4" style="text-align: end">
-        <a type="button" class="btn btn-primary" href="supplier-type">
-            <span class="oi oi-plus"> NEW SUPPLIER TYPE</span>
-        </a>
-    </div>
+<div class="title-action">
+    <MudText Typo="Typo.h2">Supplier Types</MudText>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="New">New Supplier Type</MudButton>
 </div>
 
 @if (Types is null)
@@ -21,37 +15,27 @@
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var type in Types)
-            {
-                <tr>
-                    <td>@type.Name</td>
-                    <td class="fit">
-                        <a type="button" class="btn btn-link" href="supplier-type/@type.Id">
-                            <span class="oi oi-pencil"></span>
-                        </a>
-                    </td>
-                    <td class="fit">
-                        <button type="button" class="btn btn-link" @onclick="@(e => Delete(@type))">
-                            <span class="oi oi-trash"></span>
-                        </button>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <MudTable Items="@Types" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@_loading" LoadingProgressColor="Color.Info">
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh></MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Name">@context.Name</MudTd>
+            <MudTd DataLabel="Edit" class="fit">
+                <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small" Class="ma-2" @onclick="@(e => Edit(@context.Id))"></MudIconButton>
+            </MudTd>
+            <MudTd DataLabel="Delete" class="fit">
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small" Class="ma-2" @onclick="@(e => Delete(@context))"></MudIconButton>
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
 }
 
 @code {
-    IEnumerable<SupplierType> Types;
+    IEnumerable<SupplierType> Types = null;
+    private bool _loading { get => Types == null; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -63,5 +47,11 @@ else
         await supplierTypeService.DeleteOne(evType);
         NavigationManager.NavigateTo("supplier-types", true);
     }
+
+    protected void New()
+        => NavigationManager.NavigateTo("supplier-type", true);
+
+    protected void Edit(Guid Id)
+        => NavigationManager.NavigateTo("supplier-type/" + Id, true);
 
 }

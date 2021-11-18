@@ -1,0 +1,49 @@
+﻿@page "/event/{Id}"
+@using EventPlanner.Models
+@using EventPlanner.Data
+@inject EventService eventService
+@inject NavigationManager NavigationManager
+
+<h3>Edit Event</h3>
+<hr />
+
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group" hidden>
+                <input form="Name" class="form-control" @bind="@obj.Id" />
+            </div>
+            <div class="form-group">
+                <label for="Date" class="control-label">Date</label>
+                <input form="Date" class="form-control" @bind="@obj.Date" />
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-success" @onclick="@Update" value="Update" />
+                <input type="button" class="btn btn-light" @onclick="@Cancel" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    Event obj = new Event();
+
+    protected override async Task OnInitializedAsync()
+    => obj = await Task.Run(() => eventService.GetOne(Guid.Parse(Id)));
+
+    protected async void Update()
+    {
+        await eventService.UpdateOne(obj);
+        NavigationManager.NavigateTo("events");
+    }
+
+    void Cancel()
+        => NavigationManager.NavigateTo("events");
+}

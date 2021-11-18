@@ -14,7 +14,7 @@ namespace EventPlanner.Data
 
         public async Task<IEnumerable<SupplierType>> GetAll()
             => await _context.SupplierTypes
-            .OrderBy(e => e.Name)
+            .OrderBy(e => e.Name.ToLower())
             .ToListAsync();
 
         public async Task<SupplierType> GetOne(Guid id)

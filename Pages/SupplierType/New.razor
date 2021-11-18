@@ -4,32 +4,26 @@
 @inject SupplierTypeService supplierTypeService
 @inject NavigationManager NavigationManager
 
-<h3>Create Supplier Type</h3>
-<hr />
+<MudText Typo="Typo.h2">New Supplier Type</MudText>
 
-<form>
-    <div class="row">
-        <div class="col-md-8">
-            <div class="form-group">
-                <label for="Name" class="control-label">Name</label>
-                <input form="Name" class="form-control" @bind="@obj.Name" />
-            </div>
-        </div>
-    </div>
-    <br/>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="form-group">
-                <input type="button" class="btn btn-success" @onclick="@Insert" value="Save" />
-                <input type="button" class="btn btn-light" @onclick="@Cancel" value="Cancel" />
-            </div>
-        </div>
-    </div>
-</form>
+<EditForm Model="@obj" OnValidSubmit="Insert">
+    <DataAnnotationsValidator />
+    <MudCard>
+        <MudCardContent>
+            <MudTextField Label="Name" @bind-Value="obj.Name" For="@(() => obj.Name)" />
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success">Save</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Info" OnClick="Cancel">Cancel</MudButton>
+        </MudCardActions>
+    </MudCard>
+</EditForm>
 
 @code {
-    [Parameter]
-    public string Id { get; set; }
+    MudForm form;
+    bool success;
+    string[] errors = { };
+
     SupplierType obj = new SupplierType();
 
     protected async void Insert()
@@ -40,4 +34,5 @@
 
     void Cancel()
         => NavigationManager.NavigateTo("supplier-types");
+
 }

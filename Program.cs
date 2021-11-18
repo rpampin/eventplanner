@@ -1,15 +1,16 @@
 using EventPlanner.Data;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
+using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddMudServices();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddDbContext<AppDBContext>(ops => ops.UseSqlite("Data Source=planner.db"));
 
+builder.Services.AddScoped<EventService>();
 builder.Services.AddScoped<EventTypeService>();
 builder.Services.AddScoped<SupplierTypeService>();
 

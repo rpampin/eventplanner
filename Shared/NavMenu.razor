@@ -1,39 +1,14 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">EventPlanner</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
-
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="event-types">
-                <span class="oi oi-layers" aria-hidden="true"></span> Event types
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="supplier-types">
-                <span class="oi oi-layers" aria-hidden="true"></span> Supplier types
-            </NavLink>
-        </div>
-    </nav>
-</div>
-
-@code {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-}
+﻿<MudPaper Width="250px" Class="py-3" Square="true">
+    <MudNavMenu>
+        <MudText Typo="Typo.h6" Class="px-4">Wedding & Motifs</MudText>
+        <MudDivider Class="my-2"/>
+        <MudNavLink Href="/events" Icon="@Icons.Filled.CalendarToday">Events</MudNavLink>
+        <MudNavLink Href="/send-email" Icon="@Icons.Filled.Email" Disabled="true">Send Email</MudNavLink>
+        <MudNavGroup Title="Types" Icon="@Icons.Filled.Layers">
+            <MudNavLink Href="/packages" Icon="@Icons.Filled.Layers" IconColor="Color.Primary" Disabled="true">Packages</MudNavLink>
+            <MudNavLink Href="/event-types" Icon="@Icons.Filled.Layers" IconColor="Color.Success">Event Types</MudNavLink>
+            <MudNavLink Href="/supplier-types" Icon="@Icons.Filled.Layers" IconColor="Color.Info">Supplier Types</MudNavLink>
+        </MudNavGroup>
+        <MudNavLink Href="/configuration" Icon="@Icons.Filled.Settings" Disabled="true">Configuration</MudNavLink>
+    </MudNavMenu>
+</MudPaper>

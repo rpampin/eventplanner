@@ -1,0 +1,167 @@
+﻿@page "/event"
+@using EventPlanner.Models
+@using EventPlanner.Data
+@inject EventService eventService
+@inject EventTypeService eventTypeService
+@inject NavigationManager NavigationManager
+
+<h3>Create Event</h3>
+<hr />
+
+@if (Types is null)
+{
+    <p><em>Loading... !</em></p>
+}
+else
+{
+    <form>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Type" class="control-label">Type</label>
+                    <select class="form-control custom-select" @bind="@SelectedTypeId">
+                        @foreach (var t in Types)
+                        {
+                            <option value="@t.Id">@t.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Date" class="control-label">Date</label>
+                    <input form="Date" class="form-control" @bind="@obj.Date" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="PreparationVenue" class="control-label">Preparation Venue</label>
+                    <input form="PreparationVenue" class="form-control" @bind="@obj.PreparationVenue" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="PreparationTime" class="control-label">Preparation Time</label>
+                    <input form="PreparationTime" class="form-control" @bind="@obj.PreparationTime" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="ReceptionVenue" class="control-label">Reception Venue</label>
+                    <input form="ReceptionVenue" class="form-control" @bind="@obj.ReceptionVenue" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="ReceptionTime" class="control-label">Reception Time</label>
+                    <input form="ReceptionTime" class="form-control" @bind="@obj.ReceptionTime" />
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="Celebrant" class="control-label">Celebrant/s</label>
+                    <input form="Celebrant" class="form-control" @bind="@obj.Celebrant" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="Address" class="control-label">Address</label>
+                    <input form="Address" class="form-control" @bind="@obj.Address" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="Mobile" class="control-label">Mobile</label>
+                    <input form="Mobile" class="form-control" @bind="@obj.Mobile" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="Email" class="control-label">Email</label>
+                    <input form="Email" class="form-control" @bind="@obj.Email" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="Social" class="control-label">FB/IG</label>
+                    <input form="Social" class="form-control" @bind="@obj.Social" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="Package" class="control-label">Package</label>
+                    <select class="form-control custom-select" @bind="@SelectedTypeId">
+                        @foreach (var p in Packages)
+                        {
+                            <option value="@p.Id">@p.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="PackagePrice" class="control-label">Package Price</label>
+                    <input form="PackagePrice" class="form-control" @bind="@obj.PackagePrice" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="Notes" class="control-label">Notes</label>
+                    <input form="Notes" class="form-control" @bind="@obj.Notes" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="DownPayment" class="control-label">Down Payment</label>
+                    <input form="DownPayment" class="form-control" @bind="@obj.DownPayment" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="AdditionalCharges" class="control-label">Additional Charges</label>
+                    <input form="AdditionalCharges" class="form-control" @bind="@obj.AdditionalCharges" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="Balance" class="control-label">Balance</label>
+                    <input form="Balance" class="form-control" @bind="@obj.Balance" />
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input type="button" class="btn btn-success" @onclick="@Insert" value="Save" />
+                    <input type="button" class="btn btn-light" @onclick="@Cancel" value="Cancel" />
+                </div>
+            </div>
+        </div>
+    </form>
+}
+
+@code {
+    Event obj = new Event();
+    IEnumerable<EventType> Types = Enumerable.Empty<EventType>();
+    IEnumerable<Package> Packages = Enumerable.Empty<Package>();
+
+    Guid SelectedTypeId { get; set; }
+    Guid SelectedPackageId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Types = await Task.Run(() => eventTypeService.GetAll());
+    }
+
+    protected async void Insert()
+    {
+        obj.Type = Types.First(t => t.Id.Equals(SelectedTypeId));
+
+        await eventService.InsertOne(obj);
+        NavigationManager.NavigateTo("events");
+    }
+
+    void Cancel()
+        => NavigationManager.NavigateTo("events");
+}

@@ -4,6 +4,11 @@ namespace EventPlanner.Models
 {
     public class Event
     {
+        public Event()
+        {
+            Date = DateTime.Now.Date;
+        }
+
         [Key]
         public Guid Id { get; set; }
         [Required]
