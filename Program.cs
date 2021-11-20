@@ -50,9 +50,9 @@ app.UseRouting();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
-app.Run();
+var culture = new CultureInfo("fil-PH");
+culture.NumberFormat.CurrencySymbol = "₱";
+CultureInfo.DefaultThreadCurrentCulture = culture;
+CultureInfo.DefaultThreadCurrentUICulture = culture;
 
-var cultureInfo = new CultureInfo("fil-PH");
-cultureInfo.NumberFormat.CurrencySymbol = "₱";
-CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
-CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+app.Run();

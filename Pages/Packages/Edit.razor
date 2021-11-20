@@ -13,7 +13,7 @@
     <DataAnnotationsValidator />
     <MudCard>
         <MudCardContent>
-            <MudTextField Label="Name" @bind-Value="obj.Name" For="@(() => obj.Name)" />
+            <MudTextField Label="Name" Variant="Variant.Outlined" @bind-Value="obj.Name" For="@(() => obj.Name)" />
         </MudCardContent>
         <MudCardActions>
             <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Filled.Save" Class="ml-auto">Update</MudButton>

@@ -30,7 +30,7 @@ else
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Type">@context.Type</MudTd>
-            <MudTd DataLabel="Date">@context.Date</MudTd>
+            <MudTd DataLabel="Date">@context.Date.Value.ToShortDateString()</MudTd>
             <MudTd DataLabel="Celebrant">@context.Celebrant</MudTd>
             <MudTd DataLabel="Mobile">@context.Mobile</MudTd>
             <MudTd DataLabel="Email">@context.Email</MudTd>
