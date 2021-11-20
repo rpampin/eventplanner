@@ -15,7 +15,7 @@
 }
 else
 {
-    <MudTable Items="@Types" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@_loading" LoadingProgressColor="Color.Info">
+    <MudTable Items="@Types" Hover="true" Breakpoint="Breakpoint.Sm">
         <HeaderContent>
             <MudTh>Name</MudTh>
             <MudTh></MudTh>
@@ -35,7 +35,6 @@ else
 
 @code {
     IEnumerable<SupplierType> Types = null;
-    private bool _loading { get => Types == null; }
 
     protected override async Task OnInitializedAsync()
     {

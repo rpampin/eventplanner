@@ -15,32 +15,28 @@ namespace EventPlanner.Models
         public EventType Type { get; set; }
         [Required]
         [DataType(DataType.Date)]
-        public DateTime Date { get; set; }
+        public DateTime? Date { get; set; }
         [Required]
         public string Celebrant { get; set; }
         [Required]
-        public string ReceptionVenue { get; set; }
+        public DateTime? ReceptionVenue { get; set; }
         [Required]
-        public string ReceptionTime { get; set; }
+        public TimeSpan? ReceptionTime { get; set; }
         [Required]
-        public string PreparationVenue { get; set; }
+        public DateTime? PreparationVenue { get; set; }
         [Required]
-        public string PreparationTime { get; set; }
+        public TimeSpan? PreparationTime { get; set; }
         public string Address { get; set; }
-        [DataType(DataType.PhoneNumber)]
+        [Phone]
         public string Mobile { get; set; }
-        [DataType(DataType.EmailAddress)]
+        [EmailAddress]
         public string Email { get; set; }
         public string Social { get; set; }
         public Package Package { get; set; }
-        [DataType(DataType.Currency)]
         public decimal PackagePrice { get; set; }
-        [DataType(DataType.Currency)]
         public decimal Balance { get; set; }
-        [DataType(DataType.Currency)]
         public decimal DownPayment { get; set; }
         public string Notes { get; set; }
-        [DataType(DataType.Currency)]
         public decimal AdditionalCharges { get; set; }
         public string Plan { get; set; }
         public string EmailSubject { get; set; }

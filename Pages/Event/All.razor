@@ -4,15 +4,9 @@
 @inject EventService EventService
 @inject NavigationManager NavigationManager
 
-<div class="row">
-    <div class="col-md-8">
-        <h3>Events</h3>
-    </div>
-    <div class="col-md-4" style="text-align: end">
-        <a type="button" class="btn btn-primary" href="event">
-            <span class="oi oi-plus"> NEW EVENT</span>
-        </a>
-    </div>
+<div class="title-action">
+    <MudText Typo="Typo.h2">Events</MudText>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="New">New Event</MudButton>
 </div>
 
 @if (Events is null)
@@ -21,47 +15,36 @@
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Type</th>
-                <th>Date</th>
-                <th>Celebrant</th>
-                <th>Mobile</th>
-                <th>Email</th>
-                <th>Package</th>
-                <th>DownPayment</th>
-                <th>Balance</th>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var ev in Events)
-            {
-                <tr>
-                    <td>@ev.Type</td>
-                    <td>@ev.Date</td>
-                    <td>@ev.Celebrant</td>
-                    <td>@ev.Mobile</td>
-                    <td>@ev.Email</td>
-                    <td>@ev.Package</td>
-                    <td>@ev.DownPayment</td>
-                    <td>@ev.Balance</td>
-                    <td class="fit">
-                        <a type="button" class="btn btn-link" href="event/@ev.Id">
-                            <span class="oi oi-pencil"></span>
-                        </a>
-                    </td>
-                    <td class="fit">
-                        <button type="button" class="btn btn-link" @onclick="@(e => Delete(@ev.Id))">
-                            <span class="oi oi-trash"></span>
-                        </button>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <MudTable Items="@Events" Hover="true" Breakpoint="Breakpoint.Sm">
+        <HeaderContent>
+            <MudTh>Type</MudTh>
+            <MudTh>Date</MudTh>
+            <MudTh>Celebrant</MudTh>
+            <MudTh>Mobile</MudTh>
+            <MudTh>Email</MudTh>
+            <MudTh>Package</MudTh>
+            <MudTh>DownPayment</MudTh>
+            <MudTh>Balance</MudTh>
+            <MudTh></MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Type">@context.Type</MudTd>
+            <MudTd DataLabel="Date">@context.Date</MudTd>
+            <MudTd DataLabel="Celebrant">@context.Celebrant</MudTd>
+            <MudTd DataLabel="Mobile">@context.Mobile</MudTd>
+            <MudTd DataLabel="Email">@context.Email</MudTd>
+            <MudTd DataLabel="Package">@context.Package.Name</MudTd>
+            <MudTd DataLabel="DownPayment">₱@context.DownPayment</MudTd>
+            <MudTd DataLabel="Balance">₱@context.Balance</MudTd>
+            <MudTd DataLabel="Edit" class="fit">
+                <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small" Class="ma-2" @onclick="@(e => Edit(@context.Id))"></MudIconButton>
+            </MudTd>
+            <MudTd DataLabel="Delete" class="fit">
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small" Class="ma-2" @onclick="@(e => Delete(@context.Id))"></MudIconButton>
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
 }
 
 @code {
@@ -78,4 +61,9 @@ else
         NavigationManager.NavigateTo("events", true);
     }
 
+    protected void New()
+        => NavigationManager.NavigateTo("event", true);
+
+    protected void Edit(Guid Id)
+        => NavigationManager.NavigateTo("event/" + Id, true);
 }

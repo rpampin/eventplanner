@@ -1,12 +1,12 @@
-﻿@page "/event-types"
+﻿@page "/packages"
 @using EventPlanner.Models
 @using EventPlanner.Data
-@inject EventTypeService eventTypeService
+@inject PackageService packageService
 @inject NavigationManager NavigationManager
 
 <div class="title-action">
-    <MudText Typo="Typo.h2">Event Types</MudText>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="New">New Event Type</MudButton>
+    <MudText Typo="Typo.h2">Packages</MudText>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="New">New Package</MudButton>
 </div>
 
 @if (Types is null)
@@ -34,22 +34,23 @@ else
 }
 
 @code {
-    IEnumerable<EventType> Types;
+    IEnumerable<Package> Types = null;
 
     protected override async Task OnInitializedAsync()
     {
-        Types = await Task.Run(() => eventTypeService.GetAll());
+        Types = await Task.Run(() => packageService.GetAll());
     }
 
-    protected async void Delete(EventType evType)
+    protected async void Delete(Package type)
     {
-        await eventTypeService.DeleteOne(evType);
-        NavigationManager.NavigateTo("event-types", true);
+        await packageService.DeleteOne(type);
+        NavigationManager.NavigateTo("packages", true);
     }
 
     protected void New()
-        => NavigationManager.NavigateTo("event-type", true);
+        => NavigationManager.NavigateTo("package", true);
 
     protected void Edit(Guid Id)
-        => NavigationManager.NavigateTo("event-type/" + Id, true);
+        => NavigationManager.NavigateTo("package/" + Id, true);
+
 }

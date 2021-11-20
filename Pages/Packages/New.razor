@@ -1,11 +1,11 @@
-﻿@page "/event-type"
+﻿@page "/package"
 @using EventPlanner.Models
 @using EventPlanner.Data
-@inject EventTypeService eventTypeService
+@inject PackageService packageService
 @inject NavigationManager NavigationManager
 
 <div class="title-action">
-    <MudText Typo="Typo.h2">New Event Type</MudText>
+    <MudText Typo="Typo.h2">New Package</MudText>
     <MudButton Variant="Variant.Text" StartIcon="@Icons.Filled.Close" Color="Color.Transparent" OnClick="Cancel"> Cancel</MudButton>
 </div>
 
@@ -22,14 +22,15 @@
 </EditForm>
 
 @code {
-    EventType obj = new EventType();
+    Package obj = new Package();
 
     protected async void Insert()
     {
-        await eventTypeService.InsertOne(obj);
-        NavigationManager.NavigateTo("event-types");
+        await packageService.InsertOne(obj);
+        NavigationManager.NavigateTo("packages");
     }
 
     void Cancel()
-        => NavigationManager.NavigateTo("event-types", true);
+        => NavigationManager.NavigateTo("packages", true);
+
 }

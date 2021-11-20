@@ -20,7 +20,7 @@ namespace EventPlanner.Data
 
         public async Task<IEnumerable<EventType>> GetAll()
             => await _context.EventTypes
-            .OrderBy(e => e.Name)
+            .OrderBy(e => e.Name.ToLower())
             .ToListAsync();
 
         public async Task<EventType> GetOne(Guid id)

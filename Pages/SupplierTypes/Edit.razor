@@ -4,7 +4,10 @@
 @inject SupplierTypeService supplierTypeService
 @inject NavigationManager NavigationManager
 
-<MudText Typo="Typo.h2">Edit Supplier Type</MudText>
+<div class="title-action">
+    <MudText Typo="Typo.h2">Edit Supplier Type</MudText>
+    <MudButton Variant="Variant.Text" StartIcon="@Icons.Filled.Close" Color="Color.Transparent" OnClick="Cancel"> Cancel</MudButton>
+</div>
 
 <EditForm Model="@obj" OnValidSubmit="Update">
     <DataAnnotationsValidator />
@@ -13,8 +16,7 @@
             <MudTextField Label="Name" @bind-Value="obj.Name" For="@(() => obj.Name)" />
         </MudCardContent>
         <MudCardActions>
-            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success">Update</MudButton>
-            <MudButton Variant="Variant.Filled" Color="Color.Info" OnClick="Cancel">Cancel</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Filled.Save" Class="ml-auto">Update</MudButton>
         </MudCardActions>
     </MudCard>
 </EditForm>
@@ -34,5 +36,5 @@
     }
 
     void Cancel()
-        => NavigationManager.NavigateTo("supplier-types");
+        => NavigationManager.NavigateTo("supplier-types", true);
 }

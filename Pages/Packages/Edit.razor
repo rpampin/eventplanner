@@ -1,11 +1,11 @@
-﻿@page "/event-type/{Id}"
+﻿@page "/package/{Id}"
 @using EventPlanner.Models
 @using EventPlanner.Data
-@inject EventTypeService eventTypeService
+@inject PackageService packageService
 @inject NavigationManager NavigationManager
 
 <div class="title-action">
-    <MudText Typo="Typo.h2">Edit Event Type</MudText>
+    <MudText Typo="Typo.h2">Edit Package</MudText>
     <MudButton Variant="Variant.Text" StartIcon="@Icons.Filled.Close" Color="Color.Transparent" OnClick="Cancel"> Cancel</MudButton>
 </div>
 
@@ -24,17 +24,17 @@
 @code {
     [Parameter]
     public string Id { get; set; }
-    EventType obj = new EventType();
+    Package obj = new Package();
 
     protected override async Task OnInitializedAsync()
-    => obj = await Task.Run(() => eventTypeService.GetOne(Guid.Parse(Id)));
+    => obj = await Task.Run(() => packageService.GetOne(Guid.Parse(Id)));
 
     protected async void Update()
     {
-        await eventTypeService.UpdateOne(obj);
-        NavigationManager.NavigateTo("event-types");
+        await packageService.UpdateOne(obj);
+        NavigationManager.NavigateTo("packages");
     }
 
     void Cancel()
-        => NavigationManager.NavigateTo("event-types", true);
+        => NavigationManager.NavigateTo("packages", true);
 }

@@ -1,6 +1,7 @@
-using EventPlanner.Data;
+﻿using EventPlanner.Data;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,9 +11,10 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddDbContext<AppDBContext>(ops => ops.UseSqlite("Data Source=planner.db"));
 
-builder.Services.AddScoped<EventService>();
-builder.Services.AddScoped<EventTypeService>();
-builder.Services.AddScoped<SupplierTypeService>();
+builder.Services.AddTransient<EventService>();
+builder.Services.AddTransient<PackageService>();
+builder.Services.AddTransient<EventTypeService>();
+builder.Services.AddTransient<SupplierTypeService>();
 
 var app = builder.Build();
 
@@ -49,3 +51,8 @@ app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
 app.Run();
+
+var cultureInfo = new CultureInfo("fil-PH");
+cultureInfo.NumberFormat.CurrencySymbol = "₱";
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
