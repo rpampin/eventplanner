@@ -1,6 +1,8 @@
 ﻿@page "/event/{Id}"
 @using EventPlanner.Models
 @using EventPlanner.Data
+@using System.IO
+@inject IJSRuntime JS
 @inject EventService eventService
 @inject EventTypeService eventTypeService
 @inject PackageService packageService
@@ -100,7 +102,7 @@ else
                                         <MudItem>
                                             @attachment.Name
                                             <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" @onclick="@(e => DeleteAttachment(@attachment))"></MudIconButton>
-                                            <MudIconButton Icon="@Icons.Material.Filled.Download" Color="Color.Primary"></MudIconButton>
+                                            <MudIconButton Icon="@Icons.Material.Filled.Download" Color="Color.Primary" @onclick="@(e => DownloadAttachment(@attachment))"></MudIconButton>
                                         </MudItem>
                                     </MudListItem>
                                 }
@@ -153,4 +155,10 @@ else
     async Task DeleteAttachment(Attachment attachment)
         => await attachmentService.DeleteFile(attachment);
 
+    async Task DownloadAttachment(Attachment attachment)
+    {
+        var fileStream = await attachmentService.GetFile(attachment);
+        using var streamRef = new DotNetStreamReference(stream: fileStream);
+        await JS.InvokeVoidAsync("downloadFileFromStream", attachment.Name, streamRef);
+    }
 }
