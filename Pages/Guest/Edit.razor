@@ -1,0 +1,101 @@
+﻿@page "/event/{EventId}/guest/{Id}"
+@using EventPlanner.Models
+@using EventPlanner.Data
+@inject GuestService GuestService
+@inject EventService EventService
+@inject NavigationManager NavigationManager
+
+<div class="title-action">
+    <MudText Typo="Typo.h2">Edit Guest</MudText>
+    <MudButton Variant="Variant.Text" StartIcon="@Icons.Filled.Close" Color="Color.Transparent" OnClick="Cancel"> Cancel</MudButton>
+</div>
+
+@if (Event is null || obj is null)
+{
+    <p><em>Loading... !</em></p>
+}
+else
+{
+    <EditForm Model="@obj" OnValidSubmit="Update">
+        <DataAnnotationsValidator />
+        <MudCard>
+            <MudCardContent>
+                <MudGrid>
+                    <MudItem xs="12">
+                        <MudText Typo="Typo.h4">Event</MudText>
+                    </MudItem>
+                    @if (Event.Type is not null)
+                    {
+                        <MudItem xs="4">
+                            <MudTextField Label="Event Type" Variant="Variant.Outlined" @bind-Value="Event.Type.Name" />
+                        </MudItem>
+                    }
+                    <MudItem xs="4">
+                        <MudTextField Label="Event Date" Variant="Variant.Outlined" @bind-Value="Event.Date" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudTextField Label="Event Celebrants" Variant="Variant.Outlined" @bind-Value="Event.Celebrant" />
+                    </MudItem>
+                </MudGrid>
+                <MudGrid>
+                    <MudItem xs="12">
+                        <MudText Typo="Typo.h4">Guest</MudText>
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudTextField Label="Name" Variant="Variant.Outlined" @bind-Value="obj.Name" For="@(() => obj.Name)" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudTextField Label="Last Name" Variant="Variant.Outlined" @bind-Value="obj.LastName" For="@(() => obj.LastName)" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudTextField Label="Table" Variant="Variant.Outlined" @bind-Value="obj.Table" For="@(() => obj.Table)" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudTextField Label="Remarks" Variant="Variant.Outlined" @bind-Value="obj.Remarks" For="@(() => obj.Remarks)" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudTextField Label="Email" Variant="Variant.Outlined" @bind-Value="obj.Email" For="@(() => obj.Email)" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudTextField Label="Mobile" Variant="Variant.Outlined" @bind-Value="obj.Mobile" For="@(() => obj.Mobile)" />
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudRadioGroup @bind-SelectedOption="@obj.WillAttend">
+                            <MudRadio Option="@((bool?)true)">Yes</MudRadio>
+                            <MudRadio Option="@((bool?)false)">No</MudRadio>
+                            <MudRadio Option="@((bool?)null)">N/A</MudRadio>
+                        </MudRadioGroup>
+                    </MudItem>
+                </MudGrid>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Filled.Save" Class="ml-auto">Save</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </EditForm>
+}
+
+@code {
+    [Parameter]
+    public string EventId { get; set; }
+    [Parameter]
+    public string Id { get; set; }
+    Event Event = new Event();
+    Guest obj = new Guest();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Event = await Task.Run(() => EventService.GetOne(Guid.Parse(EventId)));
+        obj = await Task.Run(() => GuestService.GetOne(Guid.Parse(Id)));
+    }
+
+    protected async void Update()
+    {
+        obj.Event = Event;
+        await GuestService.UpdateOne(obj);
+        NavigationManager.NavigateTo($"/event/{EventId}/guests");
+    }
+
+    void Cancel()
+        => NavigationManager.NavigateTo($"/event/{EventId}/guests", true);
+}
