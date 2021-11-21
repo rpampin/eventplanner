@@ -112,6 +112,11 @@ else
                 </MudGrid>
             </MudCardContent>
             <MudCardActions>
+                <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Info" StartIcon="@Icons.Filled.Assignment" Class="ml-auto">Progam</MudButton>
+                <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Info" StartIcon="@Icons.Filled.AssignmentInd" Class="ml-2" @onclick="@(e => ViewGuests(@obj.Id))">Guests</MudButton>
+                <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Info" StartIcon="@Icons.Filled.AssignmentTurnedIn" Class="ml-2">Suppliers</MudButton>
+            </MudCardActions>
+            <MudCardActions>
                 <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Filled.Save" Class="ml-auto">Save</MudButton>
             </MudCardActions>
         </MudCard>
@@ -161,4 +166,7 @@ else
         using var streamRef = new DotNetStreamReference(stream: fileStream);
         await JS.InvokeVoidAsync("downloadFileFromStream", attachment.Name, streamRef);
     }
+
+    void ViewGuests(Guid eventId)
+        => NavigationManager.NavigateTo($"/event/{eventId}/guests");
 }

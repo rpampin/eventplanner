@@ -11,9 +11,9 @@ namespace EventPlanner.Models
         public string LastName { get; set; }
         public string Table { get; set; }
         public string Remarks { get; set; }
-        [DataType(DataType.EmailAddress)]
+        [EmailAddress]
         public string Email { get; set; }
-        [DataType(DataType.PhoneNumber)]
+        [Phone]
         public string Mobile { get; set; }
         public bool? WillAttend { get; set; }
         public bool InvitationSent { get; set; }

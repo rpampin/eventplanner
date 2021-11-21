@@ -20,7 +20,7 @@ namespace EventPlanner.Data
             => await Get(_context.Events.Where(e => e.Date >= DateTime.Now.Date));
 
 
-        public async Task<IEnumerable<EvenListView>> Get(IQueryable<Event> query)
+        async Task<IEnumerable<EvenListView>> Get(IQueryable<Event> query)
             => await query
             .OrderBy(e => e.Date)
             .Select(e => new EvenListView
@@ -42,6 +42,7 @@ namespace EventPlanner.Data
 
         public async Task<Event> GetOne(Guid id)
             => await _context.Events
+                .Include(e => e.Type)
                 .Include(e => e.Attachments)
                 .FirstOrDefaultAsync(t => t.Id.Equals(id));
 
