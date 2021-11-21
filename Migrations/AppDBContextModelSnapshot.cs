@@ -23,14 +23,14 @@ namespace EventPlanner.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Base64")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<Guid?>("EventId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Path")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -82,7 +82,8 @@ namespace EventPlanner.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime?>("Date")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Discriminator")
@@ -116,19 +117,19 @@ namespace EventPlanner.Migrations
                     b.Property<string>("Plan")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PreparationTime")
+                    b.Property<TimeSpan?>("PreparationTime")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PreparationVenue")
+                    b.Property<DateTime?>("PreparationVenue")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ReceptionTime")
+                    b.Property<TimeSpan?>("ReceptionTime")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ReceptionVenue")
+                    b.Property<DateTime?>("ReceptionVenue")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -160,6 +161,9 @@ namespace EventPlanner.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("EventTypes");
                 });
@@ -212,9 +216,13 @@ namespace EventPlanner.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Packages");
                 });

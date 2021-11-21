@@ -2,8 +2,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EventPlanner.Models
 {
-    public class Supplier
+    public class Supplier : IWithAttachments
     {
+        public Supplier()
+        {
+            Attachments = new List<Attachment>();
+        }
+
         [Key]
         public Guid Id { get; set; }
         [Required]

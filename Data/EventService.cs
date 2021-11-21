@@ -18,7 +18,7 @@ namespace EventPlanner.Data
 
         public async Task<IEnumerable<EvenListView>> GetAllPending()
             => await Get(_context.Events.Where(e => e.Date >= DateTime.Now.Date));
-            
+
 
         public async Task<IEnumerable<EvenListView>> Get(IQueryable<Event> query)
             => await query
@@ -41,7 +41,9 @@ namespace EventPlanner.Data
             .ToListAsync();
 
         public async Task<Event> GetOne(Guid id)
-            => await _context.Events.FirstOrDefaultAsync(t => t.Id.Equals(id));
+            => await _context.Events
+                .Include(e => e.Attachments)
+                .FirstOrDefaultAsync(t => t.Id.Equals(id));
 
         public async Task<bool> InsertOne(Event Event)
         {

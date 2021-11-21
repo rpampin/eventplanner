@@ -11,6 +11,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddDbContext<AppDBContext>(ops => ops.UseSqlite("Data Source=planner.db"));
 
+builder.Services.AddTransient<AttachmentService>();
 builder.Services.AddTransient<EventService>();
 builder.Services.AddTransient<PackageService>();
 builder.Services.AddTransient<EventTypeService>();

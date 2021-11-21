@@ -9,7 +9,7 @@ namespace EventPlanner.Models
         [Required]
         public string Name { get; set; }
         [Required]
-        public string Base64 { get; set; }
+        public string Path { get; set; }
         public Supplier Supplier { get; set; }
         public Event Event { get; set; }
     }

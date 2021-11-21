@@ -2,11 +2,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EventPlanner.Models
 {
-    public class Event
+    public class Event : IWithAttachments
     {
         public Event()
         {
             Date = DateTime.Now.Date;
+            Attachments = new List<Attachment>();
         }
 
         [Key]
