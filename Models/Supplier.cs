@@ -16,9 +16,9 @@ namespace EventPlanner.Models
         [Required]
         public SupplierType Type { get; set; }
         public string ContactPerson { get; set; }
-        [DataType(DataType.PhoneNumber)]
+        [Phone]
         public string Mobile { get; set; }
-        [DataType(DataType.EmailAddress)]
+        [EmailAddress]
         public string Email { get; set; }
         public IList<Attachment> Attachments { get; set; }
         public bool DownPaymentRequired { get; set; }

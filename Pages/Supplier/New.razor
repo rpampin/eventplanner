@@ -1,0 +1,123 @@
+﻿@page "/event/{EventId}/supplier"
+@using EventPlanner.Models
+@using EventPlanner.Data
+@inject EventService EventService
+@inject SupplierService SupplierService
+@inject SupplierTypeService SupplierTypeService;
+@inject NavigationManager NavigationManager
+
+<div class="title-action">
+    <MudText Typo="Typo.h2">New Supplier</MudText>
+    <MudButton Variant="Variant.Text" StartIcon="@Icons.Filled.Close" Color="Color.Transparent" OnClick="Cancel"> Cancel</MudButton>
+</div>
+
+@if (Event is null || Types is null)
+{
+    <p><em>Loading... !</em></p>
+}
+else
+{
+    <EditForm Model="@obj" OnValidSubmit="Insert">
+        <DataAnnotationsValidator />
+        <MudCard>
+            <MudCardContent>
+                <MudGrid>
+                    <MudItem xs="12">
+                        <MudText Typo="Typo.h4">Event</MudText>
+                    </MudItem>
+                    @if (Event.Type is not null)
+                    {
+                        <MudItem xs="4">
+                            <MudTextField Label="Event Type" Variant="Variant.Outlined" @bind-Value="Event.Type.Name" />
+                        </MudItem>
+                    }
+                    <MudItem xs="4">
+                        <MudTextField Label="Event Date" Variant="Variant.Outlined" @bind-Value="Event.Date" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudTextField Label="Event Celebrants" Variant="Variant.Outlined" @bind-Value="Event.Celebrant" />
+                    </MudItem>
+                </MudGrid>
+                <MudGrid>
+                    <MudItem xs="12">
+                        <MudText Typo="Typo.h4">Supplier</MudText>
+                    </MudItem>
+                    <MudItem xs="6">
+                        <MudSelect T="SupplierType" Label="Type" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" @bind-Value="obj.Type" For="@(() => obj.Type)">
+                            @foreach (var et in Types)
+                            {
+                                <MudSelectItem Value="@et">@et.Name</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem xs="6">
+                        <MudTextField Label="Name" Variant="Variant.Outlined" @bind-Value="obj.Name" For="@(() => obj.Name)" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudTextField Label="Contact Person" Variant="Variant.Outlined" @bind-Value="obj.ContactPerson" For="@(() => obj.ContactPerson)" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudTextField Label="Mobile" Variant="Variant.Outlined" @bind-Value="obj.Mobile" For="@(() => obj.Mobile)" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudTextField Label="Email" Variant="Variant.Outlined" @bind-Value="obj.Email" For="@(() => obj.Email)" />
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudCheckBox Label="Requires Down Payment" @bind-Checked="@obj.DownPaymentRequired"></MudCheckBox>
+                    </MudItem>
+                    <MudItem xs="3">
+                        <MudNumericField Label="Package Price" Adornment="Adornment.Start" AdornmentText="₱" HideSpinButtons="true" Format="N2" Variant="Variant.Outlined" @bind-Value="obj.PackagePrice" For="@(() => obj.PackagePrice)" />
+                    </MudItem>
+                    <MudItem xs="3">
+                        <MudNumericField Label="Discount" Adornment="Adornment.Start" AdornmentText="₱" HideSpinButtons="true" Format="N2" Variant="Variant.Outlined" @bind-Value="obj.Discount" For="@(() => obj.Discount)" />
+                    </MudItem>
+                    <MudItem xs="3">
+                        <MudNumericField Label="Other Payments" Adornment="Adornment.Start" AdornmentText="₱" HideSpinButtons="true" Format="N2" Variant="Variant.Outlined" @bind-Value="obj.OtherPayments" For="@(() => obj.OtherPayments)" />
+                    </MudItem>
+                    <MudItem xs="3">
+                        <MudNumericField Label="1st Down Payment" Adornment="Adornment.Start" AdornmentText="₱" HideSpinButtons="true" Format="N2" Variant="Variant.Outlined" @bind-Value="obj.FirstDownPayment" For="@(() => obj.FirstDownPayment)" />
+                    </MudItem>
+                    <MudItem xs="3">
+                        <MudNumericField Label="2nd Down Payment" Adornment="Adornment.Start" AdornmentText="₱" HideSpinButtons="true" Format="N2" Variant="Variant.Outlined" @bind-Value="obj.SecondDownPayment" For="@(() => obj.SecondDownPayment)" />
+                    </MudItem>
+                    <MudItem xs="3">
+                        <MudNumericField Label="3rd Down Payment" Adornment="Adornment.Start" AdornmentText="₱" HideSpinButtons="true" Format="N2" Variant="Variant.Outlined" @bind-Value="obj.ThirdDownPayment" For="@(() => obj.ThirdDownPayment)" />
+                    </MudItem>
+                    <MudItem xs="3">
+                        <MudNumericField Label="Total Down" Adornment="Adornment.Start" AdornmentText="₱" HideSpinButtons="true" Format="N2" Variant="Variant.Outlined" @bind-Value="obj.TotalDown" For="@(() => obj.TotalDown)" />
+                    </MudItem>
+                    <MudItem xs="3">
+                        <MudNumericField Label="Balance" Adornment="Adornment.Start" AdornmentText="₱" HideSpinButtons="true" Format="N2" Variant="Variant.Outlined" @bind-Value="obj.Balance" For="@(() => obj.Balance)" />
+                    </MudItem>
+                </MudGrid>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Filled.Save" Class="ml-auto">Save</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </EditForm>
+}
+
+@code {
+    [Parameter]
+    public string EventId { get; set; }
+    Event Event = new Event();
+    Supplier obj = new Supplier();
+    IEnumerable<SupplierType> Types = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Types = await Task.Run(() => SupplierTypeService.GetAll());
+        Event = await Task.Run(() => EventService.GetOne(Guid.Parse(EventId)));
+    }
+
+    protected async void Insert()
+    {
+        obj.Event = Event;
+        await SupplierService.InsertOne(obj);
+        NavigationManager.NavigateTo($"/event/{EventId}/suppliers");
+    }
+
+    void Cancel()
+        => NavigationManager.NavigateTo($"/event/{EventId}/suppliers", true);
+}

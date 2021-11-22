@@ -1,17 +1,17 @@
-﻿@page "/event/{EventId}/guests"
+﻿@page "/event/{EventId}/suppliers"
 @using EventPlanner.Models.ModelView
 @using EventPlanner.Data
 @inject EventService EventService
-@inject GuestService GuestService
+@inject SupplierService SupplierService
 @inject NavigationManager NavigationManager
 
 <div class="title-action">
-    <MudText Typo="Typo.h2">Guests</MudText>
+    <MudText Typo="Typo.h2">Suppliers</MudText>
     <MudButton Variant="Variant.Filled" Color="Color.Transparent" StartIcon="@Icons.Material.Filled.KeyboardArrowLeft" OnClick="Back" Class="ml-auto">Back to Event</MudButton>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="New" Class="ml-2">New Guest</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="New" Class="ml-2">New Supplier</MudButton>
 </div>
 
-@if (Guests is null)
+@if (Suppliers is null)
 {
     <p><em>Loading... !</em></p>
 }
@@ -38,33 +38,25 @@ else
             </MudGrid>
         </MudCardHeader>
         <MudCardContent>
-            <MudText Typo="Typo.h4">Guests</MudText>
-            <MudTable Items="@Guests" Hover="true" Breakpoint="Breakpoint.Sm">
+            <MudText Typo="Typo.h4">Suppliers</MudText>
+            <MudTable Items="@Suppliers" Hover="true" Breakpoint="Breakpoint.Sm">
                 <HeaderContent>
-                    <MudTh>Last Name</MudTh>
                     <MudTh>Name</MudTh>
+                    <MudTh>Type</MudTh>
+                    <MudTh>Contact Person</MudTh>
                     <MudTh>Email</MudTh>
-                    <MudTh>Moblie</MudTh>
-                    <MudTh>Attendance</MudTh>
-                    <MudTh>Table</MudTh>
-                    <MudTh>Remarks</MudTh>
-                    <MudTh></MudTh>
+                    <MudTh>Package Price</MudTh>
+                    <MudTh>Balance</MudTh>
                     <MudTh></MudTh>
                     <MudTh></MudTh>
                 </HeaderContent>
                 <RowTemplate>
-                    <MudTd DataLabel="LastName">@context.LastName</MudTd>
                     <MudTd DataLabel="Name">@context.Name</MudTd>
-                    <MudTd DataLabel="Email">@context.Email</MudTd>
+                    <MudTd DataLabel="TypeName">@context.Type.Name</MudTd>
                     <MudTd DataLabel="Mobile">@context.Mobile</MudTd>
-                    <MudTd DataLabel="WillAttend">@(context.WillAttend.HasValue ? context.WillAttend.Value ? "Attending" : "NOT Attending" : "N/A")</MudTd>
-                    <MudTd DataLabel="Table">@context.Table</MudTd>
-                    <MudTd DataLabel="Remarks">@context.Remarks</MudTd>
-                    <MudTd DataLabel="SendInvite" class="fit">
-                        <MudTooltip Text="Send invite">
-                            <MudIconButton Icon="@Icons.Material.Filled.Mail" Color="Color.Success" Size="Size.Small" Class="ma-2"></MudIconButton>
-                        </MudTooltip>
-                    </MudTd>
+                    <MudTd DataLabel="Email">@context.Email</MudTd>
+                    <MudTd DataLabel="PackagePrice">₱@context.PackagePrice</MudTd>
+                    <MudTd DataLabel="Balance">₱@context.Balance</MudTd>
                     <MudTd DataLabel="Edit" class="fit">
                         <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small" Class="ma-2" @onclick="@(e => Edit(@context.Id))"></MudIconButton>
                     </MudTd>
@@ -81,26 +73,26 @@ else
     [Parameter]
     public string EventId { get; set; }
     Models.Event Event = new Models.Event();
-    IEnumerable<Models.Guest> Guests;
+    IEnumerable<Models.Supplier> Suppliers;
 
     protected override async Task OnInitializedAsync()
     {
         Event = await Task.Run(() => EventService.GetOne(Guid.Parse(EventId)));
-        Guests = await Task.Run(() => GuestService.GetAll(Guid.Parse(EventId)));
+        Suppliers = await Task.Run(() => SupplierService.GetAll(Guid.Parse(EventId)));
     }
 
-    protected async void Delete(Models.Guest Guest)
+    protected async void Delete(Models.Supplier Supplier)
     {
-        await GuestService.DeleteOne(Guest);
-        NavigationManager.NavigateTo($"/event/{EventId}/guests", true);
+        await SupplierService.DeleteOne(Supplier);
+        NavigationManager.NavigateTo($"/event/{EventId}/suppliers", true);
     }
 
     protected void Back()
     => NavigationManager.NavigateTo($"/event/{EventId}", true);
 
     protected void New()
-    => NavigationManager.NavigateTo($"/event/{EventId}/guest", true);
+    => NavigationManager.NavigateTo($"/event/{EventId}/supplier", true);
 
     protected void Edit(Guid Id)
-    => NavigationManager.NavigateTo($"/event/{EventId}/guest/{Id}", true);
+    => NavigationManager.NavigateTo($"/event/{EventId}/supplier/{Id}", true);
     }
