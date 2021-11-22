@@ -33,6 +33,7 @@ namespace EventPlanner.Models
         [EmailAddress]
         public string Email { get; set; }
         public string Social { get; set; }
+        [Required]
         public Package Package { get; set; }
         public decimal PackagePrice { get; set; }
         public decimal Balance { get; set; }

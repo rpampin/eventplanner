@@ -15,7 +15,7 @@
 }
 else
 {
-    <MudTable Items="@Events" Hover="true" Breakpoint="Breakpoint.Sm">
+    <MudTable Items="@Events" OnRowClick="Edit" T="EvenListView" Hover="true" Breakpoint="Breakpoint.Sm">
         <HeaderContent>
             <MudTh>Type</MudTh>
             <MudTh>Date</MudTh>
@@ -25,7 +25,6 @@ else
             <MudTh>Package</MudTh>
             <MudTh>DownPayment</MudTh>
             <MudTh>Balance</MudTh>
-            <MudTh></MudTh>
             <MudTh></MudTh>
         </HeaderContent>
         <RowTemplate>
@@ -37,9 +36,6 @@ else
             <MudTd DataLabel="Package">@context.Package.Name</MudTd>
             <MudTd DataLabel="DownPayment">₱@context.DownPayment</MudTd>
             <MudTd DataLabel="Balance">₱@context.Balance</MudTd>
-            <MudTd DataLabel="Edit" class="fit">
-                <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small" Class="ma-2" @onclick="@(e => Edit(@context.Id))"></MudIconButton>
-            </MudTd>
             <MudTd DataLabel="Delete" class="fit">
                 <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small" Class="ma-2" @onclick="@(e => Delete(@context.Id))"></MudIconButton>
             </MudTd>
@@ -64,6 +60,7 @@ else
     protected void New()
         => NavigationManager.NavigateTo("event", true);
 
-    protected void Edit(Guid Id)
-        => NavigationManager.NavigateTo("event/" + Id, true);
+    private void Edit(TableRowClickEventArgs<EvenListView> args)
+        => NavigationManager.NavigateTo("event/" + args.Item.Id, true);
+
 }

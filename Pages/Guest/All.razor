@@ -39,7 +39,7 @@ else
         </MudCardHeader>
         <MudCardContent>
             <MudText Typo="Typo.h4">Guests</MudText>
-            <MudTable Items="@Guests" Hover="true" Breakpoint="Breakpoint.Sm">
+            <MudTable Items="@Guests" OnRowClick="Edit" T="Models.Guest" Hover="true" Breakpoint="Breakpoint.Sm">
                 <HeaderContent>
                     <MudTh>Last Name</MudTh>
                     <MudTh>Name</MudTh>
@@ -48,7 +48,6 @@ else
                     <MudTh>Attendance</MudTh>
                     <MudTh>Table</MudTh>
                     <MudTh>Remarks</MudTh>
-                    <MudTh></MudTh>
                     <MudTh></MudTh>
                     <MudTh></MudTh>
                 </HeaderContent>
@@ -64,9 +63,6 @@ else
                         <MudTooltip Text="Send invite">
                             <MudIconButton Icon="@Icons.Material.Filled.Mail" Color="Color.Success" Size="Size.Small" Class="ma-2"></MudIconButton>
                         </MudTooltip>
-                    </MudTd>
-                    <MudTd DataLabel="Edit" class="fit">
-                        <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small" Class="ma-2" @onclick="@(e => Edit(@context.Id))"></MudIconButton>
                     </MudTd>
                     <MudTd DataLabel="Delete" class="fit">
                         <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small" Class="ma-2" @onclick="@(e => Delete(@context))"></MudIconButton>
@@ -96,11 +92,11 @@ else
     }
 
     protected void Back()
-    => NavigationManager.NavigateTo($"/event/{EventId}", true);
+        => NavigationManager.NavigateTo($"/event/{EventId}", true);
 
     protected void New()
-    => NavigationManager.NavigateTo($"/event/{EventId}/guest", true);
+        => NavigationManager.NavigateTo($"/event/{EventId}/guest", true);
 
-    protected void Edit(Guid Id)
-    => NavigationManager.NavigateTo($"/event/{EventId}/guest/{Id}", true);
+    private void Edit(TableRowClickEventArgs<Models.Guest> args)
+        => NavigationManager.NavigateTo($"/event/{EventId}/guest/{args.Item.Id}", true);
     }

@@ -39,7 +39,7 @@ else
         </MudCardHeader>
         <MudCardContent>
             <MudText Typo="Typo.h4">Suppliers</MudText>
-            <MudTable Items="@Suppliers" Hover="true" Breakpoint="Breakpoint.Sm">
+            <MudTable Items="@Suppliers" OnRowClick="Edit" T="Models.Supplier" Hover="true" Breakpoint="Breakpoint.Sm">
                 <HeaderContent>
                     <MudTh>Name</MudTh>
                     <MudTh>Type</MudTh>
@@ -47,7 +47,6 @@ else
                     <MudTh>Email</MudTh>
                     <MudTh>Package Price</MudTh>
                     <MudTh>Balance</MudTh>
-                    <MudTh></MudTh>
                     <MudTh></MudTh>
                 </HeaderContent>
                 <RowTemplate>
@@ -57,9 +56,6 @@ else
                     <MudTd DataLabel="Email">@context.Email</MudTd>
                     <MudTd DataLabel="PackagePrice">₱@context.PackagePrice</MudTd>
                     <MudTd DataLabel="Balance">₱@context.Balance</MudTd>
-                    <MudTd DataLabel="Edit" class="fit">
-                        <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small" Class="ma-2" @onclick="@(e => Edit(@context.Id))"></MudIconButton>
-                    </MudTd>
                     <MudTd DataLabel="Delete" class="fit">
                         <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small" Class="ma-2" @onclick="@(e => Delete(@context))"></MudIconButton>
                     </MudTd>
@@ -88,11 +84,11 @@ else
     }
 
     protected void Back()
-    => NavigationManager.NavigateTo($"/event/{EventId}", true);
+        => NavigationManager.NavigateTo($"/event/{EventId}", true);
 
     protected void New()
-    => NavigationManager.NavigateTo($"/event/{EventId}/supplier", true);
+        => NavigationManager.NavigateTo($"/event/{EventId}/supplier", true);
 
-    protected void Edit(Guid Id)
-    => NavigationManager.NavigateTo($"/event/{EventId}/supplier/{Id}", true);
+    private void Edit(TableRowClickEventArgs<Models.Supplier> args)
+        => NavigationManager.NavigateTo($"/event/{EventId}/supplier/{args.Item.Id}", true);
     }

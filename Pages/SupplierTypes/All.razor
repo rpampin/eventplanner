@@ -15,17 +15,13 @@
 }
 else
 {
-    <MudTable Items="@Types" Hover="true" Breakpoint="Breakpoint.Sm">
+    <MudTable Items="@Types" OnRowClick="Edit" T="SupplierType" Hover="true" Breakpoint="Breakpoint.Sm">
         <HeaderContent>
             <MudTh>Name</MudTh>
-            <MudTh></MudTh>
             <MudTh></MudTh>
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Name">@context.Name</MudTd>
-            <MudTd DataLabel="Edit" class="fit">
-                <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small" Class="ma-2" @onclick="@(e => Edit(@context.Id))"></MudIconButton>
-            </MudTd>
             <MudTd DataLabel="Delete" class="fit">
                 <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small" Class="ma-2" @onclick="@(e => Delete(@context))"></MudIconButton>
             </MudTd>
@@ -50,7 +46,7 @@ else
     protected void New()
         => NavigationManager.NavigateTo("supplier-type", true);
 
-    protected void Edit(Guid Id)
-        => NavigationManager.NavigateTo("supplier-type/" + Id, true);
+    private void Edit(TableRowClickEventArgs<SupplierType> args)
+        => NavigationManager.NavigateTo("supplier-type/" + args.Item.Id, true);
 
 }
