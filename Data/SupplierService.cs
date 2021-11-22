@@ -22,6 +22,7 @@ namespace EventPlanner.Data
         public async Task<Supplier> GetOne(Guid id)
             => await _context.Suppliers
                 .Include(e => e.Type)
+                .Include(e => e.Attachments)
                 .FirstOrDefaultAsync(t => t.Id.Equals(id));
 
         public async Task<bool> InsertOne(Supplier Supplier)

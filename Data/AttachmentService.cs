@@ -40,12 +40,30 @@ namespace EventPlanner.Data
         {
             T parent = (T)await _context.FindAsync(typeof(T), objectId);
 
+            string path = "";
+            switch (typeof(T))
+            {
+                case var cls when cls == typeof(Event):
+                    {
+                        path = _options.EventAttachment;
+                        break;
+                    }
+                case var cls when cls == typeof(Supplier):
+                    {
+                        path = _options.SupplierAttachment;
+                        break;
+                    }
+                default:
+                    throw new NotImplementedException();
+            }
+
             foreach (var f in files)
             {
                 var readStream = f.OpenReadStream();
                 byte[] bytes = new byte[readStream.Length];
                 await readStream.ReadAsync(bytes, 0, (int)readStream.Length);
-                string filePath = Path.Combine(_options.Root, _options.EventAttachment.Replace("{parentId}", objectId.ToString()));
+
+                string filePath = path.Replace("{parentId}", objectId.ToString());
                 await _storage.WriteAsync(Path.Combine(filePath, f.Name), bytes);
 
                 parent.Attachments.Add(new Attachment
@@ -63,7 +81,8 @@ namespace EventPlanner.Data
         {
             _context.Attachments.Remove(attachment);
             await _context.SaveChangesAsync();
-            File.Delete(Path.Combine(attachment.Path, attachment.Name));
+            string fullPath = $"{_options.Root}/{attachment.Path}/{attachment.Name}";
+            File.Delete(fullPath);
         }
     }
 }

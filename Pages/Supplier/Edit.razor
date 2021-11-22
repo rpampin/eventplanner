@@ -1,9 +1,12 @@
 ﻿@page "/event/{EventId}/supplier/{Id}"
 @using EventPlanner.Models
 @using EventPlanner.Data
+@using System.IO
+@inject IJSRuntime JS
 @inject EventService EventService
 @inject SupplierService SupplierService
 @inject SupplierTypeService SupplierTypeService;
+@inject AttachmentService attachmentService
 @inject NavigationManager NavigationManager
 
 <div class="title-action">
@@ -89,6 +92,29 @@ else
                     <MudItem xs="3">
                         <MudNumericField Label="Balance" Adornment="Adornment.Start" AdornmentText="₱" HideSpinButtons="true" Format="N2" Variant="Variant.Outlined" @bind-Value="obj.Balance" For="@(() => obj.Balance)" />
                     </MudItem>
+                    <MudItem xs="12">
+                        <div class="title-action">
+                            <MudText Typo="Typo.h4">Attachments</MudText>
+                            <InputFile id="fileInput" OnChange="UploadFiles" hidden multiple />
+                            <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.CloudUpload" for="fileInput">Upload Files</MudButton>
+                        </div>
+                        @if (obj.Attachments != null)
+                        {
+                            <MudText Typo="@Typo.h6">@obj.Attachments.Count() File@(obj.Attachments.Count() == 1 ? "" : "s"):</MudText>
+                            <MudList>
+                                @foreach (var attachment in obj.Attachments)
+                                {
+                                    <MudListItem Icon="@Icons.Filled.AttachFile" @key="@attachment">
+                                        <MudItem>
+                                            @attachment.Name
+                                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" @onclick="@(e => DeleteAttachment(@attachment))"></MudIconButton>
+                                            <MudIconButton Icon="@Icons.Material.Filled.Download" Color="Color.Primary" @onclick="@(e => DownloadAttachment(@attachment))"></MudIconButton>
+                                        </MudItem>
+                                    </MudListItem>
+                                }
+                            </MudList>
+                        }
+                    </MudItem>
                 </MudGrid>
             </MudCardContent>
             <MudCardActions>
@@ -123,4 +149,25 @@ else
 
     void Cancel()
         => NavigationManager.NavigateTo($"/event/{EventId}/suppliers", true);
+
+    IList<IBrowserFile> files = new List<IBrowserFile>();
+    async Task UploadFiles(InputFileChangeEventArgs e)
+    {
+        foreach (var file in e.GetMultipleFiles())
+        {
+            files.Add(file);
+        }
+        await attachmentService.UpdateFiles<Supplier>(obj.Id, files);
+        files.Clear();
+    }
+
+    async Task DeleteAttachment(Attachment attachment)
+        => await attachmentService.DeleteFile(attachment);
+
+    async Task DownloadAttachment(Attachment attachment)
+    {
+        var fileStream = await attachmentService.GetFile(attachment);
+        using var streamRef = new DotNetStreamReference(stream: fileStream);
+        await JS.InvokeVoidAsync("downloadFileFromStream", attachment.Name, streamRef);
+    }
 }
