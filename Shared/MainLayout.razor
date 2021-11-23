@@ -1,13 +1,16 @@
 ﻿@inherits LayoutComponentBase
 
-<PageTitle>EventPlanner</PageTitle>
-
-<div class="page" style="background-color: lightgray">
-    <NavMenu />
-    <MudContainer Fixed="true">
-        @Body
-    </MudContainer>
-</div>
-
 <MudThemeProvider />
+<MudDialogProvider />
 <MudSnackbarProvider />
+
+<MudLayout>
+    <MudDrawer Open="true">
+        <NavMenu />
+    </MudDrawer>
+    <MudMainContent>
+        <MudContainer Fixed="true">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>

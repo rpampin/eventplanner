@@ -4,10 +4,17 @@
 @inject EventService EventService
 @inject NavigationManager NavigationManager
 
-<div class="title-action">
-    <MudText Typo="Typo.h2">Events</MudText>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="New">New Event</MudButton>
-</div>
+<MudGrid Justify="Justify.FlexEnd">
+    <MudItem xs="8">
+        <MudText Typo="Typo.h2">Events</MudText>
+    </MudItem>
+    <MudItem xs="2" Style="align-self: center;">
+        <MudCheckBox @bind-Checked="@ShowPastEvents" Label="Inclue past events"></MudCheckBox>
+    </MudItem>
+    <MudItem xs="2" Style="align-self: center;">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="New">New Event</MudButton>
+    </MudItem>
+</MudGrid>
 
 @if (Events is null)
 {
@@ -44,6 +51,7 @@ else
 }
 
 @code {
+    bool ShowPastEvents { get; set; }
     IEnumerable<EvenListView> Events;
 
     protected override async Task OnInitializedAsync()
