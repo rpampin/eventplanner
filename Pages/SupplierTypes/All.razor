@@ -1,6 +1,7 @@
 ﻿@page "/supplier-types"
 @using EventPlanner.Models
 @using EventPlanner.Data
+@inject IJSRuntime JS
 @inject SupplierTypeService supplierTypeService
 @inject NavigationManager NavigationManager
 
@@ -39,8 +40,12 @@ else
 
     protected async void Delete(SupplierType evType)
     {
-        await supplierTypeService.DeleteOne(evType);
-        NavigationManager.NavigateTo("supplier-types", true);
+        bool confirmed = await JS.InvokeAsync<bool>("confirm", "Are you sure?");
+        if (confirmed)
+        {
+            await supplierTypeService.DeleteOne(evType);
+            NavigationManager.NavigateTo("supplier-types", true);
+        }
     }
 
     protected void New()

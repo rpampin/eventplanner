@@ -1,6 +1,7 @@
 ﻿@page "/packages"
 @using EventPlanner.Models
 @using EventPlanner.Data
+@inject IJSRuntime JS
 @inject PackageService packageService
 @inject NavigationManager NavigationManager
 
@@ -39,8 +40,12 @@ else
 
     protected async void Delete(Package type)
     {
-        await packageService.DeleteOne(type);
-        NavigationManager.NavigateTo("packages", true);
+        bool confirmed = await JS.InvokeAsync<bool>("confirm", "Are you sure?");
+        if (confirmed)
+        {
+            await packageService.DeleteOne(type);
+            NavigationManager.NavigateTo("packages", true);
+        }
     }
 
     protected void New()

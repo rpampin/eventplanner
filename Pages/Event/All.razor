@@ -1,6 +1,7 @@
 ﻿@page "/events"
 @using EventPlanner.Models.ModelView
 @using EventPlanner.Data
+@inject IJSRuntime JS
 @inject EventService EventService
 @inject NavigationManager NavigationManager
 
@@ -61,8 +62,12 @@ else
 
     protected async void Delete(Guid id)
     {
-        await EventService.DeleteOne(id);
-        NavigationManager.NavigateTo("events", true);
+        bool confirmed = await JS.InvokeAsync<bool>("confirm", "Are you sure?");
+        if (confirmed)
+        {
+            await EventService.DeleteOne(id);
+            NavigationManager.NavigateTo("events", true);
+        }
     }
 
     protected void New()

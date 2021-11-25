@@ -1,6 +1,7 @@
 ﻿@page "/event-types"
 @using EventPlanner.Models
 @using EventPlanner.Data
+@inject IJSRuntime JS
 @inject EventTypeService eventTypeService
 @inject NavigationManager NavigationManager
 
@@ -39,8 +40,12 @@ else
 
     protected async void Delete(EventType evType)
     {
-        await eventTypeService.DeleteOne(evType);
-        NavigationManager.NavigateTo("event-types", true);
+        bool confirmed = await JS.InvokeAsync<bool>("confirm", "Are you sure?");
+        if (confirmed)
+        {
+            await eventTypeService.DeleteOne(evType);
+            NavigationManager.NavigateTo("event-types", true);
+        }
     }
 
     protected void New()
