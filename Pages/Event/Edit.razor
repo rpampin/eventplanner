@@ -1,4 +1,5 @@
 ﻿@page "/event/{Id}"
+@using Syncfusion.Blazor.RichTextEditor
 @using EventPlanner.Models
 @using EventPlanner.Data
 @using System.IO
@@ -87,27 +88,57 @@ else
                         <MudNumericField Label="Balance" Adornment="Adornment.Start" AdornmentText="₱" HideSpinButtons="true" Format="N2" Variant="Variant.Outlined" @bind-Value="obj.Balance" For="@(() => obj.Balance)" />
                     </MudItem>
                     <MudItem xs="12">
-                        <div class="title-action">
-                            <MudText Typo="Typo.h4">Attachments</MudText>
-                            <InputFile id="fileInput" OnChange="UploadFiles" hidden multiple />
-                            <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.CloudUpload" for="fileInput">Upload Files</MudButton>
-                        </div>
-                        @if (obj.Attachments != null)
-                        {
-                            <MudText Typo="@Typo.h6">@obj.Attachments.Count() File@(obj.Attachments.Count() == 1 ? "" : "s"):</MudText>
-                            <MudList>
-                                @foreach (var attachment in obj.Attachments)
-                                {
-                                    <MudListItem Icon="@Icons.Filled.AttachFile" @key="@attachment">
-                                        <MudItem>
-                                            @attachment.Name
-                                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" @onclick="@(e => DeleteAttachment(@attachment))"></MudIconButton>
-                                            <MudIconButton Icon="@Icons.Material.Filled.Download" Color="Color.Primary" @onclick="@(e => DownloadAttachment(@attachment))"></MudIconButton>
-                                        </MudItem>
-                                    </MudListItem>
-                                }
-                            </MudList>
-                        }
+                        <MudExpansionPanels>
+                            <MudExpansionPanel>
+                                <TitleContent>
+                                    <div class="d-flex">
+                                        <MudIcon Icon="@Icons.Filled.Book" class="mr-3"></MudIcon>
+                                        <MudText>Program</MudText>
+                                    </div>
+                                </TitleContent>
+                                <ChildContent>
+                                    <SfRichTextEditor @bind-Value="@obj.Plan">
+                                        <RichTextEditorToolbarSettings Items="@Tools" />
+                                        <RichTextEditorImageSettings SaveFormat="SaveFormat.Base64" />
+                                    </SfRichTextEditor>
+                                </ChildContent>
+                            </MudExpansionPanel>
+                        </MudExpansionPanels>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudExpansionPanels>
+                            <MudExpansionPanel>
+                                <TitleContent>
+                                    <div class="d-flex">
+                                        <MudIcon Icon="@Icons.Filled.AttachFile" class="mr-3"></MudIcon>
+                                        <MudText>Files</MudText>
+                                    </div>
+                                </TitleContent>
+                                <ChildContent>
+                                    <div class="title-action">
+                                        <MudText></MudText>
+                                        <InputFile id="fileInput" OnChange="UploadFiles" hidden multiple />
+                                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.FileUpload" for="fileInput">Upload Files</MudButton>
+                                    </div>
+                                    @if (obj.Attachments != null)
+                                    {
+                                        <MudText Typo="@Typo.h6">@obj.Attachments.Count() File@(obj.Attachments.Count() == 1 ? "" : "s"):</MudText>
+                                        <MudList>
+                                            @foreach (var attachment in obj.Attachments)
+                                            {
+                                                <MudListItem Icon="@Icons.Filled.AttachFile" @key="@attachment">
+                                                    <MudItem>
+                                                        @attachment.Name
+                                                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" @onclick="@(e => DeleteAttachment(@attachment))"></MudIconButton>
+                                                        <MudIconButton Icon="@Icons.Material.Filled.Download" Color="Color.Primary" @onclick="@(e => DownloadAttachment(@attachment))"></MudIconButton>
+                                                    </MudItem>
+                                                </MudListItem>
+                                            }
+                                        </MudList>
+                                    }
+                                </ChildContent>
+                            </MudExpansionPanel>
+                        </MudExpansionPanels>
                     </MudItem>
                 </MudGrid>
             </MudCardContent>
@@ -125,9 +156,52 @@ else
 @code {
     [Parameter]
     public string Id { get; set; }
+    SfRichTextEditor RteObj;
     Event obj = new Event();
     IEnumerable<EventType> Types = null;
     IEnumerable<Package> Packages = null;
+
+    private List<ToolbarItemModel> Tools = new List<ToolbarItemModel>()
+    {
+        new ToolbarItemModel() { Command = ToolbarCommand.Bold },
+        new ToolbarItemModel() { Command = ToolbarCommand.Italic },
+        new ToolbarItemModel() { Command = ToolbarCommand.Underline },
+        new ToolbarItemModel() { Command = ToolbarCommand.StrikeThrough },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.FontName },
+        new ToolbarItemModel() { Command = ToolbarCommand.FontSize },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.FontColor },
+        new ToolbarItemModel() { Command = ToolbarCommand.BackgroundColor },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.LowerCase },
+        new ToolbarItemModel() { Command = ToolbarCommand.UpperCase },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.SuperScript },
+        new ToolbarItemModel() { Command = ToolbarCommand.SubScript },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.Formats },
+        new ToolbarItemModel() { Command = ToolbarCommand.Alignments },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.OrderedList },
+        new ToolbarItemModel() { Command = ToolbarCommand.UnorderedList },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.Outdent },
+        new ToolbarItemModel() { Command = ToolbarCommand.Indent },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.CreateLink },
+        new ToolbarItemModel() { Command = ToolbarCommand.Image },
+        new ToolbarItemModel() { Command = ToolbarCommand.CreateTable },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.ClearFormat },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.Print },
+        new ToolbarItemModel() { Command = ToolbarCommand.SourceCode },
+        new ToolbarItemModel() { Command = ToolbarCommand.FullScreen },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.Undo },
+        new ToolbarItemModel() { Command = ToolbarCommand.Redo }
+    };
 
     protected override async Task OnInitializedAsync()
     {

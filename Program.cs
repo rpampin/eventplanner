@@ -1,6 +1,7 @@
 ﻿using EventPlanner.Data;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
+using Syncfusion.Blazor;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMudServices();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddSyncfusionBlazor();
 builder.Services.AddDbContext<AppDBContext>(ops => ops.UseSqlite("Data Source=planner.db"));
 
 builder.Services.AddTransient<AttachmentService>();

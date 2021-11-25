@@ -64,11 +64,19 @@ namespace EventPlanner.Data
                 await readStream.ReadAsync(bytes, 0, (int)readStream.Length);
 
                 string filePath = path.Replace("{parentId}", objectId.ToString());
-                await _storage.WriteAsync(Path.Combine(filePath, f.Name), bytes);
+
+                string fileName = f.Name;
+                while (File.Exists(Path.Combine(_options.Root, filePath, fileName)))
+                {
+                    var dotIndex = f.Name.LastIndexOf('.');
+                    fileName = fileName.Insert(dotIndex, new Random().Next(1, 99).ToString());
+                }
+
+                await _storage.WriteAsync(Path.Combine(filePath, fileName), bytes);
 
                 parent.Attachments.Add(new Attachment
                 {
-                    Name = f.Name,
+                    Name = fileName,
                     Path = filePath
                 });
             }

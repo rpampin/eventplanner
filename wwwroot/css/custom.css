@@ -16,3 +16,7 @@
 .mud-table-body .mud-table-row {
     cursor: pointer !important;
 }
+
+.sf-license-warning {
+    display: none !important;
+}

@@ -20,6 +20,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
     <PackageReference Include="MudBlazor" Version="6.0.2" />
     <PackageReference Include="Storage.Net" Version="9.3.0" />
+    <PackageReference Include="Syncfusion.Blazor.RichTextEditor" Version="19.3.0.55" />
   </ItemGroup>
 
 </Project>
