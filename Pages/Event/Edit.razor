@@ -93,6 +93,25 @@ else
                             <MudExpansionPanel>
                                 <TitleContent>
                                     <div class="d-flex">
+                                        <MudIcon Icon="@Icons.Filled.Email" class="mr-3"></MudIcon>
+                                        <MudText>Guest's Invitation Email Template</MudText>
+                                    </div>
+                                </TitleContent>
+                                <ChildContent>
+                                    <MudTextField Label="Email Subject" Variant="Variant.Outlined" @bind-Value="obj.EmailSubject" For="@(() => obj.EmailSubject)" />
+                                    <SfRichTextEditor @bind-Value="@obj.EmailTemplate">
+                                        <RichTextEditorToolbarSettings Items="@Tools" />
+                                        <RichTextEditorImageSettings SaveFormat="SaveFormat.Base64" />
+                                    </SfRichTextEditor>
+                                </ChildContent>
+                            </MudExpansionPanel>
+                        </MudExpansionPanels>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudExpansionPanels>
+                            <MudExpansionPanel>
+                                <TitleContent>
+                                    <div class="d-flex">
                                         <MudIcon Icon="@Icons.Filled.Book" class="mr-3"></MudIcon>
                                         <MudText>Program</MudText>
                                         <MudIconButton Icon="@Icons.Filled.Print" Class="ml-auto" OnClick="PrintPlan" Style="margin: 0; padding: 0;">Budget Form</MudIconButton>
