@@ -1,0 +1,49 @@
+﻿@page "/conf/smtp"
+@using EventPlanner.Data
+@using EventPlanner.Models
+@inject ConfigurationService ConfigurationService
+@inject NavigationManager NavigationManager
+
+<div class="title-action">
+    <MudText Typo="Typo.h2">Smtp Configuration</MudText>
+</div>
+
+<EditForm Model="@obj" OnValidSubmit="Save">
+    <DataAnnotationsValidator />
+    <MudCard>
+        <MudCardContent>
+            <MudGrid>
+                <MudItem xs="6">
+                    <MudTextField Label="Host" Variant="Variant.Outlined" @bind-Value="obj.Host" For="@(() => obj.Host)" />
+                </MudItem>
+                <MudItem xs="6">
+                    <MudNumericField Label="Port" Variant="Variant.Outlined" @bind-Value="obj.Port" For="@(() => obj.Port)" HideSpinButtons="true" />
+                </MudItem>
+                <MudItem xs="6">
+                    <MudTextField Label="Username" Variant="Variant.Outlined" @bind-Value="obj.Username" For="@(() => obj.Username)" />
+                </MudItem>
+                <MudItem xs="6">
+                    <MudTextField Label="Password" Variant="Variant.Outlined" InputType="InputType.Password" @bind-Value="obj.Password" For="@(() => obj.Password)" />
+                </MudItem>
+            </MudGrid>
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Filled.Save" Class="ml-auto">Update</MudButton>
+        </MudCardActions>
+    </MudCard>
+</EditForm>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    SmtpConfig obj = new();
+
+    protected override async Task OnInitializedAsync()
+        => obj = await ConfigurationService.GetSmtpConfig();
+
+    async Task Save()
+    {
+        await ConfigurationService.SaveSmtpConfig(obj);
+        NavigationManager.NavigateTo("/conf/smtp", true);
+    }
+}

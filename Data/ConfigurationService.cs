@@ -23,5 +23,18 @@ namespace EventPlanner.Data
 
             await _context.SaveChangesAsync();
         }
+
+        public async Task<Models.SmtpConfig> GetSmtpConfig()
+            => await _context.SmtpConfig.SingleOrDefaultAsync() ?? new Models.SmtpConfig();
+
+        public async Task SaveSmtpConfig(Models.SmtpConfig smtp)
+        {
+            if (smtp.Id == Guid.Empty)
+                await _context.SmtpConfig.AddAsync(smtp);
+            else
+                _context.SmtpConfig.Update(smtp);
+
+            await _context.SaveChangesAsync();
+        }
     }
 }
