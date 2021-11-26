@@ -15,7 +15,7 @@ namespace EventPlanner.Data
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Wedding> Weddings { get; set; }
         public DbSet<SmtpConfig> SmtpConfig { get; set; }
-        public DbSet<Configuration> Configurations { get; set; }
+        public DbSet<Templates> Templates { get; set; }
         public DbSet<Package> Packages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -36,8 +36,6 @@ namespace EventPlanner.Data
                 .HasMany(s => s.Attachments)
                 .WithOne(a => a.Supplier)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Configuration>().ToTable("AppConfigurations");
         }
     }
 }

@@ -10,6 +10,9 @@
             <MudNavLink Href="/event-types" Icon="@Icons.Filled.Layers" IconColor="Color.Success">Event Types</MudNavLink>
             <MudNavLink Href="/supplier-types" Icon="@Icons.Filled.Layers" IconColor="Color.Info">Supplier Types</MudNavLink>
         </MudNavGroup>
-        <MudNavLink Href="/configuration" Icon="@Icons.Filled.Settings" Disabled="true">Configuration</MudNavLink>
+        <MudNavGroup Title="Configuration" Icon="@Icons.Filled.Settings">
+            <MudNavLink Href="/conf/smtp" Icon="@Icons.Filled.Settings" IconColor="Color.Secondary">SMTP</MudNavLink>
+            <MudNavLink Href="/conf/templates" Icon="@Icons.Filled.Settings" IconColor="Color.Primary">Templates</MudNavLink>
+        </MudNavGroup>
     </MudNavMenu>
 </MudPaper>

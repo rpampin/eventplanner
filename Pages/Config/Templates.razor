@@ -1,0 +1,112 @@
+﻿@page "/conf/templates"
+@using EventPlanner.Data
+@using EventPlanner.Models
+@inject ConfigurationService ConfigurationService
+@inject NavigationManager NavigationManager
+
+<div class="title-action">
+    <MudText Typo="Typo.h2">Templates</MudText>
+</div>
+
+<EditForm Model="@obj" OnValidSubmit="Save">
+    <MudCard>
+        <MudCardContent>
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudExpansionPanels>
+                        <MudExpansionPanel>
+                            <TitleContent>
+                                <div class="d-flex">
+                                    <MudIcon Icon="@Icons.Filled.Book" class="mr-3"></MudIcon>
+                                    <MudText>Event Program Template</MudText>
+                                </div>
+                            </TitleContent>
+                            <ChildContent>
+                                <SfRichTextEditor @bind-Value="@obj.EventProgramTemplate">
+                                    <RichTextEditorToolbarSettings Items="@Tools" />
+                                    <RichTextEditorImageSettings SaveFormat="SaveFormat.Base64" />
+                                </SfRichTextEditor>
+                            </ChildContent>
+                        </MudExpansionPanel>
+                    </MudExpansionPanels>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudExpansionPanels>
+                        <MudExpansionPanel>
+                            <TitleContent>
+                                <div class="d-flex">
+                                    <MudIcon Icon="@Icons.Filled.Book" class="mr-3"></MudIcon>
+                                    <MudText>Email Signature Template</MudText>
+                                </div>
+                            </TitleContent>
+                            <ChildContent>
+                                <SfRichTextEditor @bind-Value="@obj.EmailSignature">
+                                    <RichTextEditorToolbarSettings Items="@Tools" />
+                                    <RichTextEditorImageSettings SaveFormat="SaveFormat.Base64" />
+                                </SfRichTextEditor>
+                            </ChildContent>
+                        </MudExpansionPanel>
+                    </MudExpansionPanels>
+                </MudItem>
+            </MudGrid>
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Filled.Save" Class="ml-auto">Save</MudButton>
+        </MudCardActions>
+    </MudCard>
+</EditForm>
+
+@code {
+    Models.Templates obj = new Models.Templates();
+
+    private List<ToolbarItemModel> Tools = new List<ToolbarItemModel>()
+    {
+        new ToolbarItemModel() { Command = ToolbarCommand.Bold },
+        new ToolbarItemModel() { Command = ToolbarCommand.Italic },
+        new ToolbarItemModel() { Command = ToolbarCommand.Underline },
+        new ToolbarItemModel() { Command = ToolbarCommand.StrikeThrough },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.FontName },
+        new ToolbarItemModel() { Command = ToolbarCommand.FontSize },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.FontColor },
+        new ToolbarItemModel() { Command = ToolbarCommand.BackgroundColor },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.LowerCase },
+        new ToolbarItemModel() { Command = ToolbarCommand.UpperCase },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.SuperScript },
+        new ToolbarItemModel() { Command = ToolbarCommand.SubScript },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.Formats },
+        new ToolbarItemModel() { Command = ToolbarCommand.Alignments },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.OrderedList },
+        new ToolbarItemModel() { Command = ToolbarCommand.UnorderedList },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.Outdent },
+        new ToolbarItemModel() { Command = ToolbarCommand.Indent },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.CreateLink },
+        new ToolbarItemModel() { Command = ToolbarCommand.Image },
+        new ToolbarItemModel() { Command = ToolbarCommand.CreateTable },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.ClearFormat },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.Print },
+        new ToolbarItemModel() { Command = ToolbarCommand.SourceCode },
+        new ToolbarItemModel() { Command = ToolbarCommand.FullScreen },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.Undo },
+        new ToolbarItemModel() { Command = ToolbarCommand.Redo }
+    };
+
+    protected override async Task OnInitializedAsync()
+        => obj = await ConfigurationService.GetTemplates();
+
+    async Task Save()
+    {
+        await ConfigurationService.SaveTemplates(obj);
+        NavigationManager.NavigateTo("/conf/templates", true);
+    }
+}
