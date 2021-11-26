@@ -22,6 +22,7 @@ builder.Services.AddTransient<GuestService>();
 builder.Services.AddTransient<SupplierService>();
 builder.Services.AddTransient<ReportService>();
 builder.Services.AddTransient<ConfigurationService>();
+builder.Services.AddTransient<EmailService>();
 
 var app = builder.Build();
 

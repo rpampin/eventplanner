@@ -9,6 +9,7 @@
 @inject PackageService packageService
 @inject AttachmentService attachmentService
 @inject ReportService ReportService
+@inject EmailService EmailService
 @inject NavigationManager NavigationManager
 
 <div class="title-action">
@@ -95,6 +96,15 @@ else
                                     <div class="d-flex">
                                         <MudIcon Icon="@Icons.Filled.Email" class="mr-3"></MudIcon>
                                         <MudText>Guest's Invitation Email Template</MudText>
+                                        <MudBadge Content="@obj.Guests.Where(g => !g.InvitationSent).Count()" Color="Color.Secondary" Overlap="true" Class="ml-auto mx-6">
+                                            <MudTooltip Text="Send pending invitations">
+                                                <MudIconButton Icon="@Icons.Outlined.Email" OnClick="SendInvitation" Style="margin: 0; padding: 0;" />
+                                            </MudTooltip>
+                                        </MudBadge>
+                                        <MudTooltip Text="Resend invitation" Class="ml-2">
+                                            <MudIconButton Icon="@Icons.Outlined.MarkEmailRead" OnClick="ResendInvitation" Style="margin: 0; padding: 0;" />
+                                        </MudTooltip>
+                                        <MudText Class="ml-2"></MudText>
                                     </div>
                                 </TitleContent>
                                 <ChildContent>
@@ -165,8 +175,12 @@ else
                 </MudGrid>
             </MudCardContent>
             <MudCardActions>
-                <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Info" StartIcon="@Icons.Filled.AssignmentInd" Class="ml-2" @onclick="@(e => ViewGuests(@obj.Id))">Guests</MudButton>
-                <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Info" StartIcon="@Icons.Filled.AssignmentTurnedIn" Class="ml-2" @onclick="@(e => ViewSuppliers(@obj.Id))">Suppliers</MudButton>
+                <MudBadge Content="@obj.Guests.Count" Color="Color.Secondary" Overlap="true" Class="ml-2">
+                    <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Info" StartIcon="@Icons.Filled.AssignmentInd" @onclick="@(e => ViewGuests(@obj.Id))">Guests</MudButton>
+                </MudBadge>
+                <MudBadge Content="@obj.Suppliers.Count" Color="Color.Secondary" Overlap="true" Class="ml-2">
+                    <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Info" StartIcon="@Icons.Filled.AssignmentTurnedIn" @onclick="@(e => ViewSuppliers(@obj.Id))">Suppliers</MudButton>
+                </MudBadge>
             </MudCardActions>
             <MudCardActions>
                 <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Tertiary" StartIcon="@Icons.Filled.Print" Class="ml-2" OnClick="PrintA">Budget Form</MudButton>
@@ -304,4 +318,14 @@ else
 
     void ViewSuppliers(Guid eventId)
         => NavigationManager.NavigateTo($"/event/{eventId}/suppliers");
+
+    async Task SendInvitation()
+    {
+        await EmailService.SendInvitations(obj.Id, false, null);
+        NavigationManager.NavigateTo($"/event/{obj.Id}");
+    }
+
+    async Task ResendInvitation()
+        => await EmailService.SendInvitations(obj.Id, true, null);
+
 }

@@ -44,6 +44,8 @@ namespace EventPlanner.Data
             => await _context.Events
                 .Include(e => e.Type)
                 .Include(e => e.Attachments)
+                .Include(e => e.Guests)
+                .Include(e => e.Suppliers)
                 .FirstOrDefaultAsync(t => t.Id.Equals(id));
 
         public async Task<bool> InsertOne(Event Event)
