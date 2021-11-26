@@ -20,6 +20,7 @@ builder.Services.AddTransient<EventTypeService>();
 builder.Services.AddTransient<SupplierTypeService>();
 builder.Services.AddTransient<GuestService>();
 builder.Services.AddTransient<SupplierService>();
+builder.Services.AddTransient<ReportService>();
 
 var app = builder.Build();
 

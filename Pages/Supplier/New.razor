@@ -28,14 +28,14 @@ else
                     @if (Event.Type is not null)
                     {
                         <MudItem xs="4">
-                            <MudTextField Label="Event Type" Variant="Variant.Outlined" @bind-Value="Event.Type.Name" />
+                            <MudTextField Label="Event Type" Variant="Variant.Outlined" @bind-Value="Event.Type.Name" ReadOnly="true" />
                         </MudItem>
                     }
                     <MudItem xs="4">
-                        <MudTextField Label="Event Date" Variant="Variant.Outlined" @bind-Value="Event.Date" />
+                        <MudTextField Label="Event Date" Variant="Variant.Outlined" @bind-Value="Event.Date" ReadOnly="true" />
                     </MudItem>
                     <MudItem xs="4">
-                        <MudTextField Label="Event Celebrants" Variant="Variant.Outlined" @bind-Value="Event.Celebrant" />
+                        <MudTextField Label="Event Celebrants" Variant="Variant.Outlined" @bind-Value="Event.Celebrant" ReadOnly="true" />
                     </MudItem>
                 </MudGrid>
                 <MudGrid>
