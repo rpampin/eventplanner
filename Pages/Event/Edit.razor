@@ -1,4 +1,5 @@
 ﻿@page "/event/{Id}"
+@using Newtonsoft.Json
 @using Syncfusion.Blazor.RichTextEditor
 @using EventPlanner.Models
 @using EventPlanner.Data
@@ -17,181 +18,405 @@
     <MudButton Variant="Variant.Text" StartIcon="@Icons.Filled.Close" Color="Color.Transparent" OnClick="Cancel"> Cancel</MudButton>
 </div>
 
-@if (Types is null || Packages is null)
+@if (!ready)
 {
     <p><em>Loading... !</em></p>
 }
 else
 {
-    <EditForm Model="@obj" OnValidSubmit="Update">
-        <DataAnnotationsValidator />
-        <MudCard>
-            <MudCardContent>
-                <MudGrid>
-                    <MudItem xs="6">
-                        <MudSelect T="EventType" Label="Type" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" ReadOnly="true" @bind-Value="obj.Type" For="@(() => obj.Type)">
-                            @foreach (var et in Types)
-                            {
-                                <MudSelectItem Value="@et">@et.Name</MudSelectItem>
-                            }
-                        </MudSelect>
-                    </MudItem>
-                    <MudItem xs="6">
-                        <MudDatePicker Label="Date" Variant="Variant.Outlined" @bind-Date="obj.Date" For="@(() => obj.Date)" />
-                    </MudItem>
-                    <MudItem xs="3">
-                        <MudDatePicker Label="PreparationVenue" Variant="Variant.Outlined" @bind-Date="obj.PreparationVenue" For="@(() => obj.PreparationVenue)" />
-                    </MudItem>
-                    <MudItem xs="3">
-                        <MudTimePicker Label="PreparationTime" Variant="Variant.Outlined" @bind-Time="obj.PreparationTime" For="@(() => obj.PreparationTime)" />
-                    </MudItem>
-                    <MudItem xs="3">
-                        <MudDatePicker Label="ReceptionVenue" Variant="Variant.Outlined" @bind-Date="obj.ReceptionVenue" For="@(() => obj.ReceptionVenue)" />
-                    </MudItem>
-                    <MudItem xs="3">
-                        <MudTimePicker Label="ReceptionTime" Variant="Variant.Outlined" @bind-Time="obj.ReceptionTime" For="@(() => obj.ReceptionTime)" />
-                    </MudItem>
-                    <MudItem xs="12">
-                        <MudTextField Label="Celebrant" Variant="Variant.Outlined" @bind-Value="obj.Celebrant" For="@(() => obj.Celebrant)" />
-                    </MudItem>
-                    <MudItem xs="3">
-                        <MudTextField Label="Address" Variant="Variant.Outlined" @bind-Value="obj.Address" For="@(() => obj.Address)" />
-                    </MudItem>
-                    <MudItem xs="3">
-                        <MudTextField Label="Mobile" Variant="Variant.Outlined" @bind-Value="obj.Mobile" For="@(() => obj.Mobile)" />
-                    </MudItem>
-                    <MudItem xs="3">
-                        <MudTextField Label="Email" Variant="Variant.Outlined" @bind-Value="obj.Email" For="@(() => obj.Email)" />
-                    </MudItem>
-                    <MudItem xs="3">
-                        <MudTextField Label="Social" Variant="Variant.Outlined" @bind-Value="obj.Social" For="@(() => obj.Social)" />
-                    </MudItem>
-                    <MudItem xs="4">
-                        <MudSelect T="Package" Label="Package" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" @bind-Value="obj.Package" For="@(() => obj.Package)">
-                            @foreach (var p in Packages)
-                            {
-                                <MudSelectItem Value="@p">@p.Name</MudSelectItem>
-                            }
-                        </MudSelect>
-                    </MudItem>
-                    <MudItem xs="4">
-                        <MudNumericField Label="PackagePrice" Adornment="Adornment.Start" AdornmentText="₱" HideSpinButtons="true" Format="N2" Variant="Variant.Outlined" @bind-Value="obj.PackagePrice" For="@(() => obj.PackagePrice)" />
-                    </MudItem>
-                    <MudItem xs="4">
-                        <MudTextField Label="Notes" Variant="Variant.Outlined" @bind-Value="obj.Notes" For="@(() => obj.Notes)" />
-                    </MudItem>
-                    <MudItem xs="4">
-                        <MudNumericField Label="DownPayment" Adornment="Adornment.Start" AdornmentText="₱" HideSpinButtons="true" Format="N2" Variant="Variant.Outlined" @bind-Value="obj.DownPayment" For="@(() => obj.DownPayment)" />
-                    </MudItem>
-                    <MudItem xs="4">
-                        <MudNumericField Label="AdditionalCharges" Adornment="Adornment.Start" AdornmentText="₱" HideSpinButtons="true" Format="N2" Variant="Variant.Outlined" @bind-Value="obj.AdditionalCharges" For="@(() => obj.AdditionalCharges)" />
-                    </MudItem>
-                    <MudItem xs="4">
-                        <MudNumericField Label="Balance" Adornment="Adornment.Start" AdornmentText="₱" HideSpinButtons="true" Format="N2" Variant="Variant.Outlined" @bind-Value="obj.Balance" For="@(() => obj.Balance)" />
-                    </MudItem>
-                    <MudItem xs="12">
-                        <MudExpansionPanels>
-                            <MudExpansionPanel>
-                                <TitleContent>
-                                    <div class="d-flex">
-                                        <MudIcon Icon="@Icons.Filled.Email" class="mr-3"></MudIcon>
-                                        <MudText>Guest's Invitation Email Template</MudText>
-                                        <MudBadge Content="@obj.Guests.Where(g => !g.InvitationSent).Count()" Color="Color.Secondary" Overlap="true" Class="ml-auto mx-6">
-                                            <MudTooltip Text="Send pending invitations">
-                                                <MudIconButton Icon="@Icons.Outlined.Email" OnClick="SendInvitation" Style="margin: 0; padding: 0;" />
+    if (@objWed != null)
+    {
+        <EditForm Model="@objWed" OnValidSubmit="Update">
+            <DataAnnotationsValidator />
+            <MudCard>
+                <MudCardContent>
+                    <MudGrid>
+                        <MudItem xs="6">
+                            <MudSelect T="EventType" Label="Type" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" ReadOnly="true" @bind-Value="objWed.Type" For="@(() => objWed.Type)">
+                                @foreach (var et in Types)
+                                {
+                                    <MudSelectItem Value="@et">@et.Name</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="6">
+                            <MudDatePicker Label="Date" Variant="Variant.Outlined" @bind-Date="objWed.Date" For="@(() => objWed.Date)" />
+                        </MudItem>
+                        @if (objWed.Type?.Id == WeddingTypeId)
+                        {
+                            <MudItem xs="6">
+                                <MudTextField Label="Bride's Name" Variant="Variant.Outlined" @bind-Value="objWed.BrideName" For="@(() => objWed.BrideName)" />
+                            </MudItem>
+                            <MudItem xs="6">
+                                <MudTextField Label="Groom's Name" Variant="Variant.Outlined" @bind-Value="objWed.GroomName" For="@(() => objWed.GroomName)" />
+                            </MudItem>
+                        }
+                        <MudItem xs="3">
+                            <MudDatePicker Label="Preparation Venue" Variant="Variant.Outlined" @bind-Date="objWed.PreparationVenue" For="@(() => objWed.PreparationVenue)" />
+                        </MudItem>
+                        <MudItem xs="3">
+                            <MudTimePicker Label="Preparation Time" Variant="Variant.Outlined" @bind-Time="objWed.PreparationTime" For="@(() => objWed.PreparationTime)" />
+                        </MudItem>
+                        @if (objWed.Type?.Id == WeddingTypeId)
+                        {
+                            <MudItem xs="3">
+                                <MudDatePicker Label="Ceremony Venue" Variant="Variant.Outlined" @bind-Date="objWed.CeremonyVenue" For="@(() => objWed.CeremonyVenue)" />
+                            </MudItem>
+                            <MudItem xs="3">
+                                <MudTimePicker Label="Ceremony Time" Variant="Variant.Outlined" @bind-Time="objWed.CeremonyTime" For="@(() => objWed.CeremonyTime)" />
+                            </MudItem>
+                        }
+                        <MudItem xs="3">
+                            <MudDatePicker Label="Reception Venue" Variant="Variant.Outlined" @bind-Date="objWed.ReceptionVenue" For="@(() => objWed.ReceptionVenue)" />
+                        </MudItem>
+                        <MudItem xs="3">
+                            <MudTimePicker Label="Reception Time" Variant="Variant.Outlined" @bind-Time="objWed.ReceptionTime" For="@(() => objWed.ReceptionTime)" />
+                        </MudItem>
+                        @if (objWed.Type?.Id != WeddingTypeId)
+                        {
+                            <MudItem xs="12">
+                                <MudTextField Label="Celebrant" Variant="Variant.Outlined" @bind-Value="objWed.Celebrant" For="@(() => objWed.Celebrant)" />
+                            </MudItem>
+                            <MudItem xs="3">
+                                <MudTextField Label="Address" Variant="Variant.Outlined" @bind-Value="objWed.Address" For="@(() => objWed.Address)" />
+                            </MudItem>
+                            <MudItem xs="3">
+                                <MudTextField Label="Mobile" Variant="Variant.Outlined" @bind-Value="objWed.Mobile" For="@(() => objWed.Mobile)" />
+                            </MudItem>
+                            <MudItem xs="3">
+                                <MudTextField Label="Email" Variant="Variant.Outlined" @bind-Value="objWed.Email" For="@(() => objWed.Email)" />
+                            </MudItem>
+                            <MudItem xs="3">
+                                <MudTextField Label="Social" Variant="Variant.Outlined" @bind-Value="objWed.Social" For="@(() => objWed.Social)" />
+                            </MudItem>
+                        }
+                        else
+                        {
+                            <MudItem xs="3">
+                                <MudTextField Label="Bride's Address" Variant="Variant.Outlined" @bind-Value="objWed.BrideAddress" For="@(() => objWed.BrideAddress)" />
+                            </MudItem>
+                            <MudItem xs="3">
+                                <MudTextField Label="Bride's Mobile" Variant="Variant.Outlined" @bind-Value="objWed.BrideMobile" For="@(() => objWed.BrideMobile)" />
+                            </MudItem>
+                            <MudItem xs="3">
+                                <MudTextField Label="Bride's Email" Variant="Variant.Outlined" @bind-Value="objWed.BrideEmail" For="@(() => objWed.BrideEmail)" />
+                            </MudItem>
+                            <MudItem xs="3">
+                                <MudTextField Label="Bride's Social" Variant="Variant.Outlined" @bind-Value="objWed.BrideSocial" For="@(() => objWed.BrideSocial)" />
+                            </MudItem>
+                            <MudItem xs="3">
+                                <MudTextField Label="Groom's Address" Variant="Variant.Outlined" @bind-Value="objWed.GroomAddress" For="@(() => objWed.GroomAddress)" />
+                            </MudItem>
+                            <MudItem xs="3">
+                                <MudTextField Label="Groom's Mobile" Variant="Variant.Outlined" @bind-Value="objWed.GroomMobile" For="@(() => objWed.GroomMobile)" />
+                            </MudItem>
+                            <MudItem xs="3">
+                                <MudTextField Label="Groom's Email" Variant="Variant.Outlined" @bind-Value="objWed.GroomEmail" For="@(() => objWed.GroomEmail)" />
+                            </MudItem>
+                            <MudItem xs="3">
+                                <MudTextField Label="Groom's Social" Variant="Variant.Outlined" @bind-Value="objWed.GroomSocial" For="@(() => objWed.GroomSocial)" />
+                            </MudItem>
+                            <MudItem xs="3"></MudItem>
+                        }
+                        <MudItem xs="4">
+                            <MudSelect T="Package" Label="Package" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" @bind-Value="objWed.Package" For="@(() => objWed.Package)">
+                                @foreach (var p in Packages)
+                                {
+                                    <MudSelectItem Value="@p">@p.Name</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudNumericField Label="PackagePrice" Adornment="Adornment.Start" AdornmentText="₱" HideSpinButtons="true" Format="N2" Variant="Variant.Outlined" @bind-Value="objWed.PackagePrice" For="@(() => objWed.PackagePrice)" />
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudTextField Label="Notes" Variant="Variant.Outlined" @bind-Value="objWed.Notes" For="@(() => objWed.Notes)" />
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudNumericField Label="DownPayment" Adornment="Adornment.Start" AdornmentText="₱" HideSpinButtons="true" Format="N2" Variant="Variant.Outlined" @bind-Value="objWed.DownPayment" For="@(() => objWed.DownPayment)" />
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudNumericField Label="AdditionalCharges" Adornment="Adornment.Start" AdornmentText="₱" HideSpinButtons="true" Format="N2" Variant="Variant.Outlined" @bind-Value="objWed.AdditionalCharges" For="@(() => objWed.AdditionalCharges)" />
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudNumericField Label="Balance" Adornment="Adornment.Start" AdornmentText="₱" HideSpinButtons="true" Format="N2" Variant="Variant.Outlined" @bind-Value="objWed.Balance" For="@(() => objWed.Balance)" />
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudExpansionPanels>
+                                <MudExpansionPanel>
+                                    <TitleContent>
+                                        <div class="d-flex">
+                                            <MudIcon Icon="@Icons.Filled.Email" class="mr-3"></MudIcon>
+                                            <MudText>Guest's Invitation Email Template</MudText>
+                                            <MudBadge Content="@objWed.Guests.Where(g => !g.InvitationSent).Count()" Color="Color.Secondary" Overlap="true" Class="ml-auto mx-6">
+                                                <MudTooltip Text="Send pending invitations">
+                                                    <MudIconButton Icon="@Icons.Outlined.Email" OnClick="SendInvitation" Style="margin: 0; padding: 0;" />
+                                                </MudTooltip>
+                                            </MudBadge>
+                                            <MudTooltip Text="Resend invitation" Class="ml-2">
+                                                <MudIconButton Icon="@Icons.Outlined.MarkEmailRead" OnClick="ResendInvitation" Style="margin: 0; padding: 0;" />
                                             </MudTooltip>
-                                        </MudBadge>
-                                        <MudTooltip Text="Resend invitation" Class="ml-2">
-                                            <MudIconButton Icon="@Icons.Outlined.MarkEmailRead" OnClick="ResendInvitation" Style="margin: 0; padding: 0;" />
-                                        </MudTooltip>
-                                        <MudText Class="ml-2"></MudText>
-                                    </div>
-                                </TitleContent>
-                                <ChildContent>
-                                    <MudTextField Label="Email Subject" Variant="Variant.Outlined" @bind-Value="obj.EmailSubject" For="@(() => obj.EmailSubject)" />
-                                    <SfRichTextEditor @bind-Value="@obj.EmailTemplate">
-                                        <RichTextEditorToolbarSettings Items="@Tools" />
-                                        <RichTextEditorImageSettings SaveFormat="SaveFormat.Base64" />
-                                    </SfRichTextEditor>
-                                </ChildContent>
-                            </MudExpansionPanel>
-                        </MudExpansionPanels>
-                    </MudItem>
-                    <MudItem xs="12">
-                        <MudExpansionPanels>
-                            <MudExpansionPanel>
-                                <TitleContent>
-                                    <div class="d-flex">
-                                        <MudIcon Icon="@Icons.Filled.Book" class="mr-3"></MudIcon>
-                                        <MudText>Program</MudText>
-                                        <MudIconButton Icon="@Icons.Filled.Print" Class="ml-auto" OnClick="PrintPlan" Style="margin: 0; padding: 0;">Budget Form</MudIconButton>
-                                        <MudText Class="ml-2"></MudText>
-                                    </div>
-                                </TitleContent>
-                                <ChildContent>
-                                    <SfRichTextEditor @bind-Value="@obj.Plan" @ref="RtePlan">
-                                        <RichTextEditorToolbarSettings Items="@Tools" />
-                                        <RichTextEditorImageSettings SaveFormat="SaveFormat.Base64" />
-                                    </SfRichTextEditor>
-                                </ChildContent>
-                            </MudExpansionPanel>
-                        </MudExpansionPanels>
-                    </MudItem>
-                    <MudItem xs="12">
-                        <MudExpansionPanels>
-                            <MudExpansionPanel>
-                                <TitleContent>
-                                    <div class="d-flex">
-                                        <MudIcon Icon="@Icons.Filled.AttachFile" class="mr-3"></MudIcon>
-                                        <MudText>Files (@obj.Attachments.Count)</MudText>
-                                    </div>
-                                </TitleContent>
-                                <ChildContent>
-                                    <div class="title-action">
-                                        <MudText></MudText>
-                                        <InputFile id="fileInput" OnChange="UploadFiles" hidden multiple />
-                                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.FileUpload" for="fileInput">Upload Files</MudButton>
-                                    </div>
-                                    @if (obj.Attachments != null)
-                                    {
-                                        <MudText Typo="@Typo.h6">@obj.Attachments.Count() File@(obj.Attachments.Count() == 1 ? "" : "s"):</MudText>
-                                        <MudList>
-                                            @foreach (var attachment in obj.Attachments)
-                                            {
-                                                <MudListItem Icon="@Icons.Filled.AttachFile" @key="@attachment">
-                                                    <MudItem>
-                                                        @attachment.Name
-                                                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" @onclick="@(e => DeleteAttachment(@attachment))"></MudIconButton>
-                                                        <MudIconButton Icon="@Icons.Material.Filled.Download" Color="Color.Primary" @onclick="@(e => DownloadAttachment(@attachment))"></MudIconButton>
-                                                    </MudItem>
-                                                </MudListItem>
-                                            }
-                                        </MudList>
-                                    }
-                                </ChildContent>
-                            </MudExpansionPanel>
-                        </MudExpansionPanels>
-                    </MudItem>
-                </MudGrid>
-            </MudCardContent>
-            <MudCardActions>
-                <MudBadge Content="@obj.Guests.Count" Color="Color.Secondary" Overlap="true" Class="ml-2">
-                    <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Info" StartIcon="@Icons.Filled.AssignmentInd" @onclick="@(e => ViewGuests(@obj.Id))">Guests</MudButton>
-                </MudBadge>
-                <MudBadge Content="@obj.Suppliers.Count" Color="Color.Secondary" Overlap="true" Class="ml-2">
-                    <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Info" StartIcon="@Icons.Filled.AssignmentTurnedIn" @onclick="@(e => ViewSuppliers(@obj.Id))">Suppliers</MudButton>
-                </MudBadge>
-            </MudCardActions>
-            <MudCardActions>
-                <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Tertiary" StartIcon="@Icons.Filled.Print" Class="ml-2" OnClick="PrintA">Budget Form</MudButton>
-                <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Tertiary" StartIcon="@Icons.Filled.Print" Class="ml-2" OnClick="PrintB">Checklist</MudButton>
-                <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Tertiary" StartIcon="@Icons.Filled.Print" Class="ml-2" OnClick="PrintC">Guest List</MudButton>
-            </MudCardActions>
-            <MudCardActions>
-                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Filled.Save" Class="ml-auto">Save</MudButton>
-            </MudCardActions>
-        </MudCard>
-    </EditForm>
+                                            <MudText Class="ml-2"></MudText>
+                                        </div>
+                                    </TitleContent>
+                                    <ChildContent>
+                                        <MudTextField Label="Email Subject" Variant="Variant.Outlined" @bind-Value="objWed.EmailSubject" For="@(() => objWed.EmailSubject)" />
+                                        <SfRichTextEditor @bind-Value="@objWed.EmailTemplate">
+                                            <RichTextEditorToolbarSettings Items="@Tools" />
+                                            <RichTextEditorImageSettings SaveFormat="SaveFormat.Base64" />
+                                        </SfRichTextEditor>
+                                    </ChildContent>
+                                </MudExpansionPanel>
+                            </MudExpansionPanels>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudExpansionPanels>
+                                <MudExpansionPanel>
+                                    <TitleContent>
+                                        <div class="d-flex">
+                                            <MudIcon Icon="@Icons.Filled.Book" class="mr-3"></MudIcon>
+                                            <MudText>Program</MudText>
+                                            <MudIconButton Icon="@Icons.Filled.Print" Class="ml-auto" OnClick="PrintPlan" Style="margin: 0; padding: 0;">Budget Form</MudIconButton>
+                                            <MudText Class="ml-2"></MudText>
+                                        </div>
+                                    </TitleContent>
+                                    <ChildContent>
+                                        <SfRichTextEditor @bind-Value="@objWed.Plan" @ref="RtePlan">
+                                            <RichTextEditorToolbarSettings Items="@Tools" />
+                                            <RichTextEditorImageSettings SaveFormat="SaveFormat.Base64" />
+                                        </SfRichTextEditor>
+                                    </ChildContent>
+                                </MudExpansionPanel>
+                            </MudExpansionPanels>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudExpansionPanels>
+                                <MudExpansionPanel>
+                                    <TitleContent>
+                                        <div class="d-flex">
+                                            <MudIcon Icon="@Icons.Filled.AttachFile" class="mr-3"></MudIcon>
+                                            <MudText>Files (@objWed..Attachments.Count)</MudText>
+                                        </div>
+                                    </TitleContent>
+                                    <ChildContent>
+                                        <div class="title-action">
+                                            <MudText></MudText>
+                                            <InputFile id="fileInput" OnChange="UploadFiles" hidden multiple />
+                                            <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.FileUpload" for="fileInput">Upload Files</MudButton>
+                                        </div>
+                                        @if (objWed.Attachments != null)
+                                        {
+                                            <MudText Typo="@Typo.h6">@objWed..Attachments.Count() File@(objWed.Attachments.Count() == 1 ? "" : "s"):</MudText>
+                                            <MudList>
+                                                @foreach (var attachment in objWed.Attachments)
+                                                {
+                                                    <MudListItem Icon="@Icons.Filled.AttachFile" @key="@attachment">
+                                                        <MudItem>
+                                                            @attachment.Name
+                                                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" @onclick="@(e => DeleteAttachment(@attachment))"></MudIconButton>
+                                                            <MudIconButton Icon="@Icons.Material.Filled.Download" Color="Color.Primary" @onclick="@(e => DownloadAttachment(@attachment))"></MudIconButton>
+                                                        </MudItem>
+                                                    </MudListItem>
+                                                }
+                                            </MudList>
+                                        }
+                                    </ChildContent>
+                                </MudExpansionPanel>
+                            </MudExpansionPanels>
+                        </MudItem>
+                    </MudGrid>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudBadge Content="@objWed.Guests.Count" Color="Color.Secondary" Overlap="true" Class="ml-2">
+                        <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Info" StartIcon="@Icons.Filled.AssignmentInd" @onclick="@(e => ViewGuests(@objWed.Id))">Guests</MudButton>
+                    </MudBadge>
+                    <MudBadge Content="@objWed.Suppliers.Count" Color="Color.Secondary" Overlap="true" Class="ml-2">
+                        <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Info" StartIcon="@Icons.Filled.AssignmentTurnedIn" @onclick="@(e => ViewSuppliers(@objWed.Id))">Suppliers</MudButton>
+                    </MudBadge>
+                </MudCardActions>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Tertiary" StartIcon="@Icons.Filled.Print" Class="ml-2" OnClick="PrintA">Budget Form</MudButton>
+                    <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Tertiary" StartIcon="@Icons.Filled.Print" Class="ml-2" OnClick="PrintB">Checklist</MudButton>
+                    <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Tertiary" StartIcon="@Icons.Filled.Print" Class="ml-2" OnClick="PrintC">Guest List</MudButton>
+                </MudCardActions>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Filled.Save" Class="ml-auto">Save</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </EditForm>
+    }
+    else if (@obj != null)
+    {
+        <EditForm Model="@obj" OnValidSubmit="Update">
+            <DataAnnotationsValidator />
+            <MudCard>
+                <MudCardContent>
+                    <MudGrid>
+                        <MudItem xs="6">
+                            <MudSelect T="EventType" Label="Type" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" ReadOnly="true" @bind-Value="obj.Type" For="@(() => obj.Type)">
+                                @foreach (var et in Types)
+                                {
+                                    <MudSelectItem Value="@et">@et.Name</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="6">
+                            <MudDatePicker Label="Date" Variant="Variant.Outlined" @bind-Date="obj.Date" For="@(() => obj.Date)" />
+                        </MudItem>
+                        <MudItem xs="3">
+                            <MudDatePicker Label="Preparation Venue" Variant="Variant.Outlined" @bind-Date="obj.PreparationVenue" For="@(() => obj.PreparationVenue)" />
+                        </MudItem>
+                        <MudItem xs="3">
+                            <MudTimePicker Label="Preparation Time" Variant="Variant.Outlined" @bind-Time="obj.PreparationTime" For="@(() => obj.PreparationTime)" />
+                        </MudItem>
+                        <MudItem xs="3">
+                            <MudDatePicker Label="Reception Venue" Variant="Variant.Outlined" @bind-Date="obj.ReceptionVenue" For="@(() => obj.ReceptionVenue)" />
+                        </MudItem>
+                        <MudItem xs="3">
+                            <MudTimePicker Label="Reception Time" Variant="Variant.Outlined" @bind-Time="obj.ReceptionTime" For="@(() => obj.ReceptionTime)" />
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudTextField Label="Celebrant" Variant="Variant.Outlined" @bind-Value="obj.Celebrant" For="@(() => obj.Celebrant)" />
+                        </MudItem>
+                        <MudItem xs="3">
+                            <MudTextField Label="Address" Variant="Variant.Outlined" @bind-Value="obj.Address" For="@(() => obj.Address)" />
+                        </MudItem>
+                        <MudItem xs="3">
+                            <MudTextField Label="Mobile" Variant="Variant.Outlined" @bind-Value="obj.Mobile" For="@(() => obj.Mobile)" />
+                        </MudItem>
+                        <MudItem xs="3">
+                            <MudTextField Label="Email" Variant="Variant.Outlined" @bind-Value="obj.Email" For="@(() => obj.Email)" />
+                        </MudItem>
+                        <MudItem xs="3">
+                            <MudTextField Label="Social" Variant="Variant.Outlined" @bind-Value="obj.Social" For="@(() => obj.Social)" />
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudSelect T="Package" Label="Package" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" @bind-Value="obj.Package" For="@(() => obj.Package)">
+                                @foreach (var p in Packages)
+                                {
+                                    <MudSelectItem Value="@p">@p.Name</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudNumericField Label="PackagePrice" Adornment="Adornment.Start" AdornmentText="₱" HideSpinButtons="true" Format="N2" Variant="Variant.Outlined" @bind-Value="obj.PackagePrice" For="@(() => obj.PackagePrice)" />
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudTextField Label="Notes" Variant="Variant.Outlined" @bind-Value="obj.Notes" For="@(() => obj.Notes)" />
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudNumericField Label="DownPayment" Adornment="Adornment.Start" AdornmentText="₱" HideSpinButtons="true" Format="N2" Variant="Variant.Outlined" @bind-Value="obj.DownPayment" For="@(() => obj.DownPayment)" />
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudNumericField Label="AdditionalCharges" Adornment="Adornment.Start" AdornmentText="₱" HideSpinButtons="true" Format="N2" Variant="Variant.Outlined" @bind-Value="obj.AdditionalCharges" For="@(() => obj.AdditionalCharges)" />
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudNumericField Label="Balance" Adornment="Adornment.Start" AdornmentText="₱" HideSpinButtons="true" Format="N2" Variant="Variant.Outlined" @bind-Value="obj.Balance" For="@(() => obj.Balance)" />
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudExpansionPanels>
+                                <MudExpansionPanel>
+                                    <TitleContent>
+                                        <div class="d-flex">
+                                            <MudIcon Icon="@Icons.Filled.Email" class="mr-3"></MudIcon>
+                                            <MudText>Guest's Invitation Email Template</MudText>
+                                            <MudBadge Content="@obj.Guests.Where(g => !g.InvitationSent).Count()" Color="Color.Secondary" Overlap="true" Class="ml-auto mx-6">
+                                                <MudTooltip Text="Send pending invitations">
+                                                    <MudIconButton Icon="@Icons.Outlined.Email" OnClick="SendInvitation" Style="margin: 0; padding: 0;" />
+                                                </MudTooltip>
+                                            </MudBadge>
+                                            <MudTooltip Text="Resend invitation" Class="ml-2">
+                                                <MudIconButton Icon="@Icons.Outlined.MarkEmailRead" OnClick="ResendInvitation" Style="margin: 0; padding: 0;" />
+                                            </MudTooltip>
+                                            <MudText Class="ml-2"></MudText>
+                                        </div>
+                                    </TitleContent>
+                                    <ChildContent>
+                                        <MudTextField Label="Email Subject" Variant="Variant.Outlined" @bind-Value="obj.EmailSubject" For="@(() => obj.EmailSubject)" />
+                                        <SfRichTextEditor @bind-Value="@obj.EmailTemplate">
+                                            <RichTextEditorToolbarSettings Items="@Tools" />
+                                            <RichTextEditorImageSettings SaveFormat="SaveFormat.Base64" />
+                                        </SfRichTextEditor>
+                                    </ChildContent>
+                                </MudExpansionPanel>
+                            </MudExpansionPanels>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudExpansionPanels>
+                                <MudExpansionPanel>
+                                    <TitleContent>
+                                        <div class="d-flex">
+                                            <MudIcon Icon="@Icons.Filled.Book" class="mr-3"></MudIcon>
+                                            <MudText>Program</MudText>
+                                            <MudIconButton Icon="@Icons.Filled.Print" Class="ml-auto" OnClick="PrintPlan" Style="margin: 0; padding: 0;">Budget Form</MudIconButton>
+                                            <MudText Class="ml-2"></MudText>
+                                        </div>
+                                    </TitleContent>
+                                    <ChildContent>
+                                        <SfRichTextEditor @bind-Value="@obj.Plan" @ref="RtePlan">
+                                            <RichTextEditorToolbarSettings Items="@Tools" />
+                                            <RichTextEditorImageSettings SaveFormat="SaveFormat.Base64" />
+                                        </SfRichTextEditor>
+                                    </ChildContent>
+                                </MudExpansionPanel>
+                            </MudExpansionPanels>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudExpansionPanels>
+                                <MudExpansionPanel>
+                                    <TitleContent>
+                                        <div class="d-flex">
+                                            <MudIcon Icon="@Icons.Filled.AttachFile" class="mr-3"></MudIcon>
+                                            <MudText>Files (@obj.Attachments.Count)</MudText>
+                                        </div>
+                                    </TitleContent>
+                                    <ChildContent>
+                                        <div class="title-action">
+                                            <MudText></MudText>
+                                            <InputFile id="fileInput" OnChange="UploadFiles" hidden multiple />
+                                            <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.FileUpload" for="fileInput">Upload Files</MudButton>
+                                        </div>
+                                        @if (obj.Attachments != null)
+                                        {
+                                            <MudText Typo="@Typo.h6">@obj.Attachments.Count() File@(obj.Attachments.Count() == 1 ? "" : "s"):</MudText>
+                                            <MudList>
+                                                @foreach (var attachment in obj.Attachments)
+                                                {
+                                                    <MudListItem Icon="@Icons.Filled.AttachFile" @key="@attachment">
+                                                        <MudItem>
+                                                            @attachment.Name
+                                                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" @onclick="@(e => DeleteAttachment(@attachment))"></MudIconButton>
+                                                            <MudIconButton Icon="@Icons.Material.Filled.Download" Color="Color.Primary" @onclick="@(e => DownloadAttachment(@attachment))"></MudIconButton>
+                                                        </MudItem>
+                                                    </MudListItem>
+                                                }
+                                            </MudList>
+                                        }
+                                    </ChildContent>
+                                </MudExpansionPanel>
+                            </MudExpansionPanels>
+                        </MudItem>
+                    </MudGrid>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudBadge Content="@obj.Guests.Count" Color="Color.Secondary" Overlap="true" Class="ml-2">
+                        <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Info" StartIcon="@Icons.Filled.AssignmentInd" @onclick="@(e => ViewGuests(@obj.Id))">Guests</MudButton>
+                    </MudBadge>
+                    <MudBadge Content="@obj.Suppliers.Count" Color="Color.Secondary" Overlap="true" Class="ml-2">
+                        <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Info" StartIcon="@Icons.Filled.AssignmentTurnedIn" @onclick="@(e => ViewSuppliers(@obj.Id))">Suppliers</MudButton>
+                    </MudBadge>
+                </MudCardActions>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Tertiary" StartIcon="@Icons.Filled.Print" Class="ml-2" OnClick="PrintA">Budget Form</MudButton>
+                    <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Tertiary" StartIcon="@Icons.Filled.Print" Class="ml-2" OnClick="PrintB">Checklist</MudButton>
+                    <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Tertiary" StartIcon="@Icons.Filled.Print" Class="ml-2" OnClick="PrintC">Guest List</MudButton>
+                </MudCardActions>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Filled.Save" Class="ml-auto">Save</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </EditForm>
+    }
     <div hidden>
         <SfRichTextEditor @bind-Value="@Report" @ref="RteObj" />
     </div>
@@ -203,7 +428,11 @@ else
     SfRichTextEditor RtePlan;
     SfRichTextEditor RteObj;
     string Report = "";
-    Event obj = new Event();
+    bool ready = false;
+    Event obj = null;
+    Wedding objWed = null;
+    Guid EventTypeId = Guid.Empty;
+    Guid WeddingTypeId = Guid.Empty;
     IEnumerable<EventType> Types = null;
     IEnumerable<Package> Packages = null;
 
@@ -212,19 +441,19 @@ else
 
     async Task PrintA()
     {
-        Report = await ReportService.GetBudgetForm(obj.Id);
+        Report = await ReportService.GetBudgetForm(Guid.Parse(Id));
         await RteObj.PrintAsync();
     }
 
     async Task PrintB()
     {
-        Report = await ReportService.GetChecklist(obj.Id);
+        Report = await ReportService.GetChecklist(Guid.Parse(Id));
         await RteObj.PrintAsync();
     }
 
     async Task PrintC()
     {
-        Report = await ReportService.GetGuestList(obj.Id);
+        Report = await ReportService.GetGuestList(Guid.Parse(Id));
         await RteObj.PrintAsync();
     }
 
@@ -272,14 +501,23 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        Types = await Task.Run(() => eventTypeService.GetAll());
-        Packages = await Task.Run(() => packageService.GetAll());
-        obj = await Task.Run(() => eventService.GetOne(Guid.Parse(Id)));
+        Types = await eventTypeService.GetAll();
+        Packages = await packageService.GetAll();
+        WeddingTypeId = await eventTypeService.GetWeddingEventTypeId();
+        EventTypeId = await eventService.GetOneType(Guid.Parse(Id));
+        if (EventTypeId == WeddingTypeId)
+            objWed = await eventService.GetOne<Wedding>(Guid.Parse(Id));
+        else
+            obj = await eventService.GetOne<Event>(Guid.Parse(Id));
+        ready = true;
     }
 
     protected async void Update()
     {
-        await eventService.UpdateOne(obj);
+        if (obj != null)
+            await eventService.UpdateOne(obj);
+        else
+            await eventService.UpdateOne(objWed);
         NavigationManager.NavigateTo("events");
     }
 
@@ -293,7 +531,7 @@ else
         {
             files.Add(file);
         }
-        await attachmentService.UpdateFiles<Event>(obj.Id, files);
+        await attachmentService.UpdateFiles<Event>(Guid.Parse(Id), files);
         files.Clear();
     }
 
@@ -314,18 +552,18 @@ else
     }
 
     void ViewGuests(Guid eventId)
-        => NavigationManager.NavigateTo($"/event/{eventId}/guests");
+        => NavigationManager.NavigateTo($"/event/{Id}/guests");
 
     void ViewSuppliers(Guid eventId)
-        => NavigationManager.NavigateTo($"/event/{eventId}/suppliers");
+        => NavigationManager.NavigateTo($"/event/{Id}/suppliers");
 
     async Task SendInvitation()
     {
-        await EmailService.SendInvitations(obj.Id, false, null);
-        NavigationManager.NavigateTo($"/event/{obj.Id}");
+        await EmailService.SendInvitations(Guid.Parse(Id), false, null);
+        NavigationManager.NavigateTo($"/event/{Id}");
     }
 
     async Task ResendInvitation()
-        => await EmailService.SendInvitations(obj.Id, true, null);
+        => await EmailService.SendInvitations(Guid.Parse(Id), true, null);
 
 }

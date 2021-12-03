@@ -83,7 +83,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        Event = await Task.Run(() => EventService.GetOne(Guid.Parse(EventId)));
+        Event = await Task.Run(() => EventService.GetOne<Event>(Guid.Parse(EventId)));
     }
 
     protected async void Insert()

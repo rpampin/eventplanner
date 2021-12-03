@@ -19,7 +19,6 @@ namespace EventPlanner.Data
         public async Task<IEnumerable<EvenListView>> GetAllPending()
             => await Get(_context.Events.Where(e => e.Date >= DateTime.Now.Date));
 
-
         async Task<IEnumerable<EvenListView>> Get(IQueryable<Event> query)
             => await query
             .OrderBy(e => e.Date)
@@ -40,17 +39,25 @@ namespace EventPlanner.Data
             })
             .ToListAsync();
 
-        public async Task<Event> GetOne(Guid id)
+        public async Task<Guid> GetOneType(Guid id)
             => await _context.Events
+                .Where(e => e.Id == id)
+                .Select(e => e.Type.Id)
+                .SingleAsync();
+
+        public async Task<T> GetOne<T>(Guid id)
+            where T : Event
+            => await _context.Set<T>()
                 .Include(e => e.Type)
                 .Include(e => e.Attachments)
                 .Include(e => e.Guests)
                 .Include(e => e.Suppliers)
                 .FirstOrDefaultAsync(t => t.Id.Equals(id));
 
-        public async Task<bool> InsertOne(Event Event)
+        public async Task<bool> InsertOne<T>(T Event)
+            where T : Event
         {
-            await _context.Events.AddAsync(Event);
+            await _context.AddAsync(Event);
             await _context.SaveChangesAsync();
             return true;
         }

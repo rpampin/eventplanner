@@ -203,15 +203,15 @@ namespace EventPlanner.Data
                 var wedding = @event as Wedding;
                 template = template.Replace("[event.brideName]", wedding.BrideName);
                 template = template.Replace("[event.groomName]", wedding.GroomName);
-                template = template.Replace("[event.ceremonyVenue]", wedding.CeremonyVenue);
-                template = template.Replace("[event.ceremonyTime]", wedding.CeremonyTime);
+                template = template.Replace("[event.ceremonyVenue]", wedding.CeremonyVenue.HasValue ? wedding.CeremonyVenue.Value.ToLongDateString() : "");
+                template = template.Replace("[event.ceremonyTime]", wedding.CeremonyTime.HasValue ? wedding.CeremonyTime.Value.ToString() : "");
                 template = template.Replace("[event.receptionVenue]", wedding.ReceptionVenue.HasValue ? wedding.ReceptionVenue.Value.ToLongDateString() : "");
                 template = template.Replace("[event.receptionTime]", wedding.ReceptionTime.HasValue ? wedding.ReceptionTime.Value.ToString() : "");
 
                 subject = subject.Replace("[event.brideName]", wedding.BrideName);
                 subject = subject.Replace("[event.groomName]", wedding.GroomName);
-                subject = subject.Replace("[event.ceremonyVenue]", wedding.CeremonyVenue);
-                subject = subject.Replace("[event.ceremonyTime]", wedding.CeremonyTime);
+                subject = subject.Replace("[event.ceremonyVenue]", wedding.CeremonyVenue.HasValue ? wedding.CeremonyVenue.Value.ToLongDateString() : "");
+                subject = subject.Replace("[event.ceremonyTime]", wedding.CeremonyTime.HasValue ? wedding.CeremonyTime.Value.ToString() : "");
                 subject = subject.Replace("[event.receptionVenue]", wedding.ReceptionVenue.HasValue ? wedding.ReceptionVenue.Value.ToLongDateString() : "");
                 subject = subject.Replace("[event.receptionTime]", wedding.ReceptionTime.HasValue ? wedding.ReceptionTime.Value.ToString() : "");
             }

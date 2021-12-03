@@ -9,18 +9,18 @@ namespace EventPlanner.Models
         [Required]
         public string GroomName { get; set; }
         [Required]
-        public string CeremonyVenue { get; set; }
+        public DateTime? CeremonyVenue { get; set; }
         [Required]
-        public string CeremonyTime { get; set; }
+        public TimeSpan? CeremonyTime { get; set; }
         public string BrideAddress { get; set; }
-        [DataType(DataType.PhoneNumber)]
+        [Phone]
         public string BrideMobile { get; set; }
-        [DataType(DataType.EmailAddress)]
+        [EmailAddress]
         public string BrideEmail { get; set; }
         public string GroomAddress { get; set; }
-        [DataType(DataType.PhoneNumber)]
+        [Phone]
         public string GroomMobile { get; set; }
-        [DataType(DataType.EmailAddress)]
+        [EmailAddress]
         public string GroomEmail { get; set; }
         public string BrideSocial { get; set; }
         public string GroomSocial { get; set; }

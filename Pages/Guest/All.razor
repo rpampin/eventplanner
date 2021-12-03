@@ -1,4 +1,5 @@
 ﻿@page "/event/{EventId}/guests"
+@using EventPlanner.Models
 @using EventPlanner.Models.ModelView
 @using EventPlanner.Data
 @inject IJSRuntime JS
@@ -82,7 +83,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        Event = await Task.Run(() => EventService.GetOne(Guid.Parse(EventId)));
+        Event = await Task.Run(() => EventService.GetOne<Event>(Guid.Parse(EventId)));
         Guests = await Task.Run(() => GuestService.GetAll(Guid.Parse(EventId)));
     }
 
