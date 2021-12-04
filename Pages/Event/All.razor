@@ -1,4 +1,5 @@
-﻿@page "/events"
+﻿@page "/"
+@page "/events"
 @using EventPlanner.Models.ModelView
 @using EventPlanner.Data
 @inject IJSRuntime JS
@@ -10,7 +11,7 @@
         <MudText Typo="Typo.h2">Events</MudText>
     </MudItem>
     <MudItem xs="2" Style="align-self: center;">
-        <MudCheckBox @bind-Checked="@ShowPastEvents" Label="Inclue past events"></MudCheckBox>
+        <MudCheckBox @bind-Checked="@ShowPastEvents" Label="Inclue past events" onclick="@(() => Toggle())"></MudCheckBox>
     </MudItem>
     <MudItem xs="2" Style="align-self: center;">
         <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="New">New Event</MudButton>
@@ -52,12 +53,20 @@ else
 }
 
 @code {
-    bool ShowPastEvents { get; set; }
-    IEnumerable<EvenListView> Events;
+    bool ShowPastEvents;
+    IEnumerable<EvenListView> Events = null;
 
     protected override async Task OnInitializedAsync()
     {
-        Events = await Task.Run(() => EventService.GetAll());
+        Events = await EventService.GetAllPending();
+    }
+
+    async Task Toggle()
+    {
+        if (!ShowPastEvents)
+            Events = await EventService.GetAll();
+        else
+            Events = await EventService.GetAllPending();
     }
 
     protected async void Delete(Guid id)
@@ -76,4 +85,4 @@ else
     private void Edit(TableRowClickEventArgs<EvenListView> args)
         => NavigationManager.NavigateTo("event/" + args.Item.Id, true);
 
-}
+    }
