@@ -1,8 +1,13 @@
 ﻿using EventPlanner.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace EventPlanner.Data
 {
@@ -10,11 +15,13 @@ namespace EventPlanner.Data
     {
         private readonly AppDBContext _context;
         private readonly AttachmentService _attachmentService;
+        private readonly EventTypeService _eventTypeService;
 
-        public EmailService(AppDBContext context, AttachmentService attachmentService)
+        public EmailService(AppDBContext context, AttachmentService attachmentService, EventTypeService eventTypeService)
         {
             _context = context;
             _attachmentService = attachmentService;
+            _eventTypeService = eventTypeService;
         }
 
         static Random random = new Random();
@@ -97,7 +104,7 @@ namespace EventPlanner.Data
             if (smtpConfig == null)
                 throw new ApplicationException("There's no SMTP configured. Please configure one to be able to send emails.");
 
-            var @event = await _context.Events.Include(e => e.Type).FirstAsync(e => e.Id == eventId);
+            var @event = await _context.BaseEvents.Include(e => e.Type).FirstAsync(e => e.Id == eventId);
 
             if (string.IsNullOrWhiteSpace(@event.EmailSubject) || string.IsNullOrWhiteSpace(@event.EmailTemplate))
                 throw new ApplicationException("No Invitation Subject/Template configured for this event.");
@@ -190,13 +197,26 @@ namespace EventPlanner.Data
                 template = template.Replace(matchString, $"cid:{newName}");
             }
 
+            var wedTypeId = await _eventTypeService.GetWeddingEventTypeId();
+            string celebrant = "";
+            if (@event.Type.Id == wedTypeId)
+            {
+                var wedEv = @event as Wedding;
+                celebrant = wedEv.BrideName + " - " + wedEv.GroomName;
+            }
+            else
+            {
+                var ev = @event as Event;
+                celebrant = ev.Celebrant;
+            }
+
             template = template.Replace("[event.type]", @event.Type.Name);
             template = template.Replace("[event.date]", @event.Date.Value.ToLongDateString());
-            template = template.Replace("[event.celebrant]", @event.Celebrant);
+            template = template.Replace("[event.celebrant]", celebrant);
 
             subject = subject.Replace("[event.type]", @event.Type.Name);
             subject = subject.Replace("[event.date]", @event.Date.Value.ToLongDateString());
-            subject = subject.Replace("[event.celebrant]", @event.Celebrant);
+            subject = subject.Replace("[event.celebrant]", celebrant);
 
             if (@event is Wedding)
             {

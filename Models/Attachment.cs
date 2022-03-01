@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace EventPlanner.Models
 {
@@ -11,6 +12,6 @@ namespace EventPlanner.Models
         [Required]
         public string Path { get; set; }
         public Supplier Supplier { get; set; }
-        public Event Event { get; set; }
+        public BaseEvent Event { get; set; }
     }
 }

@@ -11,10 +11,10 @@
         <MudText Typo="Typo.h2">Events</MudText>
     </MudItem>
     <MudItem xs="2" Style="align-self: center;">
-        <MudCheckBox @bind-Checked="@ShowPastEvents" Label="Inclue past events" onclick="@(() => Toggle())"></MudCheckBox>
+        <MudCheckBox @bind-Checked="@ShowPastEvents" Label="Inclue past events" onclick="@Toggle()"></MudCheckBox>
     </MudItem>
     <MudItem xs="2" Style="align-self: center;">
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="New">New Event</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="New" type="button">New Event</MudButton>
     </MudItem>
 </MudGrid>
 
@@ -24,7 +24,7 @@
 }
 else
 {
-    <MudTable Items="@Events" OnRowClick="Edit" T="EvenListView" Hover="true" Breakpoint="Breakpoint.Sm">
+    <MudTable Items="@Events" OnRowClick="Edit" T="EventListView" Hover="true" Breakpoint="Breakpoint.Sm">
         <HeaderContent>
             <MudTh>Type</MudTh>
             <MudTh>Date</MudTh>
@@ -54,7 +54,7 @@ else
 
 @code {
     bool ShowPastEvents;
-    IEnumerable<EvenListView> Events = null;
+    IEnumerable<EventListView> Events = null;
 
     protected override async Task OnInitializedAsync()
     {
@@ -82,7 +82,7 @@ else
     protected void New()
         => NavigationManager.NavigateTo("event", true);
 
-    private void Edit(TableRowClickEventArgs<EvenListView> args)
+    private void Edit(TableRowClickEventArgs<EventListView> args)
         => NavigationManager.NavigateTo("event/" + args.Item.Id, true);
 
     }

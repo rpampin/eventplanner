@@ -1,6 +1,8 @@
-﻿namespace EventPlanner.Models.ModelView
+﻿using System;
+
+namespace EventPlanner.Models.ModelView
 {
-    public record EvenListView
+    public record EventListView
     {
         public Guid Id { get; set; }
         public string Type { get; set; }

@@ -1,8 +1,9 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace EventPlanner.Models
 {
-    public class Wedding : Event
+    public class Wedding : BaseEvent
     {
         [Required]
         public string BrideName { get; set; }

@@ -1,5 +1,6 @@
 ﻿using EventPlanner.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace EventPlanner.Data
 {

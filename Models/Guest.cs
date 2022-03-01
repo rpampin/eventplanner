@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace EventPlanner.Models
@@ -17,6 +18,6 @@ namespace EventPlanner.Models
         public string Mobile { get; set; }
         public bool? WillAttend { get; set; }
         public bool InvitationSent { get; set; }
-        public Event Event { get; set; }
+        public BaseEvent Event { get; set; }
     }
 }

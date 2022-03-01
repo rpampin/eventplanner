@@ -24,7 +24,11 @@
 }
 else
 {
-    if (@objWed != null)
+    if (obj == null && objWed == null)
+    {
+        <MudText>Loading ...</MudText>
+    }
+    else if (objWed != null)
     {
         <EditForm Model="@objWed" OnValidSubmit="Update">
             <DataAnnotationsValidator />
@@ -42,82 +46,55 @@ else
                         <MudItem xs="6">
                             <MudDatePicker Label="Date" Variant="Variant.Outlined" @bind-Date="objWed.Date" For="@(() => objWed.Date)" />
                         </MudItem>
-                        @if (objWed.Type?.Id == WeddingTypeId)
-                        {
-                            <MudItem xs="6">
-                                <MudTextField Label="Bride's Name" Variant="Variant.Outlined" @bind-Value="objWed.BrideName" For="@(() => objWed.BrideName)" />
-                            </MudItem>
-                            <MudItem xs="6">
-                                <MudTextField Label="Groom's Name" Variant="Variant.Outlined" @bind-Value="objWed.GroomName" For="@(() => objWed.GroomName)" />
-                            </MudItem>
-                        }
+                        <MudItem xs="6">
+                            <MudTextField Label="Bride's Name" Variant="Variant.Outlined" @bind-Value="objWed.BrideName" For="@(() => objWed.BrideName)" />
+                        </MudItem>
+                        <MudItem xs="6">
+                            <MudTextField Label="Groom's Name" Variant="Variant.Outlined" @bind-Value="objWed.GroomName" For="@(() => objWed.GroomName)" />
+                        </MudItem>
                         <MudItem xs="3">
                             <MudDatePicker Label="Preparation Venue" Variant="Variant.Outlined" @bind-Date="objWed.PreparationVenue" For="@(() => objWed.PreparationVenue)" />
                         </MudItem>
                         <MudItem xs="3">
                             <MudTimePicker Label="Preparation Time" Variant="Variant.Outlined" @bind-Time="objWed.PreparationTime" For="@(() => objWed.PreparationTime)" />
                         </MudItem>
-                        @if (objWed.Type?.Id == WeddingTypeId)
-                        {
-                            <MudItem xs="3">
-                                <MudDatePicker Label="Ceremony Venue" Variant="Variant.Outlined" @bind-Date="objWed.CeremonyVenue" For="@(() => objWed.CeremonyVenue)" />
-                            </MudItem>
-                            <MudItem xs="3">
-                                <MudTimePicker Label="Ceremony Time" Variant="Variant.Outlined" @bind-Time="objWed.CeremonyTime" For="@(() => objWed.CeremonyTime)" />
-                            </MudItem>
-                        }
+                        <MudItem xs="3">
+                            <MudDatePicker Label="Ceremony Venue" Variant="Variant.Outlined" @bind-Date="objWed.CeremonyVenue" For="@(() => objWed.CeremonyVenue)" />
+                        </MudItem>
+                        <MudItem xs="3">
+                            <MudTimePicker Label="Ceremony Time" Variant="Variant.Outlined" @bind-Time="objWed.CeremonyTime" For="@(() => objWed.CeremonyTime)" />
+                        </MudItem>
                         <MudItem xs="3">
                             <MudDatePicker Label="Reception Venue" Variant="Variant.Outlined" @bind-Date="objWed.ReceptionVenue" For="@(() => objWed.ReceptionVenue)" />
                         </MudItem>
                         <MudItem xs="3">
                             <MudTimePicker Label="Reception Time" Variant="Variant.Outlined" @bind-Time="objWed.ReceptionTime" For="@(() => objWed.ReceptionTime)" />
                         </MudItem>
-                        @if (objWed.Type?.Id != WeddingTypeId)
-                        {
-                            <MudItem xs="12">
-                                <MudTextField Label="Celebrant" Variant="Variant.Outlined" @bind-Value="objWed.Celebrant" For="@(() => objWed.Celebrant)" />
-                            </MudItem>
-                            <MudItem xs="3">
-                                <MudTextField Label="Address" Variant="Variant.Outlined" @bind-Value="objWed.Address" For="@(() => objWed.Address)" />
-                            </MudItem>
-                            <MudItem xs="3">
-                                <MudTextField Label="Mobile" Variant="Variant.Outlined" @bind-Value="objWed.Mobile" For="@(() => objWed.Mobile)" />
-                            </MudItem>
-                            <MudItem xs="3">
-                                <MudTextField Label="Email" Variant="Variant.Outlined" @bind-Value="objWed.Email" For="@(() => objWed.Email)" />
-                            </MudItem>
-                            <MudItem xs="3">
-                                <MudTextField Label="Social" Variant="Variant.Outlined" @bind-Value="objWed.Social" For="@(() => objWed.Social)" />
-                            </MudItem>
-                        }
-                        else
-                        {
-                            <MudItem xs="3">
-                                <MudTextField Label="Bride's Address" Variant="Variant.Outlined" @bind-Value="objWed.BrideAddress" For="@(() => objWed.BrideAddress)" />
-                            </MudItem>
-                            <MudItem xs="3">
-                                <MudTextField Label="Bride's Mobile" Variant="Variant.Outlined" @bind-Value="objWed.BrideMobile" For="@(() => objWed.BrideMobile)" />
-                            </MudItem>
-                            <MudItem xs="3">
-                                <MudTextField Label="Bride's Email" Variant="Variant.Outlined" @bind-Value="objWed.BrideEmail" For="@(() => objWed.BrideEmail)" />
-                            </MudItem>
-                            <MudItem xs="3">
-                                <MudTextField Label="Bride's Social" Variant="Variant.Outlined" @bind-Value="objWed.BrideSocial" For="@(() => objWed.BrideSocial)" />
-                            </MudItem>
-                            <MudItem xs="3">
-                                <MudTextField Label="Groom's Address" Variant="Variant.Outlined" @bind-Value="objWed.GroomAddress" For="@(() => objWed.GroomAddress)" />
-                            </MudItem>
-                            <MudItem xs="3">
-                                <MudTextField Label="Groom's Mobile" Variant="Variant.Outlined" @bind-Value="objWed.GroomMobile" For="@(() => objWed.GroomMobile)" />
-                            </MudItem>
-                            <MudItem xs="3">
-                                <MudTextField Label="Groom's Email" Variant="Variant.Outlined" @bind-Value="objWed.GroomEmail" For="@(() => objWed.GroomEmail)" />
-                            </MudItem>
-                            <MudItem xs="3">
-                                <MudTextField Label="Groom's Social" Variant="Variant.Outlined" @bind-Value="objWed.GroomSocial" For="@(() => objWed.GroomSocial)" />
-                            </MudItem>
-                            <MudItem xs="3"></MudItem>
-                        }
+                        <MudItem xs="3">
+                            <MudTextField Label="Bride's Address" Variant="Variant.Outlined" @bind-Value="objWed.BrideAddress" For="@(() => objWed.BrideAddress)" />
+                        </MudItem>
+                        <MudItem xs="3">
+                            <MudTextField Label="Bride's Mobile" Variant="Variant.Outlined" @bind-Value="objWed.BrideMobile" For="@(() => objWed.BrideMobile)" />
+                        </MudItem>
+                        <MudItem xs="3">
+                            <MudTextField Label="Bride's Email" Variant="Variant.Outlined" @bind-Value="objWed.BrideEmail" For="@(() => objWed.BrideEmail)" />
+                        </MudItem>
+                        <MudItem xs="3">
+                            <MudTextField Label="Bride's Social" Variant="Variant.Outlined" @bind-Value="objWed.BrideSocial" For="@(() => objWed.BrideSocial)" />
+                        </MudItem>
+                        <MudItem xs="3">
+                            <MudTextField Label="Groom's Address" Variant="Variant.Outlined" @bind-Value="objWed.GroomAddress" For="@(() => objWed.GroomAddress)" />
+                        </MudItem>
+                        <MudItem xs="3">
+                            <MudTextField Label="Groom's Mobile" Variant="Variant.Outlined" @bind-Value="objWed.GroomMobile" For="@(() => objWed.GroomMobile)" />
+                        </MudItem>
+                        <MudItem xs="3">
+                            <MudTextField Label="Groom's Email" Variant="Variant.Outlined" @bind-Value="objWed.GroomEmail" For="@(() => objWed.GroomEmail)" />
+                        </MudItem>
+                        <MudItem xs="3">
+                            <MudTextField Label="Groom's Social" Variant="Variant.Outlined" @bind-Value="objWed.GroomSocial" For="@(() => objWed.GroomSocial)" />
+                        </MudItem>
+                        <MudItem xs="3"></MudItem>
                         <MudItem xs="4">
                             <MudSelect T="Package" Label="Package" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" @bind-Value="objWed.Package" For="@(() => objWed.Package)">
                                 @foreach (var p in Packages)
@@ -240,12 +217,12 @@ else
                     <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Tertiary" StartIcon="@Icons.Filled.Print" Class="ml-2" OnClick="PrintC">Guest List</MudButton>
                 </MudCardActions>
                 <MudCardActions>
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Filled.Save" Class="ml-auto">Save</MudButton>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Filled.Save" Class="ml-auto">Update</MudButton>
                 </MudCardActions>
             </MudCard>
         </EditForm>
     }
-    else if (@obj != null)
+    else
     {
         <EditForm Model="@obj" OnValidSubmit="Update">
             <DataAnnotationsValidator />
@@ -412,11 +389,13 @@ else
                     <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Tertiary" StartIcon="@Icons.Filled.Print" Class="ml-2" OnClick="PrintC">Guest List</MudButton>
                 </MudCardActions>
                 <MudCardActions>
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Filled.Save" Class="ml-auto">Save</MudButton>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Filled.Save" Class="ml-auto">Update</MudButton>
                 </MudCardActions>
             </MudCard>
         </EditForm>
     }
+    <br />
+    <br />
     <div hidden>
         <SfRichTextEditor @bind-Value="@Report" @ref="RteObj" />
     </div>
@@ -431,10 +410,27 @@ else
     bool ready = false;
     Event obj = null;
     Wedding objWed = null;
-    Guid EventTypeId = Guid.Empty;
-    Guid WeddingTypeId = Guid.Empty;
+    EventType evType = null;
+    EventType wedType = null;
+    Guid? EventTypeId = null;
+    Guid? WeddingTypeId = null;
     IEnumerable<EventType> Types = null;
     IEnumerable<Package> Packages = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Types = await eventTypeService.GetAll();
+        Packages = await packageService.GetAll();
+        WeddingTypeId = await eventTypeService.GetWeddingEventTypeId();
+        EventTypeId = await eventService.GetOneType(Guid.Parse(Id));
+        if (EventTypeId == WeddingTypeId)
+            objWed = await eventService.GetOne<Wedding>(Guid.Parse(Id));
+        else
+            obj = await eventService.GetOne<Event>(Guid.Parse(Id));
+        evType = Types.Where(t => t.Id != WeddingTypeId).First();
+        wedType = Types.Where(t => t.Id == WeddingTypeId).Single();
+        ready = true;
+    }
 
     async Task PrintPlan()
         => await RtePlan.PrintAsync();
@@ -499,19 +495,6 @@ else
         new ToolbarItemModel() { Command = ToolbarCommand.Redo }
     };
 
-    protected override async Task OnInitializedAsync()
-    {
-        Types = await eventTypeService.GetAll();
-        Packages = await packageService.GetAll();
-        WeddingTypeId = await eventTypeService.GetWeddingEventTypeId();
-        EventTypeId = await eventService.GetOneType(Guid.Parse(Id));
-        if (EventTypeId == WeddingTypeId)
-            objWed = await eventService.GetOne<Wedding>(Guid.Parse(Id));
-        else
-            obj = await eventService.GetOne<Event>(Guid.Parse(Id));
-        ready = true;
-    }
-
     protected async void Update()
     {
         if (obj != null)
@@ -546,9 +529,8 @@ else
 
     async Task DownloadAttachment(Attachment attachment)
     {
-        var fileStream = await attachmentService.GetFile(attachment);
-        using var streamRef = new DotNetStreamReference(stream: fileStream);
-        await JS.InvokeVoidAsync("downloadFileFromStream", attachment.Name, streamRef);
+        var fileByteArr = await attachmentService.GetFileByteArray(attachment);
+        await JS.InvokeVoidAsync("downloadFromByteArray", fileByteArr, attachment.Name);
     }
 
     void ViewGuests(Guid eventId)

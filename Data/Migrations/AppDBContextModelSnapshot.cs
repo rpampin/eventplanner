@@ -3,21 +3,18 @@ using System;
 using EventPlanner.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-#nullable disable
-
-namespace EventPlanner.Migrations
+namespace EventPlanner.Data.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20211118015447_Uniqness")]
-    partial class Uniqness
+    partial class AppDBContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.0");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "5.0.14");
 
             modelBuilder.Entity("EventPlanner.Models.Attachment", b =>
                 {
@@ -25,14 +22,14 @@ namespace EventPlanner.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Base64")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<Guid?>("EventId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Path")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -48,24 +45,7 @@ namespace EventPlanner.Migrations
                     b.ToTable("Attachments");
                 });
 
-            modelBuilder.Entity("EventPlanner.Models.Configuration", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("EmailSignature")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("EventProgramTemplate")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AppConfigurations", (string)null);
-                });
-
-            modelBuilder.Entity("EventPlanner.Models.Event", b =>
+            modelBuilder.Entity("EventPlanner.Models.BaseEvent", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -74,17 +54,11 @@ namespace EventPlanner.Migrations
                     b.Property<decimal>("AdditionalCharges")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Address")
-                        .HasColumnType("TEXT");
-
                     b.Property<decimal>("Balance")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Celebrant")
+                    b.Property<DateTime?>("Date")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Discriminator")
@@ -94,16 +68,10 @@ namespace EventPlanner.Migrations
                     b.Property<decimal>("DownPayment")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("EmailSubject")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("EmailTemplate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Mobile")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Notes")
@@ -118,26 +86,23 @@ namespace EventPlanner.Migrations
                     b.Property<string>("Plan")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PreparationTime")
+                    b.Property<TimeSpan?>("PreparationTime")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PreparationVenue")
+                    b.Property<DateTime?>("PreparationVenue")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ReceptionTime")
+                    b.Property<TimeSpan?>("ReceptionTime")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ReceptionVenue")
+                    b.Property<DateTime?>("ReceptionVenue")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Social")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("TypeId")
+                    b.Property<Guid?>("TypeId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -146,9 +111,9 @@ namespace EventPlanner.Migrations
 
                     b.HasIndex("TypeId");
 
-                    b.ToTable("Events");
+                    b.ToTable("BaseEvents");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Event");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("BaseEvent");
                 });
 
             modelBuilder.Entity("EventPlanner.Models.EventType", b =>
@@ -162,6 +127,9 @@ namespace EventPlanner.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("EventTypes");
                 });
@@ -214,9 +182,13 @@ namespace EventPlanner.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Packages");
                 });
@@ -228,15 +200,18 @@ namespace EventPlanner.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Host")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Port")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Username")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -296,7 +271,7 @@ namespace EventPlanner.Migrations
                     b.Property<decimal>("TotalDown")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("TypeId")
+                    b.Property<Guid?>("TypeId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -326,9 +301,49 @@ namespace EventPlanner.Migrations
                     b.ToTable("SupplierTypes");
                 });
 
+            modelBuilder.Entity("EventPlanner.Models.Templates", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("EmailSignature")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("EventProgramTemplate")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Templates");
+                });
+
+            modelBuilder.Entity("EventPlanner.Models.Event", b =>
+                {
+                    b.HasBaseType("EventPlanner.Models.BaseEvent");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Celebrant")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Mobile")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Social")
+                        .HasColumnType("TEXT");
+
+                    b.HasDiscriminator().HasValue("Event");
+                });
+
             modelBuilder.Entity("EventPlanner.Models.Wedding", b =>
                 {
-                    b.HasBaseType("EventPlanner.Models.Event");
+                    b.HasBaseType("EventPlanner.Models.BaseEvent");
 
                     b.Property<string>("BrideAddress")
                         .HasColumnType("TEXT");
@@ -346,11 +361,11 @@ namespace EventPlanner.Migrations
                     b.Property<string>("BrideSocial")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("CeremonyTime")
+                    b.Property<TimeSpan?>("CeremonyTime")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("CeremonyVenue")
+                    b.Property<DateTime?>("CeremonyVenue")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -375,7 +390,7 @@ namespace EventPlanner.Migrations
 
             modelBuilder.Entity("EventPlanner.Models.Attachment", b =>
                 {
-                    b.HasOne("EventPlanner.Models.Event", "Event")
+                    b.HasOne("EventPlanner.Models.BaseEvent", "Event")
                         .WithMany("Attachments")
                         .HasForeignKey("EventId");
 
@@ -389,7 +404,7 @@ namespace EventPlanner.Migrations
                     b.Navigation("Supplier");
                 });
 
-            modelBuilder.Entity("EventPlanner.Models.Event", b =>
+            modelBuilder.Entity("EventPlanner.Models.BaseEvent", b =>
                 {
                     b.HasOne("EventPlanner.Models.Package", "Package")
                         .WithMany()
@@ -397,9 +412,7 @@ namespace EventPlanner.Migrations
 
                     b.HasOne("EventPlanner.Models.EventType", "Type")
                         .WithMany()
-                        .HasForeignKey("TypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TypeId");
 
                     b.Navigation("Package");
 
@@ -408,7 +421,7 @@ namespace EventPlanner.Migrations
 
             modelBuilder.Entity("EventPlanner.Models.Guest", b =>
                 {
-                    b.HasOne("EventPlanner.Models.Event", "Event")
+                    b.HasOne("EventPlanner.Models.BaseEvent", "Event")
                         .WithMany("Guests")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -418,23 +431,21 @@ namespace EventPlanner.Migrations
 
             modelBuilder.Entity("EventPlanner.Models.Supplier", b =>
                 {
-                    b.HasOne("EventPlanner.Models.Event", "Event")
+                    b.HasOne("EventPlanner.Models.BaseEvent", "Event")
                         .WithMany("Suppliers")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("EventPlanner.Models.SupplierType", "Type")
                         .WithMany()
-                        .HasForeignKey("TypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TypeId");
 
                     b.Navigation("Event");
 
                     b.Navigation("Type");
                 });
 
-            modelBuilder.Entity("EventPlanner.Models.Event", b =>
+            modelBuilder.Entity("EventPlanner.Models.BaseEvent", b =>
                 {
                     b.Navigation("Attachments");
 

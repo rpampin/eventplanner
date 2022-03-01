@@ -1,5 +1,9 @@
 ﻿using EventPlanner.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace EventPlanner.Data
 {
@@ -14,6 +18,7 @@ namespace EventPlanner.Data
 
         public async Task<IEnumerable<Guest>> GetAll(Guid eventId)
             => await _context.Guests
+            .Include(e => e.Event)
             .Where(e => e.Event.Id.Equals(eventId))
             .OrderBy(e => e.LastName.ToLower())
             .OrderBy(e => e.Name.ToLower())

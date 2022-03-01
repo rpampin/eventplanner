@@ -28,14 +28,14 @@ else
                 @if (Event.Type is not null)
                 {
                     <MudItem xs="4">
-                        <MudTextField Label="Event Type" Variant="Variant.Outlined" @bind-Value="Event.Type.Name" />
+                        <MudTextField Label="Event Type" Variant="Variant.Outlined" @bind-Value="Event.Type" ReadOnly="true" />
                     </MudItem>
                 }
                 <MudItem xs="4">
-                    <MudTextField Label="Event Date" Variant="Variant.Outlined" @bind-Value="Event.Date" />
+                    <MudTextField Label="Event Date" Variant="Variant.Outlined" @bind-Value="Event.Date" ReadOnly="true" />
                 </MudItem>
                 <MudItem xs="4">
-                    <MudTextField Label="Event Celebrants" Variant="Variant.Outlined" @bind-Value="Event.Celebrant" />
+                    <MudTextField Label="Event Celebrants" Variant="Variant.Outlined" @bind-Value="Event.Celebrants" ReadOnly="true" />
                 </MudItem>
             </MudGrid>
         </MudCardHeader>
@@ -70,12 +70,12 @@ else
 @code {
     [Parameter]
     public string EventId { get; set; }
-    Models.Event Event = new Models.Event();
+    EventDataView Event = null;
     IEnumerable<Models.Supplier> Suppliers;
 
     protected override async Task OnInitializedAsync()
     {
-        Event = await Task.Run(() => EventService.GetOne<Event>(Guid.Parse(EventId)));
+        Event = await Task.Run(() => EventService.GetOneData(Guid.Parse(EventId)));
         Suppliers = await Task.Run(() => SupplierService.GetAll(Guid.Parse(EventId)));
     }
 

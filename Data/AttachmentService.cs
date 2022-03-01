@@ -1,7 +1,12 @@
 ﻿using EventPlanner.Models;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.Extensions.Configuration;
 using Storage.Net;
 using Storage.Net.Blobs;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace EventPlanner.Data
 {
@@ -34,6 +39,9 @@ namespace EventPlanner.Data
             await _storage.ReadToStreamAsync(Path.Combine(attachment.Path, attachment.Name), stream);
             return stream;
         }
+
+        public async Task<byte[]> GetFileByteArray(Attachment attachment)
+            => await _storage.ReadBytesAsync(Path.Combine(attachment.Path, attachment.Name));
 
         public async Task UpdateFiles<T>(Guid objectId, IList<IBrowserFile> files)
             where T : IWithAttachments

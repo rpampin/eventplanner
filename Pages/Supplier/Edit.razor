@@ -2,6 +2,7 @@
 @using EventPlanner.Models
 @using EventPlanner.Data
 @using System.IO
+@using EventPlanner.Models.ModelView
 @inject IJSRuntime JS
 @inject EventService EventService
 @inject SupplierService SupplierService
@@ -28,17 +29,14 @@ else
                     <MudItem xs="12">
                         <MudText Typo="Typo.h4">Event</MudText>
                     </MudItem>
-                    @if (Event.Type is not null)
-                    {
-                        <MudItem xs="4">
-                            <MudTextField Label="Event Type" Variant="Variant.Outlined" @bind-Value="Event.Type.Name" ReadOnly="true" />
-                        </MudItem>
-                    }
+                    <MudItem xs="4">
+                        <MudTextField Label="Event Type" Variant="Variant.Outlined" @bind-Value="Event.Type" ReadOnly="true" />
+                    </MudItem>
                     <MudItem xs="4">
                         <MudTextField Label="Event Date" Variant="Variant.Outlined" @bind-Value="Event.Date" ReadOnly="true" />
                     </MudItem>
                     <MudItem xs="4">
-                        <MudTextField Label="Event Celebrants" Variant="Variant.Outlined" @bind-Value="Event.Celebrant" ReadOnly="true" />
+                        <MudTextField Label="Event Celebrants" Variant="Variant.Outlined" @bind-Value="Event.Celebrants" ReadOnly="true" />
                     </MudItem>
                 </MudGrid>
                 <MudGrid>
@@ -141,20 +139,22 @@ else
     public string EventId { get; set; }
     [Parameter]
     public string Id { get; set; }
-    Event Event = new Event();
+    EventDataView Event = null;
+    BaseEvent BaseEvent = null;
     Supplier obj = new Supplier();
     IEnumerable<SupplierType> Types { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         Types = await Task.Run(() => SupplierTypeService.GetAll());
-        Event = await Task.Run(() => EventService.GetOne<Event>(Guid.Parse(EventId)));
+        Event = await Task.Run(() => EventService.GetOneData(Guid.Parse(EventId)));
+        BaseEvent = await Task.Run(() => EventService.GetOne<BaseEvent>(Guid.Parse(EventId)));
         obj = await Task.Run(() => SupplierService.GetOne(Guid.Parse(Id)));
     }
 
     protected async void Update()
     {
-        obj.Event = Event;
+        obj.Event = BaseEvent;
         await SupplierService.UpdateOne(obj);
         NavigationManager.NavigateTo($"/event/{EventId}/suppliers");
     }
@@ -184,8 +184,7 @@ else
 
     async Task DownloadAttachment(Attachment attachment)
     {
-        var fileStream = await attachmentService.GetFile(attachment);
-        using var streamRef = new DotNetStreamReference(stream: fileStream);
-        await JS.InvokeVoidAsync("downloadFileFromStream", attachment.Name, streamRef);
+        var fileByteArr = await attachmentService.GetFileByteArray(attachment);
+        await JS.InvokeVoidAsync("downloadFromByteArray", fileByteArr, attachment.Name);
     }
 }

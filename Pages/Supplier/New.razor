@@ -1,6 +1,7 @@
 ﻿@page "/event/{EventId}/supplier"
 @using EventPlanner.Models
 @using EventPlanner.Data
+@using EventPlanner.Models.ModelView
 @inject EventService EventService
 @inject SupplierService SupplierService
 @inject SupplierTypeService SupplierTypeService;
@@ -25,17 +26,14 @@ else
                     <MudItem xs="12">
                         <MudText Typo="Typo.h4">Event</MudText>
                     </MudItem>
-                    @if (Event.Type is not null)
-                    {
-                        <MudItem xs="4">
-                            <MudTextField Label="Event Type" Variant="Variant.Outlined" @bind-Value="Event.Type.Name" ReadOnly="true" />
-                        </MudItem>
-                    }
+                    <MudItem xs="4">
+                        <MudTextField Label="Event Type" Variant="Variant.Outlined" @bind-Value="Event.Type" ReadOnly="true" />
+                    </MudItem>
                     <MudItem xs="4">
                         <MudTextField Label="Event Date" Variant="Variant.Outlined" @bind-Value="Event.Date" ReadOnly="true" />
                     </MudItem>
                     <MudItem xs="4">
-                        <MudTextField Label="Event Celebrants" Variant="Variant.Outlined" @bind-Value="Event.Celebrant" ReadOnly="true" />
+                        <MudTextField Label="Event Celebrants" Variant="Variant.Outlined" @bind-Value="Event.Celebrants" ReadOnly="true" />
                     </MudItem>
                 </MudGrid>
                 <MudGrid>
@@ -101,19 +99,21 @@ else
 @code {
     [Parameter]
     public string EventId { get; set; }
-    Event Event = new Event();
+    EventDataView Event = null;
+    BaseEvent BaseEvent = null;
     Supplier obj = new Supplier();
     IEnumerable<SupplierType> Types = null;
 
     protected override async Task OnInitializedAsync()
     {
         Types = await Task.Run(() => SupplierTypeService.GetAll());
-        Event = await Task.Run(() => EventService.GetOne<Event>(Guid.Parse(EventId)));
+        Event = await Task.Run(() => EventService.GetOneData(Guid.Parse(EventId)));
+        BaseEvent = await Task.Run(() => EventService.GetOne<BaseEvent>(Guid.Parse(EventId)));
     }
 
     protected async void Insert()
     {
-        obj.Event = Event;
+        obj.Event = BaseEvent;
         await SupplierService.InsertOne(obj);
         NavigationManager.NavigateTo($"/event/{EventId}/suppliers");
     }

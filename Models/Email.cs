@@ -1,4 +1,6 @@
-﻿namespace EventPlanner.Models
+﻿using System.Collections.Generic;
+
+namespace EventPlanner.Models
 {
     public record Email
     {

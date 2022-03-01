@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace EventPlanner.Models
@@ -39,6 +41,6 @@ namespace EventPlanner.Models
         [DataType(DataType.Currency)]
         public decimal Balance { get; set; }
         public string Remarks { get; set; }
-        public Event Event { get; set; }
+        public BaseEvent Event { get; set; }
     }
 }

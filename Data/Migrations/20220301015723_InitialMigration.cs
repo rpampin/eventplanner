@@ -1,27 +1,12 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-#nullable disable
-
-namespace EventPlanner.Migrations
+namespace EventPlanner.Data.Migrations
 {
     public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "AppConfigurations",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    EmailSignature = table.Column<string>(type: "TEXT", nullable: true),
-                    EventProgramTemplate = table.Column<string>(type: "TEXT", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AppConfigurations", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "EventTypes",
                 columns: table => new
@@ -39,7 +24,7 @@ namespace EventPlanner.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: true)
+                    Name = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -51,10 +36,10 @@ namespace EventPlanner.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Host = table.Column<string>(type: "TEXT", nullable: true),
+                    Host = table.Column<string>(type: "TEXT", nullable: false),
                     Port = table.Column<int>(type: "INTEGER", nullable: false),
-                    Username = table.Column<string>(type: "TEXT", nullable: true),
-                    Password = table.Column<string>(type: "TEXT", nullable: true)
+                    Username = table.Column<string>(type: "TEXT", nullable: false),
+                    Password = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,21 +59,29 @@ namespace EventPlanner.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Events",
+                name: "Templates",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    TypeId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    EmailSignature = table.Column<string>(type: "TEXT", nullable: true),
+                    EventProgramTemplate = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Templates", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BaseEvents",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    TypeId = table.Column<Guid>(type: "TEXT", nullable: true),
                     Date = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Celebrant = table.Column<string>(type: "TEXT", nullable: false),
-                    ReceptionVenue = table.Column<string>(type: "TEXT", nullable: false),
-                    ReceptionTime = table.Column<string>(type: "TEXT", nullable: false),
-                    PreparationVenue = table.Column<string>(type: "TEXT", nullable: false),
-                    PreparationTime = table.Column<string>(type: "TEXT", nullable: false),
-                    Address = table.Column<string>(type: "TEXT", nullable: true),
-                    Mobile = table.Column<string>(type: "TEXT", nullable: true),
-                    Email = table.Column<string>(type: "TEXT", nullable: true),
-                    Social = table.Column<string>(type: "TEXT", nullable: true),
+                    ReceptionVenue = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ReceptionTime = table.Column<TimeSpan>(type: "TEXT", nullable: false),
+                    PreparationVenue = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    PreparationTime = table.Column<TimeSpan>(type: "TEXT", nullable: false),
                     PackageId = table.Column<Guid>(type: "TEXT", nullable: true),
                     PackagePrice = table.Column<decimal>(type: "TEXT", nullable: false),
                     Balance = table.Column<decimal>(type: "TEXT", nullable: false),
@@ -101,8 +94,8 @@ namespace EventPlanner.Migrations
                     Discriminator = table.Column<string>(type: "TEXT", nullable: false),
                     BrideName = table.Column<string>(type: "TEXT", nullable: true),
                     GroomName = table.Column<string>(type: "TEXT", nullable: true),
-                    CeremonyVenue = table.Column<string>(type: "TEXT", nullable: true),
-                    CeremonyTime = table.Column<string>(type: "TEXT", nullable: true),
+                    CeremonyVenue = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    CeremonyTime = table.Column<TimeSpan>(type: "TEXT", nullable: true),
                     BrideAddress = table.Column<string>(type: "TEXT", nullable: true),
                     BrideMobile = table.Column<string>(type: "TEXT", nullable: true),
                     BrideEmail = table.Column<string>(type: "TEXT", nullable: true),
@@ -114,18 +107,19 @@ namespace EventPlanner.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Events", x => x.Id);
+                    table.PrimaryKey("PK_BaseEvents", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Events_EventTypes_TypeId",
+                        name: "FK_BaseEvents_EventTypes_TypeId",
                         column: x => x.TypeId,
                         principalTable: "EventTypes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Events_Packages_PackageId",
+                        name: "FK_BaseEvents_Packages_PackageId",
                         column: x => x.PackageId,
                         principalTable: "Packages",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -147,9 +141,9 @@ namespace EventPlanner.Migrations
                 {
                     table.PrimaryKey("PK_Guests", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Guests_Events_EventId",
+                        name: "FK_Guests_BaseEvents_EventId",
                         column: x => x.EventId,
-                        principalTable: "Events",
+                        principalTable: "BaseEvents",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -160,7 +154,7 @@ namespace EventPlanner.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
-                    TypeId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    TypeId = table.Column<Guid>(type: "TEXT", nullable: true),
                     ContactPerson = table.Column<string>(type: "TEXT", nullable: true),
                     Mobile = table.Column<string>(type: "TEXT", nullable: true),
                     Email = table.Column<string>(type: "TEXT", nullable: true),
@@ -180,9 +174,9 @@ namespace EventPlanner.Migrations
                 {
                     table.PrimaryKey("PK_Suppliers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Suppliers_Events_EventId",
+                        name: "FK_Suppliers_BaseEvents_EventId",
                         column: x => x.EventId,
-                        principalTable: "Events",
+                        principalTable: "BaseEvents",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -190,7 +184,7 @@ namespace EventPlanner.Migrations
                         column: x => x.TypeId,
                         principalTable: "SupplierTypes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -199,7 +193,7 @@ namespace EventPlanner.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Base64 = table.Column<string>(type: "TEXT", nullable: false),
+                    Path = table.Column<string>(type: "TEXT", nullable: false),
                     SupplierId = table.Column<Guid>(type: "TEXT", nullable: true),
                     EventId = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
@@ -207,10 +201,11 @@ namespace EventPlanner.Migrations
                 {
                     table.PrimaryKey("PK_Attachments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Attachments_Events_EventId",
+                        name: "FK_Attachments_BaseEvents_EventId",
                         column: x => x.EventId,
-                        principalTable: "Events",
-                        principalColumn: "Id");
+                        principalTable: "BaseEvents",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Attachments_Suppliers_SupplierId",
                         column: x => x.SupplierId,
@@ -230,19 +225,31 @@ namespace EventPlanner.Migrations
                 column: "SupplierId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Events_PackageId",
-                table: "Events",
+                name: "IX_BaseEvents_PackageId",
+                table: "BaseEvents",
                 column: "PackageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Events_TypeId",
-                table: "Events",
+                name: "IX_BaseEvents_TypeId",
+                table: "BaseEvents",
                 column: "TypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EventTypes_Name",
+                table: "EventTypes",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Guests_EventId",
                 table: "Guests",
                 column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Packages_Name",
+                table: "Packages",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Suppliers_EventId",
@@ -253,13 +260,16 @@ namespace EventPlanner.Migrations
                 name: "IX_Suppliers_TypeId",
                 table: "Suppliers",
                 column: "TypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SupplierTypes_Name",
+                table: "SupplierTypes",
+                column: "Name",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "AppConfigurations");
-
             migrationBuilder.DropTable(
                 name: "Attachments");
 
@@ -270,10 +280,13 @@ namespace EventPlanner.Migrations
                 name: "SmtpConfig");
 
             migrationBuilder.DropTable(
+                name: "Templates");
+
+            migrationBuilder.DropTable(
                 name: "Suppliers");
 
             migrationBuilder.DropTable(
-                name: "Events");
+                name: "BaseEvents");
 
             migrationBuilder.DropTable(
                 name: "SupplierTypes");
