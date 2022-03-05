@@ -3,6 +3,8 @@
 @using EventPlanner.Models
 @inject ConfigurationService ConfigurationService
 @inject NavigationManager NavigationManager
+@inject AppState AppState
+<Loading IsLoading="AppState.IsLoading" />
 
 <div class="title-action">
     <MudText Typo="Typo.h2">Templates</MudText>
@@ -106,7 +108,10 @@
 
     async Task Save()
     {
-        await ConfigurationService.SaveTemplates(obj);
-        NavigationManager.NavigateTo("/conf/templates", true);
+        await AppState.RunAsync(async () =>
+        {
+            await ConfigurationService.SaveTemplates(obj);
+            NavigationManager.NavigateTo("/conf/templates", true);
+        });
     }
 }

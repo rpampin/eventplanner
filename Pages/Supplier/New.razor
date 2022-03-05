@@ -6,6 +6,8 @@
 @inject SupplierService SupplierService
 @inject SupplierTypeService SupplierTypeService;
 @inject NavigationManager NavigationManager
+@inject AppState AppState
+<Loading IsLoading="AppState.IsLoading" />
 
 <div class="title-action">
     <MudText Typo="Typo.h2">New Supplier</MudText>
@@ -14,7 +16,7 @@
 
 @if (Event is null || Types is null)
 {
-    <p><em>Loading... !</em></p>
+    <Loading IsLoading="true" />
 }
 else
 {
@@ -111,11 +113,15 @@ else
         BaseEvent = await Task.Run(() => EventService.GetOne<BaseEvent>(Guid.Parse(EventId)));
     }
 
-    protected async void Insert()
+    async Task Insert()
     {
-        obj.Event = BaseEvent;
-        await SupplierService.InsertOne(obj);
-        NavigationManager.NavigateTo($"/event/{EventId}/suppliers");
+        await AppState.RunAsync(async () =>
+        {
+            obj.Event = BaseEvent;
+            await SupplierService.InsertOne(obj);
+            NavigationManager.NavigateTo($"/event/{EventId}/suppliers");
+        });
+
     }
 
     void Cancel()

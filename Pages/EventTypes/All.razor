@@ -4,6 +4,8 @@
 @inject IJSRuntime JS
 @inject EventTypeService eventTypeService
 @inject NavigationManager NavigationManager
+@inject AppState AppState
+<Loading IsLoading="AppState.IsLoading" />
 
 <div class="title-action">
     <MudText Typo="Typo.h2">Event Types</MudText>
@@ -12,7 +14,7 @@
 
 @if (Types is null)
 {
-    <p><em>Loading... !</em></p>
+    <Loading IsLoading="true" />
 }
 else
 {
@@ -38,13 +40,16 @@ else
         Types = await Task.Run(() => eventTypeService.GetAll());
     }
 
-    protected async void Delete(EventType evType)
+    async Task Delete(EventType evType)
     {
         bool confirmed = await JS.InvokeAsync<bool>("confirm", "Are you sure?");
         if (confirmed)
         {
-            await eventTypeService.DeleteOne(evType);
-            NavigationManager.NavigateTo("event-types", true);
+            await AppState.RunAsync(async () =>
+            {
+                await eventTypeService.DeleteOne(evType);
+                NavigationManager.NavigateTo("event-types", true);
+            });
         }
     }
 

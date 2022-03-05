@@ -1,4 +1,5 @@
-﻿using EventPlanner.Data;
+﻿using EventPlanner;
+using EventPlanner.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,7 @@ namespace WebApplication1
             services.AddSyncfusionBlazor();
             services.AddDbContext<AppDBContext>(ops => ops.UseSqlite("Data Source=planner.db"));
 
+            services.AddSingleton<AppState>();
             services.AddTransient<AttachmentService>();
             services.AddTransient<EventService>();
             services.AddTransient<PackageService>();

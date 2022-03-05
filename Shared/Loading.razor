@@ -1,0 +1,19 @@
+﻿<MudOverlay Visible="IsLoading" DarkBackground="true">
+    <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" />
+    <MudElement HtmlTag="h1" Style="margin-left: -25px; color: white">
+        Loading ...
+    </MudElement>
+</MudOverlay>
+
+@ChildContent
+
+@code {
+    [Parameter]
+    public bool IsLoading { get; set; }
+
+    [Parameter]
+    public string LoadingText { get; set; } = "Loading...";
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+}

@@ -5,6 +5,7 @@
 @inject GuestService GuestService
 @inject EventService EventService
 @inject NavigationManager NavigationManager
+@inject AppState AppState
 
 <div class="title-action">
     <MudText Typo="Typo.h2">New Guest</MudText>
@@ -13,7 +14,7 @@
 
 @if (Event is null)
 {
-    <p><em>Loading... !</em></p>
+    <Loading IsLoading="true" />
 }
 else
 {
@@ -86,11 +87,14 @@ else
         BaseEvent = await Task.Run(() => EventService.GetOne<BaseEvent>(Guid.Parse(EventId)));
     }
 
-    protected async void Insert()
+    async Task Insert()
     {
-        obj.Event = BaseEvent;
-        await GuestService.InsertOne(obj);
-        NavigationManager.NavigateTo($"/event/{EventId}/guests");
+        await AppState.RunAsync(async () =>
+        {
+            obj.Event = BaseEvent;
+            await GuestService.InsertOne(obj);
+            NavigationManager.NavigateTo($"/event/{EventId}/guests");
+        });
     }
 
     void Cancel()

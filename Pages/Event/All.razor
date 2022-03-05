@@ -5,13 +5,15 @@
 @inject IJSRuntime JS
 @inject EventService EventService
 @inject NavigationManager NavigationManager
+@inject AppState AppState
+<Loading IsLoading="AppState.IsLoading" />
 
 <MudGrid Justify="Justify.FlexEnd">
     <MudItem xs="8">
         <MudText Typo="Typo.h2">Events</MudText>
     </MudItem>
     <MudItem xs="2" Style="align-self: center;">
-        <MudCheckBox @bind-Checked="@ShowPastEvents" Label="Inclue past events" onclick="@Toggle()"></MudCheckBox>
+        <MudCheckBox @bind-Checked="@ShowPastEvents" Label="Inclue past events" onclick="Toggle()"></MudCheckBox>
     </MudItem>
     <MudItem xs="2" Style="align-self: center;">
         <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="New" type="button">New Event</MudButton>
@@ -20,7 +22,7 @@
 
 @if (Events is null)
 {
-    <p><em>Loading... !</em></p>
+    <Loading IsLoading="true" />
 }
 else
 {
@@ -63,19 +65,25 @@ else
 
     async Task Toggle()
     {
-        if (!ShowPastEvents)
-            Events = await EventService.GetAll();
-        else
-            Events = await EventService.GetAllPending();
+        await AppState.RunAsync(async () =>
+        {
+            if (!ShowPastEvents)
+                Events = await EventService.GetAll();
+            else
+                Events = await EventService.GetAllPending();
+        });
     }
 
-    protected async void Delete(Guid id)
+    async Task Delete(Guid id)
     {
         bool confirmed = await JS.InvokeAsync<bool>("confirm", "Are you sure?");
         if (confirmed)
         {
-            await EventService.DeleteOne(id);
-            NavigationManager.NavigateTo("events", true);
+            await AppState.RunAsync(async () =>
+            {
+                await EventService.DeleteOne(id);
+                NavigationManager.NavigateTo("events", true);
+            });
         }
     }
 

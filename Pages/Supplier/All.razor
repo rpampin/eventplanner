@@ -6,6 +6,8 @@
 @inject EventService EventService
 @inject SupplierService SupplierService
 @inject NavigationManager NavigationManager
+@inject AppState AppState
+<Loading IsLoading="AppState.IsLoading" />
 
 <div class="title-action">
     <MudText Typo="Typo.h2">Suppliers</MudText>
@@ -15,7 +17,7 @@
 
 @if (Suppliers is null)
 {
-    <p><em>Loading... !</em></p>
+    <Loading IsLoading="true" />
 }
 else
 {
@@ -79,13 +81,16 @@ else
         Suppliers = await Task.Run(() => SupplierService.GetAll(Guid.Parse(EventId)));
     }
 
-    protected async void Delete(Models.Supplier Supplier)
+    async Task Delete(Models.Supplier Supplier)
     {
         bool confirmed = await JS.InvokeAsync<bool>("confirm", "Are you sure?");
         if (confirmed)
         {
-            await SupplierService.DeleteOne(Supplier);
-            NavigationManager.NavigateTo($"/event/{EventId}/suppliers", true);
+            await AppState.RunAsync(async () =>
+            {
+                await SupplierService.DeleteOne(Supplier);
+                NavigationManager.NavigateTo($"/event/{EventId}/suppliers", true);
+            });
         }
     }
 

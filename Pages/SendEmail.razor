@@ -3,6 +3,8 @@
 @using EventPlanner.Data
 @inject EmailService EmailService
 @inject NavigationManager NavigationManager
+@inject AppState AppState
+<Loading IsLoading="AppState.IsLoading" />
 
 <div class="title-action">
     <MudText Typo="Typo.h2">New Event Type</MudText>
@@ -36,8 +38,11 @@
 
     async Task Send()
     {
-        await EmailService.SendEmail(obj);
-        NavigationManager.NavigateTo("send-email", true);
+        await AppState.RunAsync(async () =>
+        {
+            await EmailService.SendEmail(obj);
+            NavigationManager.NavigateTo("send-email", true);
+        });
     }
 
     private List<ToolbarItemModel> Tools = new List<ToolbarItemModel>()

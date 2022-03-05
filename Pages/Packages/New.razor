@@ -3,6 +3,8 @@
 @using EventPlanner.Data
 @inject PackageService packageService
 @inject NavigationManager NavigationManager
+@inject AppState AppState
+<Loading IsLoading="AppState.IsLoading" />
 
 <div class="title-action">
     <MudText Typo="Typo.h2">New Package</MudText>
@@ -24,10 +26,13 @@
 @code {
     Package obj = new Package();
 
-    protected async void Insert()
+    async Task Insert()
     {
-        await packageService.InsertOne(obj);
-        NavigationManager.NavigateTo("packages");
+        await AppState.RunAsync(async () =>
+        {
+            await packageService.InsertOne(obj);
+            NavigationManager.NavigateTo("packages");
+        });
     }
 
     void Cancel()

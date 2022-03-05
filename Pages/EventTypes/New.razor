@@ -3,6 +3,8 @@
 @using EventPlanner.Data
 @inject EventTypeService eventTypeService
 @inject NavigationManager NavigationManager
+@inject AppState AppState
+<Loading IsLoading="AppState.IsLoading" />
 
 <div class="title-action">
     <MudText Typo="Typo.h2">New Event Type</MudText>
@@ -24,10 +26,14 @@
 @code {
     EventType obj = new EventType();
 
-    protected async void Insert()
+    async Task Insert()
     {
-        await eventTypeService.InsertOne(obj);
-        NavigationManager.NavigateTo("event-types");
+        await AppState.RunAsync(async () =>
+        {
+            await eventTypeService.InsertOne(obj);
+            NavigationManager.NavigateTo("event-types");
+        });
+
     }
 
     void Cancel()

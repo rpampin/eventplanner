@@ -3,6 +3,8 @@
 @using EventPlanner.Models
 @inject ConfigurationService ConfigurationService
 @inject NavigationManager NavigationManager
+@inject AppState AppState
+<Loading IsLoading="AppState.IsLoading" />
 
 <div class="title-action">
     <MudText Typo="Typo.h2">Smtp Configuration</MudText>
@@ -43,7 +45,10 @@
 
     async Task Save()
     {
-        await ConfigurationService.SaveSmtpConfig(obj);
-        NavigationManager.NavigateTo("/conf/smtp", true);
+        await AppState.RunAsync(async () =>
+        {
+            await ConfigurationService.SaveSmtpConfig(obj);
+            NavigationManager.NavigateTo("/conf/smtp", true);
+        });
     }
 }

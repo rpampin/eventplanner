@@ -6,6 +6,8 @@
 @inject EventTypeService eventTypeService
 @inject PackageService packageService
 @inject NavigationManager NavigationManager
+@inject AppState AppState
+<Loading IsLoading="AppState.IsLoading" />
 
 <div class="title-action">
     <MudText Typo="Typo.h2">New Event</MudText>
@@ -14,7 +16,7 @@
 
 @if (!ready)
 {
-    <p><em>Loading... !</em></p>
+    <Loading IsLoading="true" />
 }
 else
 {
@@ -224,14 +226,17 @@ else
         ready = true;
     }
 
-    protected async void Insert()
+    async Task Insert()
     {
-        if (evType.Id == WeddingTypeId)
-            await eventService.InsertOne<Wedding>(objWed);
-        else
-            await eventService.InsertOne<Event>(ev);
+        await AppState.RunAsync(async () =>
+        {
+            if (evType.Id == WeddingTypeId)
+                await eventService.InsertOne<Wedding>(objWed);
+            else
+                await eventService.InsertOne<Event>(ev);
 
-        NavigationManager.NavigateTo("events", true);
+            NavigationManager.NavigateTo("events", true);
+        });
     }
 
     void Cancel()

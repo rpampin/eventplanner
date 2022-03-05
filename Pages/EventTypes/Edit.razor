@@ -3,6 +3,8 @@
 @using EventPlanner.Data
 @inject EventTypeService eventTypeService
 @inject NavigationManager NavigationManager
+@inject AppState AppState
+<Loading IsLoading="AppState.IsLoading" />
 
 <div class="title-action">
     <MudText Typo="Typo.h2">Edit Event Type</MudText>
@@ -29,10 +31,13 @@
     protected override async Task OnInitializedAsync()
     => obj = await Task.Run(() => eventTypeService.GetOne(Guid.Parse(Id)));
 
-    protected async void Update()
+    async Task Update()
     {
-        await eventTypeService.UpdateOne(obj);
-        NavigationManager.NavigateTo("event-types");
+        await AppState.RunAsync(async () =>
+        {
+            await eventTypeService.UpdateOne(obj);
+            NavigationManager.NavigateTo("event-types");
+        });
     }
 
     void Cancel()

@@ -3,6 +3,8 @@
 @using EventPlanner.Data
 @inject PackageService packageService
 @inject NavigationManager NavigationManager
+@inject AppState AppState
+<Loading IsLoading="AppState.IsLoading" />
 
 <div class="title-action">
     <MudText Typo="Typo.h2">Edit Package</MudText>
@@ -29,10 +31,14 @@
     protected override async Task OnInitializedAsync()
     => obj = await Task.Run(() => packageService.GetOne(Guid.Parse(Id)));
 
-    protected async void Update()
+    async Task Update()
     {
-        await packageService.UpdateOne(obj);
-        NavigationManager.NavigateTo("packages");
+        await AppState.RunAsync(async () =>
+        {
+            await packageService.UpdateOne(obj);
+            NavigationManager.NavigateTo("packages");
+        });
+
     }
 
     void Cancel()

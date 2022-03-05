@@ -9,6 +9,8 @@
 @inject SupplierTypeService SupplierTypeService;
 @inject AttachmentService attachmentService
 @inject NavigationManager NavigationManager
+@inject AppState AppState
+<Loading IsLoading="AppState.IsLoading" />
 
 <div class="title-action">
     <MudText Typo="Typo.h2">Edit Supplier</MudText>
@@ -17,7 +19,7 @@
 
 @if (Event is null || obj is null || Types is null)
 {
-    <p><em>Loading... !</em></p>
+    <Loading IsLoading="true" />
 }
 else
 {
@@ -152,11 +154,14 @@ else
         obj = await Task.Run(() => SupplierService.GetOne(Guid.Parse(Id)));
     }
 
-    protected async void Update()
+    async Task Update()
     {
-        obj.Event = BaseEvent;
-        await SupplierService.UpdateOne(obj);
-        NavigationManager.NavigateTo($"/event/{EventId}/suppliers");
+        await AppState.RunAsync(async () =>
+        {
+            obj.Event = BaseEvent;
+            await SupplierService.UpdateOne(obj);
+            NavigationManager.NavigateTo($"/event/{EventId}/suppliers");
+        });
     }
 
     void Cancel()
@@ -165,26 +170,35 @@ else
     IList<IBrowserFile> files = new List<IBrowserFile>();
     async Task UploadFiles(InputFileChangeEventArgs e)
     {
-        foreach (var file in e.GetMultipleFiles())
+        await AppState.RunAsync(async () =>
         {
-            files.Add(file);
-        }
-        await attachmentService.UpdateFiles<Supplier>(obj.Id, files);
-        files.Clear();
+            foreach (var file in e.GetMultipleFiles())
+            {
+                files.Add(file);
+            }
+            await attachmentService.UpdateFiles<Supplier>(obj.Id, files);
+            files.Clear();
+        });
     }
 
     async Task DeleteAttachment(Attachment attachment)
     {
-        bool confirmed = await JS.InvokeAsync<bool>("confirm", "Are you sure?");
-        if (confirmed)
+        await AppState.RunAsync(async () =>
         {
-            await attachmentService.DeleteFile(attachment);
-        }
+            bool confirmed = await JS.InvokeAsync<bool>("confirm", "Are you sure?");
+            if (confirmed)
+            {
+                await attachmentService.DeleteFile(attachment);
+            }
+        });
     }
 
     async Task DownloadAttachment(Attachment attachment)
     {
-        var fileByteArr = await attachmentService.GetFileByteArray(attachment);
-        await JS.InvokeVoidAsync("downloadFromByteArray", fileByteArr, attachment.Name);
+        await AppState.RunAsync(async () =>
+        {
+            var fileByteArr = await attachmentService.GetFileByteArray(attachment);
+            await JS.InvokeVoidAsync("downloadFromByteArray", fileByteArr, attachment.Name);
+        });
     }
 }

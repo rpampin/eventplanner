@@ -6,6 +6,9 @@
 @inject EventService EventService
 @inject GuestService GuestService
 @inject NavigationManager NavigationManager
+@inject EmailService EmailService
+@inject AppState AppState
+<Loading IsLoading="AppState.IsLoading" />
 
 <div class="title-action">
     <MudText Typo="Typo.h2">Guests</MudText>
@@ -15,7 +18,7 @@
 
 @if (Guests is null || Event is null)
 {
-    <p><em>Loading... !</em></p>
+    <Loading IsLoading="true" />
 }
 else
 {
@@ -60,7 +63,7 @@ else
                     <MudTd DataLabel="Remarks">@context.Remarks</MudTd>
                     <MudTd DataLabel="SendInvite" class="fit">
                         <MudTooltip Text="Send invite">
-                            <MudIconButton Icon="@Icons.Material.Filled.Mail" Color="Color.Success" Size="Size.Small" Class="ma-2"></MudIconButton>
+                            <MudIconButton Icon="@Icons.Material.Filled.Mail" Color="Color.Success" Size="Size.Small" Class="ma-2" @onclick="@(e => SendInvitation(@context))"></MudIconButton>
                         </MudTooltip>
                     </MudTd>
                     <MudTd DataLabel="Delete" class="fit">
@@ -84,14 +87,25 @@ else
         Guests = await Task.Run(() => GuestService.GetAll(Guid.Parse(EventId)));
     }
 
-    protected async void Delete(Models.Guest Guest)
+    async Task Delete(Models.Guest Guest)
     {
         bool confirmed = await JS.InvokeAsync<bool>("confirm", "Are you sure?");
         if (confirmed)
         {
-            await GuestService.DeleteOne(Guest);
-            NavigationManager.NavigateTo($"/event/{EventId}/guests", true);
+            await AppState.RunAsync(async () =>
+            {
+                await GuestService.DeleteOne(Guest);
+                NavigationManager.NavigateTo($"/event/{EventId}/guests", true);
+            });
         }
+    }
+
+    async Task SendInvitation(Models.Guest Guest)
+    {
+        await AppState.RunAsync(async () =>
+        {
+            await EmailService.SendInvitations(Guid.Parse(EventId), false, Guest.Id);
+        });
     }
 
     protected void Back()

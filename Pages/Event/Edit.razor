@@ -12,6 +12,8 @@
 @inject ReportService ReportService
 @inject EmailService EmailService
 @inject NavigationManager NavigationManager
+@inject AppState AppState
+<Loading IsLoading="AppState.IsLoading" />
 
 <div class="title-action">
     <MudText Typo="Typo.h2">Edit Event</MudText>
@@ -20,7 +22,7 @@
 
 @if (!ready)
 {
-    <p><em>Loading... !</em></p>
+    <Loading IsLoading="true" />
 }
 else
 {
@@ -125,14 +127,17 @@ else
                                         <div class="d-flex">
                                             <MudIcon Icon="@Icons.Filled.Email" class="mr-3"></MudIcon>
                                             <MudText>Guest's Invitation Email Template</MudText>
-                                            <MudBadge Content="@objWed.Guests.Where(g => !g.InvitationSent).Count()" Color="Color.Secondary" Overlap="true" Class="ml-auto mx-6">
-                                                <MudTooltip Text="Send pending invitations">
-                                                    <MudIconButton Icon="@Icons.Outlined.Email" OnClick="SendInvitation" Style="margin: 0; padding: 0;" />
+                                            @if (!string.IsNullOrWhiteSpace(objWed.EmailSubject) && !string.IsNullOrWhiteSpace(objWed.EmailTemplate))
+                                            {
+                                                <MudBadge Content="@objWed.Guests.Where(g => !g.InvitationSent).Count()" Color="Color.Secondary" Overlap="true" Class="ml-auto mx-6">
+                                                    <MudTooltip Text="Send pending invitations">
+                                                        <MudIconButton Icon="@Icons.Outlined.Email" OnClick="SendInvitation" Style="margin: 0; padding: 0;" />
+                                                    </MudTooltip>
+                                                </MudBadge>
+                                                <MudTooltip Text="Resend invitation" Class="ml-2">
+                                                    <MudIconButton Icon="@Icons.Outlined.MarkEmailRead" OnClick="ResendInvitation" Style="margin: 0; padding: 0;" />
                                                 </MudTooltip>
-                                            </MudBadge>
-                                            <MudTooltip Text="Resend invitation" Class="ml-2">
-                                                <MudIconButton Icon="@Icons.Outlined.MarkEmailRead" OnClick="ResendInvitation" Style="margin: 0; padding: 0;" />
-                                            </MudTooltip>
+                                            }
                                             <MudText Class="ml-2"></MudText>
                                         </div>
                                     </TitleContent>
@@ -153,7 +158,10 @@ else
                                         <div class="d-flex">
                                             <MudIcon Icon="@Icons.Filled.Book" class="mr-3"></MudIcon>
                                             <MudText>Program</MudText>
-                                            <MudIconButton Icon="@Icons.Filled.Print" Class="ml-auto" OnClick="PrintPlan" Style="margin: 0; padding: 0;">Budget Form</MudIconButton>
+                                            @if (!string.IsNullOrWhiteSpace(objWed.Plan))
+                                            {
+                                                <MudIconButton Icon="@Icons.Filled.Print" Class="ml-auto" OnClick="PrintPlan" Style="margin: 0; padding: 0;">Budget Form</MudIconButton>
+                                            }
                                             <MudText Class="ml-2"></MudText>
                                         </div>
                                     </TitleContent>
@@ -297,14 +305,17 @@ else
                                         <div class="d-flex">
                                             <MudIcon Icon="@Icons.Filled.Email" class="mr-3"></MudIcon>
                                             <MudText>Guest's Invitation Email Template</MudText>
-                                            <MudBadge Content="@obj.Guests.Where(g => !g.InvitationSent).Count()" Color="Color.Secondary" Overlap="true" Class="ml-auto mx-6">
-                                                <MudTooltip Text="Send pending invitations">
-                                                    <MudIconButton Icon="@Icons.Outlined.Email" OnClick="SendInvitation" Style="margin: 0; padding: 0;" />
+                                            @if (!string.IsNullOrWhiteSpace(obj.EmailSubject) && !string.IsNullOrWhiteSpace(obj.EmailTemplate))
+                                            {
+                                                <MudBadge Content="@obj.Guests.Where(g => !g.InvitationSent).Count()" Color="Color.Secondary" Overlap="true" Class="ml-auto mx-6">
+                                                    <MudTooltip Text="Send pending invitations">
+                                                        <MudIconButton Icon="@Icons.Outlined.Email" OnClick="SendInvitation" Style="margin: 0; padding: 0;" />
+                                                    </MudTooltip>
+                                                </MudBadge>
+                                                <MudTooltip Text="Resend invitation" Class="ml-2">
+                                                    <MudIconButton Icon="@Icons.Outlined.MarkEmailRead" OnClick="ResendInvitation" Style="margin: 0; padding: 0;" />
                                                 </MudTooltip>
-                                            </MudBadge>
-                                            <MudTooltip Text="Resend invitation" Class="ml-2">
-                                                <MudIconButton Icon="@Icons.Outlined.MarkEmailRead" OnClick="ResendInvitation" Style="margin: 0; padding: 0;" />
-                                            </MudTooltip>
+                                            }
                                             <MudText Class="ml-2"></MudText>
                                         </div>
                                     </TitleContent>
@@ -325,7 +336,10 @@ else
                                         <div class="d-flex">
                                             <MudIcon Icon="@Icons.Filled.Book" class="mr-3"></MudIcon>
                                             <MudText>Program</MudText>
-                                            <MudIconButton Icon="@Icons.Filled.Print" Class="ml-auto" OnClick="PrintPlan" Style="margin: 0; padding: 0;">Budget Form</MudIconButton>
+                                            @if (!string.IsNullOrWhiteSpace(obj.Plan))
+                                            {
+                                                <MudIconButton Icon="@Icons.Filled.Print" Class="ml-auto" OnClick="PrintPlan" Style="margin: 0; padding: 0;">Budget Form</MudIconButton>
+                                            }
                                             <MudText Class="ml-2"></MudText>
                                         </div>
                                     </TitleContent>
@@ -433,24 +447,36 @@ else
     }
 
     async Task PrintPlan()
-        => await RtePlan.PrintAsync();
+        => await AppState.RunAsync(async () =>
+        {
+            await RtePlan.PrintAsync();
+        });
 
     async Task PrintA()
     {
-        Report = await ReportService.GetBudgetForm(Guid.Parse(Id));
-        await RteObj.PrintAsync();
+        await AppState.RunAsync(async () =>
+        {
+            Report = await ReportService.GetBudgetForm(Guid.Parse(Id));
+            await RteObj.PrintAsync();
+        });
     }
 
     async Task PrintB()
     {
-        Report = await ReportService.GetChecklist(Guid.Parse(Id));
-        await RteObj.PrintAsync();
+        await AppState.RunAsync(async () =>
+        {
+            Report = await ReportService.GetChecklist(Guid.Parse(Id));
+            await RteObj.PrintAsync();
+        });
     }
 
     async Task PrintC()
     {
-        Report = await ReportService.GetGuestList(Guid.Parse(Id));
-        await RteObj.PrintAsync();
+        await AppState.RunAsync(async () =>
+        {
+            Report = await ReportService.GetGuestList(Guid.Parse(Id));
+            await RteObj.PrintAsync();
+        });
     }
 
     private List<ToolbarItemModel> Tools = new List<ToolbarItemModel>()
@@ -495,13 +521,16 @@ else
         new ToolbarItemModel() { Command = ToolbarCommand.Redo }
     };
 
-    protected async void Update()
+    async Task Update()
     {
-        if (obj != null)
-            await eventService.UpdateOne(obj);
-        else
-            await eventService.UpdateOne(objWed);
-        NavigationManager.NavigateTo("events");
+        await AppState.RunAsync(async () =>
+        {
+            if (obj != null)
+                await eventService.UpdateOne(obj);
+            else
+                await eventService.UpdateOne(objWed);
+            NavigationManager.NavigateTo("events");
+        });
     }
 
     void Cancel()
@@ -510,27 +539,32 @@ else
     IList<IBrowserFile> files = new List<IBrowserFile>();
     async Task UploadFiles(InputFileChangeEventArgs e)
     {
-        foreach (var file in e.GetMultipleFiles())
+        await AppState.RunAsync(async () =>
         {
-            files.Add(file);
-        }
-        await attachmentService.UpdateFiles<Event>(Guid.Parse(Id), files);
-        files.Clear();
+            foreach (var file in e.GetMultipleFiles())
+                files.Add(file);
+            await attachmentService.UpdateFiles<Event>(Guid.Parse(Id), files);
+            files.Clear();
+        });
     }
 
     async Task DeleteAttachment(Attachment attachment)
     {
         bool confirmed = await JS.InvokeAsync<bool>("confirm", "Are you sure?");
         if (confirmed)
+            await AppState.RunAsync(async () =>
         {
             await attachmentService.DeleteFile(attachment);
-        }
+        });
     }
 
     async Task DownloadAttachment(Attachment attachment)
     {
-        var fileByteArr = await attachmentService.GetFileByteArray(attachment);
-        await JS.InvokeVoidAsync("downloadFromByteArray", fileByteArr, attachment.Name);
+        await AppState.RunAsync(async () =>
+        {
+            var fileByteArr = await attachmentService.GetFileByteArray(attachment);
+            await JS.InvokeVoidAsync("downloadFromByteArray", fileByteArr, attachment.Name);
+        });
     }
 
     void ViewGuests(Guid eventId)
@@ -541,11 +575,17 @@ else
 
     async Task SendInvitation()
     {
-        await EmailService.SendInvitations(Guid.Parse(Id), false, null);
-        NavigationManager.NavigateTo($"/event/{Id}");
+        await AppState.RunAsync(async () =>
+        {
+            await EmailService.SendInvitations(Guid.Parse(Id), false, null);
+            NavigationManager.NavigateTo($"/event/{Id}");
+        });
     }
 
     async Task ResendInvitation()
-        => await EmailService.SendInvitations(Guid.Parse(Id), true, null);
+        => await AppState.RunAsync(async () =>
+        {
+            await EmailService.SendInvitations(Guid.Parse(Id), true, null);
+        });
 
 }

@@ -3,6 +3,8 @@
 @using EventPlanner.Data
 @inject SupplierTypeService supplierTypeService
 @inject NavigationManager NavigationManager
+@inject AppState AppState
+<Loading IsLoading="AppState.IsLoading" />
 
 <div class="title-action">
     <MudText Typo="Typo.h2">Edit Supplier Type</MudText>
@@ -27,12 +29,15 @@
     SupplierType obj = new SupplierType();
 
     protected override async Task OnInitializedAsync()
-    => obj = await Task.Run(() => supplierTypeService.GetOne(Guid.Parse(Id)));
+        => obj = await Task.Run(() => supplierTypeService.GetOne(Guid.Parse(Id)));
 
-    protected async void Update()
+    async Task Update()
     {
-        await supplierTypeService.UpdateOne(obj);
-        NavigationManager.NavigateTo("supplier-types");
+        await AppState.RunAsync(async () =>
+        {
+            await supplierTypeService.UpdateOne(obj);
+            NavigationManager.NavigateTo("supplier-types");
+        });
     }
 
     void Cancel()
