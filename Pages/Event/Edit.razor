@@ -5,6 +5,7 @@
 @using EventPlanner.Data
 @using System.IO
 @inject IJSRuntime JS
+@inject ISnackbar Snackbar
 @inject EventService eventService
 @inject EventTypeService eventTypeService
 @inject PackageService packageService
@@ -577,15 +578,29 @@ else
     {
         await AppState.RunAsync(async () =>
         {
+            try
+            {
             await EmailService.SendInvitations(Guid.Parse(Id), false, null);
             NavigationManager.NavigateTo($"/event/{Id}");
+            }
+            catch (Exception ex)
+            {
+                Snackbar.Add(ex.Message, Severity.Error);
+            }
         });
     }
 
     async Task ResendInvitation()
         => await AppState.RunAsync(async () =>
         {
+            try
+            {
             await EmailService.SendInvitations(Guid.Parse(Id), true, null);
+            }
+            catch (Exception ex)
+            {
+                Snackbar.Add(ex.Message, Severity.Error);
+            }
         });
 
 }

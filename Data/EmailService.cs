@@ -118,7 +118,12 @@ namespace EventPlanner.Data
                 guests = await guestLinq.Where(g => g.Id == guestId.Value).ToListAsync();
 
             if ((!resend && guests.Where(g => !g.InvitationSent).Count() == 0) || (resend && guests.Count == 0))
-                throw new ApplicationException("There's no guests pending to send the invitation to");
+            {
+                if (guestId.HasValue)
+                    throw new ApplicationException("Guest's invitation already sent");
+                else
+                    throw new ApplicationException("There's no guests pending to send the invitation to");
+            }
 
             #region GOOGLE API
             // var secrets = new ClientSecrets

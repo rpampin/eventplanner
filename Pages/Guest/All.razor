@@ -3,6 +3,7 @@
 @using EventPlanner.Models.ModelView
 @using EventPlanner.Data
 @inject IJSRuntime JS
+@inject ISnackbar Snackbar
 @inject EventService EventService
 @inject GuestService GuestService
 @inject NavigationManager NavigationManager
@@ -52,6 +53,7 @@ else
                     <MudTh>Remarks</MudTh>
                     <MudTh></MudTh>
                     <MudTh></MudTh>
+                    <MudTh></MudTh>
                 </HeaderContent>
                 <RowTemplate>
                     <MudTd DataLabel="LastName">@context.LastName</MudTd>
@@ -62,8 +64,16 @@ else
                     <MudTd DataLabel="Table">@context.Table</MudTd>
                     <MudTd DataLabel="Remarks">@context.Remarks</MudTd>
                     <MudTd DataLabel="SendInvite" class="fit">
-                        <MudTooltip Text="Send invite">
-                            <MudIconButton Icon="@Icons.Material.Filled.Mail" Color="Color.Success" Size="Size.Small" Class="ma-2" @onclick="@(e => SendInvitation(@context))"></MudIconButton>
+                        @if (!context.InvitationSent)
+                        {
+                            <MudTooltip Text="Send invitation">
+                                <MudIconButton Icon="@Icons.Material.Filled.Mail" Color="Color.Success" Size="Size.Small" Class="ma-2" @onclick="@(e => SendInvitation(@context))"></MudIconButton>
+                            </MudTooltip>
+                        }
+                    </MudTd>
+                    <MudTd DataLabel="SendInvite" class="fit">
+                        <MudTooltip Text="Resend invitation">
+                            <MudIconButton Icon="@Icons.Material.Filled.MarkEmailRead" Color="Color.Primary" Size="Size.Small" Class="ma-2" @onclick="@(e => ResendInvitation(@context))"></MudIconButton>
                         </MudTooltip>
                     </MudTd>
                     <MudTd DataLabel="Delete" class="fit">
@@ -104,9 +114,29 @@ else
     {
         await AppState.RunAsync(async () =>
         {
-            await EmailService.SendInvitations(Guid.Parse(EventId), false, Guest.Id);
+            try
+            {
+                await EmailService.SendInvitations(Guid.Parse(EventId), false, Guest.Id);
+            }
+            catch (Exception ex)
+            {
+                Snackbar.Add(ex.Message, Severity.Error);
+            }
         });
     }
+
+    async Task ResendInvitation(Models.Guest Guest)
+        => await AppState.RunAsync(async () =>
+        {
+            try
+            {
+                await EmailService.SendInvitations(Guid.Parse(EventId), true, Guest.Id);
+            }
+            catch (Exception ex)
+            {
+                Snackbar.Add(ex.Message, Severity.Error);
+            }
+        });
 
     protected void Back()
         => NavigationManager.NavigateTo($"/event/{EventId}", true);

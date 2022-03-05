@@ -1,6 +1,7 @@
 ﻿@page "/send-email"
 @using EventPlanner.Models
 @using EventPlanner.Data
+@inject ISnackbar Snackbar
 @inject EmailService EmailService
 @inject NavigationManager NavigationManager
 @inject AppState AppState
@@ -40,8 +41,15 @@
     {
         await AppState.RunAsync(async () =>
         {
-            await EmailService.SendEmail(obj);
-            NavigationManager.NavigateTo("send-email", true);
+            try
+            {
+                await EmailService.SendEmail(obj);
+                NavigationManager.NavigateTo("send-email", true);
+            }
+            catch (Exception ex)
+            {
+                Snackbar.Add(ex.Message, Severity.Error);
+            }
         });
     }
 
