@@ -1,4 +1,5 @@
-﻿using EventPlanner;
+﻿using ElectronNET.API;
+using EventPlanner;
 using EventPlanner.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using MudBlazor.Services;
 using Syncfusion.Blazor;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace WebApplication1
 {
@@ -78,6 +80,9 @@ namespace WebApplication1
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
+
+            // Open the Electron-Window here
+            Task.Run(async () => await Electron.WindowManager.CreateWindowAsync());
         }
     }
 }

@@ -5,10 +5,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Pages\Error.cshtml.cs" />
 	  <Compile Remove="Program_6.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Content Remove="Pages\Error.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ElectronNET.API" Version="13.5.1" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.14" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.14">
 			<PrivateAssets>all</PrivateAssets>
@@ -22,7 +28,7 @@
 		<PackageReference Include="PreMailer.Net" Version="2.4.0" />
 		<PackageReference Include="Storage.Net" Version="9.3.0" />
 		<PackageReference Include="Syncfusion.Blazor.RichTextEditor" Version="19.3.0.55" />
-		<PackageReference Include="System.Drawing.Common" Version="5.0.14" />
+		<PackageReference Include="System.Drawing.Common" Version="5.0.3" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
 	</ItemGroup>
 

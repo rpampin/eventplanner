@@ -1,3 +1,4 @@
+using ElectronNET.API;
 using EventPlanner.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +13,12 @@ namespace WebApplication1
     {
         public static async Task Main(string[] args)
         {
-            var host = CreateHostBuilder(args).Build();
+            var host = CreateHostBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseElectron(args);
+                    webBuilder.UseStartup<Startup>();
+                }).Build();
             using var scope = host.Services.CreateScope();
 
             var services = scope.ServiceProvider;
